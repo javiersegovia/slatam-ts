@@ -1,0 +1,108 @@
+{
+  "name": "with-typescript-styled-components",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint:format": "prettier --write .",
+    "lint:lint": "eslint . --ext ts --ext tsx --ext js",
+    "lint:type-check": "tsc --pretty --noEmit",
+    "find:unused": "next-unused"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run lint:type-check"
+    }
+  },
+  "lint-staged": {
+    "*.@(ts|tsx)": [
+      "yarn lint:lint",
+      "yarn lint:format"
+    ]
+  },
+  "next-unused": {
+    "alias": {
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@@root/*": [
+        "./*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@views/*": [
+        "src/views/*"
+      ]
+    },
+    "debug": true,
+    "include": [
+      "src/components",
+      "src/lib",
+      "src/pages",
+      "src/views"
+    ],
+    "exclude": [],
+    "entrypoints": [
+      "./src/pages"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5"
+  },
+  "babelMacros": {
+    "twin": {
+      "preset": "styled-components"
+    }
+  },
+  "dependencies": {
+    "faker": "^5.1.0",
+    "next": "^10.0.4",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "styled-components": "^5.2.1",
+    "twin.macro": "^2.0.7"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^11.2.2",
+    "@types/jest": "^26.0.19",
+    "@types/node": "^14.14.16",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/styled-components": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
+    "autoprefixer": "^10.1.0",
+    "babel-jest": "^26.6.3",
+    "babel-plugin-styled-components": "^1.12.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-react": "^7.21.5",
+    "husky": "^4.3.6",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.3",
+    "next-unused": "^0.0.3",
+    "postcss": "^8.2.1",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.2.1",
+    "tailwindcss": "^2.0.2",
+    "typescript": "4.0"
+  }
+}
