@@ -6,11 +6,14 @@
     "import",
     "jsx-a11y",
     "jest",
+    "react",
+    "react-hooks",
     "testing-library"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:jest/recommended",
