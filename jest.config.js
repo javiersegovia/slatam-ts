@@ -17,6 +17,7 @@ module.exports = {
     '^@lib/(.*)$': '<rootDir>/src/lib/$1',
     '^@pages/(.*)$': '<rootDir>/src/pages/$1',
     '^@root/(.*)$': '<rootDir>/$1',
+    '^@tests/(.*)$': '<rootDir>/tests/$1',
     '^@styles/(.*)$': '<rootDir>/styles/$1',
     '^@views/(.*)$': '<rootDir>/src/views/$1',
   },

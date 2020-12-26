@@ -9,6 +9,7 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch",
 
+    "analyze": "BUNDLE_ANALYZE=true yarn build",
     "lint:format": "prettier --write .",
     "lint:lint": "eslint . --ext ts --ext tsx --ext js",
     "lint:type-check": "tsc --pretty --noEmit",
