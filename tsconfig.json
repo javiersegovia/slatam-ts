@@ -7,7 +7,7 @@
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
-    "strict": false,
+    "strict": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "noUnusedLocals": true,
@@ -24,12 +24,13 @@
       "@components/*": ["src/components/*"],
       "@lib/*": ["src/lib/*"],
       "@pages/*": ["src/pages/*"],
-      "@@root/*": ["./*"],
+      "@root/*": ["./*"],
       "@styles/*": ["styles/*"],
+      "@tests/*": ["tests/*"],
       "@views/*": ["src/views/*"]
     }
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "tests/setuptjs"],
   "files": ["twin.d.ts"]
 }
