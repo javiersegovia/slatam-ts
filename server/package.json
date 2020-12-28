@@ -8,7 +8,7 @@
     "build": "nest build",
     "dev": "nest start --watch",
     "dev:debug": "nest start --debug --watch",
-    "start": "node dist/main",
+    "start": "node -r ./tsconfig-paths dist/main",
     "migrate:dev": "prisma migrate dev --preview-feature",
     "migrate:dev:create": "prisma migrate dev --create-only --preview-feature",
     "migrate:reset": "prisma migrate reset --preview-feature",
