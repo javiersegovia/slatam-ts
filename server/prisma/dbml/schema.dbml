@@ -10,10 +10,24 @@ Table User {
   password String [not null]
   first_name String
   last_name String
+  posts Post
   role Role [not null, default: 'USER']
+}
+
+Table Post {
+  id String [pk]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  published Boolean [not null, default: false]
+  title String [not null]
+  content String
+  author User
+  authorId String
 }
 
 Enum Role {
   ADMIN
   USER
 }
+
+Ref: Post.authorId > User.id

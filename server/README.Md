@@ -2,8 +2,8 @@
 
 ## Install workflow
 
-1. Run `yarn` to install dependencies
-2. Create the `.env` file
+1. Create the `.env` file
+2. Run `yarn` to install dependencies
 3. Run `docker:db` to start the PostgresQL database
 4. Run `yarn migrate:dev` to apply database migrations
 5. Run `yarn seed` to seed the database

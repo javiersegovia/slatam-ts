@@ -1,16 +1,17 @@
+import { join } from 'path'
 import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
-import { PrismaService } from '../services/prisma.service'
-// import { PostResolver } from '../resolvers/post.resolver'
+import { PrismaService } from '@services/prisma.service'
 import { UserModule } from './user.module'
-import { join } from 'path'
+import { PostModule } from './post.module'
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/generated-schema.gql'),
+      autoSchemaFile: join(process.cwd(), 'src/schema-gen.gql'),
     }),
     UserModule,
+    PostModule,
   ],
   controllers: [],
   providers: [PrismaService],

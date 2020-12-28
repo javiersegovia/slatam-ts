@@ -1,53 +1,24 @@
 import 'reflect-metadata'
-import { Resolver, Query, Args } from '@nestjs/graphql'
-import { User } from '../models/user'
-
-// @InputType()
-// class SignupUserInput {
-//   @Field({ nullable: true })
-//   name: string
-
-//   @Field()
-//   email: string
-// }
+import { Resolver, ResolveField, Root, Query, Args } from '@nestjs/graphql'
+import { UserService } from '@services/user.service'
+import { User } from '@entities/user.entity'
 
 @Resolver(User)
 export class UserResolver {
-  // @ResolveField()
-  // async posts(@Root() user: User, @Context() ctx): Promise<Post[]> {
-  //   return this.prismaService.user
-  //     .findOne({
-  //       where: {
-  //         id: user.id,
-  //       },
-  //     })
-  //     .posts()
-  // }
-  // @Mutation((returns) => User)
-  // async signupUser(
-  //   @Args('data') data: SignupUserInput,
-  //   @Context() ctx
-  // ): Promise<User> {
-  //   return this.prismaService.user.create({
-  //     data: {
-  //       email: data.email,
-  //       name: data.name,
-  //     },
-  //   })
-  // }
-  // @Query((returns) => User, { nullable: true })
-  // async user(@Args('id') id: number, @Context() ctx) {
-  //   return this.prismaService.user.findOne({
-  //     where: { id: id },
-  //   })
-  // }
+  constructor(private userService: UserService) {}
 
-  @Query(() => String)
-  helloWorld(): string {
-    return 'Hello World!'
+  @ResolveField()
+  async posts(@Root() user: User) {
+    return this.userService.getUserPosts(user.id)
   }
-  @Query(() => String)
-  hello(@Args('name') name: string): string {
-    return `Hello ${name}!`
+
+  @Query(() => User, { nullable: true })
+  getUser(@Args('id') id: string) {
+    return this.userService.getUser(id)
+  }
+
+  @Query(() => [User], { nullable: true })
+  getAllUsers() {
+    return this.userService.getAllUsers()
   }
 }

@@ -8,13 +8,13 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - postgres
+      - db
     env_file:
       - .env
 
-  postgres:
+  db:
     image: postgres:12
-    container_name: postgres
+    container_name: db
     restart: always
     ports:
       - 5432:5432

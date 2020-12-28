@@ -9,9 +9,15 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
+    "incremental": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
+    "paths": {
+      "@entities/*": ["src/entities/*"],
+      "@modules/*": ["src/modules/*"],
+      "@resolvers/*": ["src/resolvers/*"],
+      "@services/*": ["src/services/*"]
+    }
   },
   "exclude": ["node_modules", "dist", "graphql"]
 }

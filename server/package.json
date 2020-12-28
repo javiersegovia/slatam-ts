@@ -29,7 +29,6 @@
     "start:db": "yarn run migrate:up && yarn run prisma:generate && yarn run seed",
     "seed": "ts-node prisma/seed.ts",
     "postinstall": "yarn run prisma:generate",
-    "postmigrate:dev": "yarn run prisma:generate",
     "docker:db": "docker-compose -f docker-compose.db.yml up",
     "docker:seed": "docker exec -it nest-api yarn run seed",
     "docker": "docker-compose up",
