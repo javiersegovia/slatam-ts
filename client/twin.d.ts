@@ -23,7 +23,7 @@ declare module 'react' {
 declare global {
   namespace JSX {
     interface IntrinsicAttributes<T> extends DOMAttributes<T> {
-      as?: string
+      as?: string | React.ReactNode
     }
   }
 }
