@@ -31,6 +31,11 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "tests/setuptjs"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+  ],
   "files": ["types/twin.d.tsn.d.ts"]
 }
