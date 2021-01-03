@@ -1,46 +1,10 @@
+import React from 'react'
 import _tw from 'twin.macro'
-import React, { useState } from 'react'
-// import Link from 'next/link'
-// import { Menu, Transition } from '@headlessui/react'
-// import ClickAwayListener from '@components/Utilities/ClickAwayListener'
 import NavDropdownItem from './MainNavbar/NavDropdownItem'
 import SolutionsDropdownContent from './MainNavbar/SolutionsDropdownContent'
 import MoreDropdownContent from './MainNavbar/MoreDropdownContent'
 
-// function HomeButton() {
-//   return (
-//     <Link href="/">
-//       <button type="button">Inicio</button>
-//     </Link>
-//   )
-// }
-
-enum NavItems {
-  SOLUTIONS,
-  PRICING,
-  MORE,
-}
-
-// interface iDefaultOpenDropdowns {
-//   [NavItems.SOLUTIONS]: boolean
-//   [NavItems.PRICING]: boolean
-//   [NavItems.MORE]: boolean
-// }
-
 export default function MainNavbar() {
-  const [isOpen, setOpen] = useState({
-    [NavItems.SOLUTIONS]: false,
-    [NavItems.PRICING]: false,
-    [NavItems.MORE]: false,
-  })
-
-  const handleOpenState = (dropdownName: NavItems, newState: boolean): void => {
-    setOpen((state) => ({
-      ...state,
-      [dropdownName]: newState,
-    }))
-  }
-
   return (
     <>
       <div className="relative bg-white">
