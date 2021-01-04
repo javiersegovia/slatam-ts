@@ -11,7 +11,7 @@ type PossibleEvent = {
 
 type Handler = (event: PossibleEvent) => void
 
-export function useOnClickOutside(
+export default function useOnClickOutside(
   ref: React.RefObject<HTMLElement>,
   handler: Handler
 ) {

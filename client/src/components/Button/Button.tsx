@@ -55,7 +55,7 @@ const Button = ({
         isApple && _tw`transform active:scale-95 bg-black text-white`,
         isApple && !disabled && _tw` hover:bg-gray-800`,
 
-        disabled && _tw`opacity-70`,
+        disabled && _tw`opacity-30 cursor-not-allowed`,
       ]}
     >
       {children}
