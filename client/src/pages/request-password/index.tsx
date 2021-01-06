@@ -1,7 +1,7 @@
 import React from 'react'
 import _tw from 'twin.macro'
 import Link from 'next/link'
-import Input from '@components/Form/Input'
+import Input from '@components/FormFields/Input'
 import Button from '@components/Button'
 import { useForm } from 'react-hook-form'
 

@@ -50,20 +50,6 @@ const AvatarWithMenu = () => {
                     >
                       Upgrade account (soon)
                     </Menu.Item>
-                    {/* <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href="#license"
-                          className={`${
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700'
-                          } hover:bg-gray-100 hover:text-gray-900 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left`}
-                        >
-                          Upgrade account
-                        </a>
-                      )}
-                    </Menu.Item> */}
                     <Menu.Item>
                       {({ active }) => (
                         <Link href="/dashboard/settings">

@@ -2,11 +2,11 @@ import React from 'react'
 import _tw from 'twin.macro'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Input from '@components/Form/Input'
+import Input from '@components/FormFields/Input'
 import Button, { ButtonColorVariants } from '@components/Button'
 import { useForm } from 'react-hook-form'
 
-type IFormValues = {
+interface IFormValues {
   email: string
   password: string
 }
