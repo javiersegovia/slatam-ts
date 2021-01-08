@@ -13,7 +13,6 @@ For running the server on Production mode:
 
 - Run `yarn build` and then `yarn start`
 
-Everytime you make a change to the `prisma/schema.prisma` file you must run the migrations (see migrations section below)
 
 ## Folder architecture
 
@@ -45,7 +44,7 @@ src/
 
 ## Workflow considerations
 
-- If you make changes to the `schema.prisma` file, make sure you run a migration command (see migrations section) to generate the updated Prisma Client types.
+- If you make changes to the `schema.prisma` file, you must run a migration command (see migrations section) to generate the updated Prisma Client types.
 
 - Take a look at the paths aliases defined in `tsconfig.json`. They may help you understand some imports across the project.
 
