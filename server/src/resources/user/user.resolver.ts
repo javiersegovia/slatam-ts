@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 import { Resolver, ResolveField, Root, Query, Args } from '@nestjs/graphql'
-import { UserService } from '@services/user.service'
-import { User } from '@entities/user.entity'
+import { User, UserService } from '.'
 
 @Resolver(User)
 export class UserResolver {

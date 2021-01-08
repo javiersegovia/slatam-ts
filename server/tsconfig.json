@@ -13,10 +13,8 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@entities/*": ["src/entities/*"],
-      "@modules/*": ["src/modules/*"],
-      "@resolvers/*": ["src/resolvers/*"],
-      "@services/*": ["src/services/*"]
+      "@resources/*": ["src/resources/*"],
+      "@lib/*": ["src/lib/*"],
     }
   },
   "exclude": ["node_modules", "dist", "graphql"]

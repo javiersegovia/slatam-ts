@@ -3,26 +3,26 @@
 //// ------------------------------------------------------
 
 Table User {
-  id String [pk]
-  created_at DateTime [default: `now()`, not null]
-  updated_at DateTime [not null]
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   email String [unique, not null]
   password String [not null]
-  first_name String
-  last_name String
+  firstName String
+  lastName String
   posts Post
   role Role [not null, default: 'USER']
 }
 
 Table Post {
   id String [pk]
-  created_at DateTime [default: `now()`, not null]
-  updated_at DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   published Boolean [not null, default: false]
   title String [not null]
   content String
   author User
-  authorId String
+  authorId Int
 }
 
 Enum Role {
