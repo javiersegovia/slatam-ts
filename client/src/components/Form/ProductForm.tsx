@@ -2,63 +2,56 @@ import React from 'react'
 import _tw from 'twin.macro'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { Input, Select } from '@components/FormFields'
+import { Input } from '@components/FormFields'
 import Button from '@components/Button'
-// import { categoriesOptions } from '@lib/demo/categoriesData'
-// import { countriesOptions } from '@lib/demo/countriesData'
+import Select, { TOption, SelectMultiple } from '@components/FormFields/Select'
+import faker from 'faker'
 
-// export enum ProductStatus {
-//   ACTIVE = 'Active',
-//   INACTIVE = 'Inactive',
-// }
+// this should be queried from the database
+const peopleOptions = new Array(49).fill(null).map(() => ({
+  value: faker.name.firstName(),
+  label: faker.name.firstName(),
+}))
 
-// this enums should be queried from the database
-const statusOptions = [
-  {
-    description: 'Active',
-  },
-  {
-    description: 'Inactive',
-  },
-  {
-    description: 'Hello',
-  },
-  {
-    description: 'Moto',
-  },
-]
+const citiesOptions = new Array(49).fill(null).map(() => ({
+  value: faker.address.zipCode(),
+  label: faker.address.city(),
+}))
 
 export enum ProductCategory {
   AGRICULTURE,
   TECHNOLOGY,
 }
 
-// this should be queried from the database
-
 interface IFormValues {
   name: string
   description: string
-  status: {
-    description: string
-  }
   price?: number | null
+  cities?: TOption[] | null
+  contactPerson?: TOption | null
   // category?: number | null
 }
 
 // TODO: create helper text for input component
 // TODO: create radio field for Status Options
-// TODO: create simple multi select for categories
-// TODO: create simple multi select (with filter) for countries
 // TODO: add drag and drop image field
 
 const ProductForm = () => {
   const defaultValues: IFormValues = {
     name: '',
     description: '',
-    status: {
-      description: 'Hello',
-    },
     price: null,
+    // contactPerson: {
+    //   value: peopleOptions[0].value,
+    //   label: peopleOptions[0].label,
+    // },
+    contactPerson: null,
+    cities: [
+      {
+        value: peopleOptions[5].value,
+        label: peopleOptions[5].label,
+      },
+    ],
     // category: null,
   }
 
@@ -66,20 +59,24 @@ const ProductForm = () => {
     register,
     unregister,
     handleSubmit,
-    getValues,
+    formState,
     setValue,
-    watch,
     control,
     errors,
   } = useForm<IFormValues>({
     defaultValues,
   })
+
+  const { submitCount } = formState
+
   const router = useRouter()
   const onSubmit = (data: IFormValues) => {
     console.log(data)
 
     // router.push('/dashboard/products')
   }
+
+  console.log({ submitCount })
 
   // const statusValue = getValues('status')
 
@@ -112,14 +109,14 @@ const ProductForm = () => {
         name="description"
         type="text"
         label="Description"
-        placeholder="Description of the product. Mininum 40 characters."
+        placeholder="Description of the product. Mininum 20 characters."
         isTextArea
         register={register}
         validations={{
           minLength: {
-            value: 40,
+            value: 20,
             message:
-              'La descripción del producto debe tener mínimo 40 caracteres',
+              'La descripción del producto debe tener mínimo 20 caracteres',
           },
         }}
         error={errors?.description}
@@ -138,20 +135,49 @@ const ProductForm = () => {
         }}
         error={errors?.price}
       />
+      <div className="mt-8"></div>
       <Select
+        name="contactPerson"
+        label="Choose a contact person"
+        options={peopleOptions}
         control={control}
-        name="status"
-        label="Product status"
-        placeholder="Choose the status of your product"
-        initialValue={defaultValues.status}
-        options={statusOptions}
+        placeholder="Example select of unique value"
         register={register}
         unregister={unregister}
-        getFormValues={getValues}
         setFormValue={setValue}
+        initialValue={defaultValues.contactPerson}
+        error={errors.contactPerson}
+        validations={{
+          required: {
+            value: true,
+            message: 'Por favor, escoge un status',
+          },
+        }}
+      />
+      <SelectMultiple
+        name="cities"
+        label="Choose multiple cities to ship"
+        options={citiesOptions}
+        control={control}
+        placeholder="Example select of multiple values"
+        register={register}
+        unregister={unregister}
+        setFormValue={setValue}
+        initialValue={defaultValues.cities}
+        error={errors.cities}
+        isSubmitClicked={Boolean(submitCount)}
+        maxLimit={3}
+        validations={{
+          required: {
+            value: true,
+            message: 'Por favor, escoge una ciudad',
+          },
+        }}
       />
 
       <Button type="submit">Guardar</Button>
+
+      <div className="pb-96"></div>
     </form>
   )
 }

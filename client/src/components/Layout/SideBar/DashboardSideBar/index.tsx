@@ -58,7 +58,7 @@ const SideBar: React.FC = ({ children }) => {
         <nav
           ref={navRef}
           css={[
-            _tw`fixed top-0 left-0 z-20 h-full pb-10 overflow-x-hidden overflow-y-auto transition origin-left transform bg-indigo-900 border-r w-60 md:translate-x-0`,
+            _tw`fixed top-0 left-0 z-20 h-full pb-10 overflow-x-hidden overflow-y-auto transition origin-left transform bg-blue-900 border-r w-60 md:translate-x-0`,
             showSideBar ? _tw`translate-x-0` : _tw`-translate-x-full`,
           ]}
         >

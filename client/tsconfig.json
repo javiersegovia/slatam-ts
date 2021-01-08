@@ -3,7 +3,8 @@
     "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
-    "lib": ["dom", "es2017"],
+    "lib": ["dom", "es2017", "dom.iterable"],
+    "downlevelIteration": true,
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
@@ -31,11 +32,6 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],
   "files": ["types/twin.d.ts"]
 }

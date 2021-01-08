@@ -1,6 +1,7 @@
 import React from 'react'
 import _tw from 'twin.macro'
 import { FieldErrors, FieldError, RegisterOptions } from 'react-hook-form'
+import ErrorMessage from './ErrorMessage'
 import Label from './Label'
 import { RefReturn } from './shared'
 
@@ -40,8 +41,7 @@ const Input: React.FC<TInputProps> = ({
   const Tagname = isTextArea ? 'textarea' : 'input'
 
   return (
-    <label htmlFor={name} tw="block">
-      {label && <Label>{label}</Label>}
+    <Label htmlFor={name} description={label} tw="block">
       <Tagname
         {...otherProps}
         ref={register({ ...validations })}
@@ -53,8 +53,8 @@ const Input: React.FC<TInputProps> = ({
         rows={3}
         className={getBaseStyles(!!error)}
       />
-      <span tw="text-red-600 ml-3 text-xs">{error?.message}</span>
-    </label>
+      {Boolean(validations) && <ErrorMessage>{error?.message}</ErrorMessage>}
+    </Label>
   )
 }
 
