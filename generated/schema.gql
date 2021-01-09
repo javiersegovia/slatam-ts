@@ -2,18 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Post {
-  id: ID!
+type Auth {
+  """JWT access token"""
+  accessToken: String!
 
-  """Identifies the date and time when the object was created."""
-  created_at: DateTime!
-
-  """Identifies the date and time when the object was last updated."""
-  updated_at: DateTime!
-  title: String!
-  content: String
-  published: Boolean!
-  author: User
+  """JWT refresh token"""
+  refreshToken: String!
+  user: User!
 }
 
 """
@@ -21,19 +16,36 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type User {
-  id: ID!
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  login(data: LoginInput!): Auth!
+  refreshToken(token: String!): Token!
+  signup(data: SignupInput!): Auth!
+}
+
+type Post {
+  author: User
+  content: String
 
   """Identifies the date and time when the object was created."""
   created_at: DateTime!
+  id: ID!
+  published: Boolean!
+  title: String!
 
   """Identifies the date and time when the object was last updated."""
   updated_at: DateTime!
-  email: String!
-  role: Role!
-  firstName: String
-  lastName: String
-  posts: [Post!]
+}
+
+type Query {
+  getAllUsers: [User!]
+  getPost(id: String!): Post
+  getPublishedPosts: [Post!]
+  getUser(id: Int!): User
 }
 
 """User role"""
@@ -42,9 +54,31 @@ enum Role {
   USER
 }
 
-type Query {
-  getUser(id: Float!): User
-  getAllUsers: [User!]
-  getPost(id: String!): Post
-  getPublishedPosts: [Post!]
+input SignupInput {
+  email: String!
+  firstName: String
+  lastName: String
+  password: String!
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: String!
+
+  """JWT refresh token"""
+  refreshToken: String!
+}
+
+type User {
+  """Identifies the date and time when the object was created."""
+  created_at: DateTime!
+  email: String!
+  firstName: String
+  id: ID!
+  lastName: String
+  posts: [Post!]
+  role: Role!
+
+  """Identifies the date and time when the object was last updated."""
+  updated_at: DateTime!
 }

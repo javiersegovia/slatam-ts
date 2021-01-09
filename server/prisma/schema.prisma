@@ -9,7 +9,7 @@ generator client {
 
 generator dbml {
   provider = "prisma-dbml-generator"
-  output   = "../generated/schema.dbml"
+  output   = "../../generated/schema.dbml"
 }
 
 model User {

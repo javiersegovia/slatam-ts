@@ -13,6 +13,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
+      "@config/*": ["src/config/*"],
       "@resources/*": ["src/resources/*"],
       "@lib/*": ["src/lib/*"],
     }
