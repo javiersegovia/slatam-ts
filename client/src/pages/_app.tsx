@@ -2,7 +2,7 @@ import '@styles/main.css'
 
 import type { FC } from 'react'
 import type { AppProps } from 'next/app'
-import tw, { GlobalStyles } from 'twin.macro'
+import tw from 'twin.macro'
 
 import { createGlobalStyle } from 'styled-components'
 
@@ -20,7 +20,6 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <div>
-      <GlobalStyles />
       <AppGlobalStyles />
       <Layout pageProps={pageProps}>
         <Component {...pageProps} />

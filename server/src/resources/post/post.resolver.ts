@@ -9,8 +9,9 @@ import {
   Field,
 } from '@nestjs/graphql'
 import { IsNotEmpty } from 'class-validator'
-import { User } from '../user'
-import { Post, PostService } from '../post'
+import { User } from '../user/user.entity'
+import { Post } from './post.entity'
+import { PostService } from './post.service'
 
 @ArgsType()
 export class PostIdArgs {

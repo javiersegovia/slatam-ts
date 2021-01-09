@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import { Resolver, ResolveField, Root, Query, Args } from '@nestjs/graphql'
-import { User, UserService } from '.'
+import { User } from './user.entity'
+import { UserService } from './user.service'
 
 @Resolver(User)
 export class UserResolver {
@@ -12,7 +13,7 @@ export class UserResolver {
   }
 
   @Query(() => User, { nullable: true })
-  getUser(@Args('id') id: string) {
+  getUser(@Args('id') id: number) {
     return this.userService.getUser(id)
   }
 

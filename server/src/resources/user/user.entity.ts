@@ -1,8 +1,8 @@
 // import 'reflect-metadata'
 import { ObjectType, registerEnumType, HideField } from '@nestjs/graphql'
 import { IsEmail } from 'class-validator'
-import { BaseEntity } from '../base'
-import { Post } from '../post'
+import { BaseEntity } from '../base/base.entity'
+import { Post } from '../post/post.entity'
 
 export enum Role {
   ADMIN = 'ADMIN',

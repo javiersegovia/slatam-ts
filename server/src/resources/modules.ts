@@ -1,2 +1,2 @@
-export { UserModule } from './user'
-export { PostModule } from './post'
+export { UserModule } from './user/user.module'
+export { PostModule } from './post/post.module'

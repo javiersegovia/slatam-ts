@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma'
-
+import { PrismaService } from '../prisma/prisma.service'
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  getUser(userId: string) {
+  getUser(userId: number) {
     return this.prisma.user.findUnique({
       where: { id: userId },
     })
@@ -15,7 +14,7 @@ export class UserService {
     return this.prisma.user.findMany()
   }
 
-  getUserPosts(userId: string) {
+  getUserPosts(userId: number) {
     return this.prisma.user
       .findUnique({
         where: {
