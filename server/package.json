@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "dotenv -e .env nest build",
+    "build": "nest build",
     "dev": "nest start --watch",
-    "dev:debug": "dotenv -e .env nest start --debug --watch",
+    "dev:debug": "nest start --debug --watch",
     "start": "node -r ./tsconfig-paths dist/main",
     "migrate:dev": "prisma migrate dev --preview-feature",
     "migrate:dev:create": "prisma migrate dev --create-only --preview-feature",

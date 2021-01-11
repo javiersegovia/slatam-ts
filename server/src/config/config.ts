@@ -16,7 +16,7 @@ const config: Config = {
   },
   security: {
     tokenExpiresIn: '15s',
-    tokenRefreshIn: '1m',
+    tokenRefreshIn: '1h',
     bcryptSaltOrRound: 10,
   },
 }

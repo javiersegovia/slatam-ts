@@ -35,7 +35,7 @@ export class AuthService {
         data: {
           ...payload,
           password: hashedPassword,
-          role: 'USER',
+          roles: [],
           refreshTokens: {
             create: [
               {
@@ -139,8 +139,7 @@ export class AuthService {
 
       if (
         !currentRefreshToken ||
-        new Date().getTime() > currentRefreshToken.expiryDate.getTime() ||
-        currentRefreshToken.isRevoked
+        new Date().getTime() > currentRefreshToken.expiryDate.getTime()
       ) {
         throw new Error()
       }

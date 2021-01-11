@@ -10,7 +10,7 @@ Table User {
   password String [not null]
   firstName String
   lastName String
-  role Role [not null, default: 'USER']
+  roles Role
   posts Post
   refreshTokens RefreshToken
 }
@@ -29,14 +29,14 @@ Table Post {
 Table RefreshToken {
   id String [pk]
   expiryDate DateTime [not null]
-  isRevoked Boolean [not null, default: false]
   user User [not null]
   userId Int [not null]
 }
 
 Enum Role {
   ADMIN
-  USER
+  BUYER
+  SELLER
 }
 
 Ref: Post.authorId > User.id
