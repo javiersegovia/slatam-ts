@@ -12,6 +12,26 @@ import { SecurityConfig } from '@config/config.interface'
 
 // TODO: add authentication Guard
 
+/**
+ * 1. When user registers or logs in, the server generates an accessToken and a refreshToken.
+ *
+ * 2. The accessToken is sent in the response, so the user can store it and
+ * send in his next request as a Bearer token inside his Authorization header.
+ * The refreshToken is stored in a httpOnly cookie, so is not visible in the client.
+ *
+ * 3. The accessToken will have a short expiration time. After it expires, the server will send
+ * a TokenExpiredError when the user tries to access a protected resolver method (protected by a AuthGuard)
+ *
+ * 4. When the client receives the "TokenExpiredError", it should hit the "refreshAccessToken"
+ * method in the AuthResolver.
+ *
+ * 5. If the user has a valid RefreshToken in his cookies, will get back a new AccessToken,
+ * and then he can retry to access the protected resolver method.
+ *
+ * 6. If the user has a invalid or expired RefreshToken, he will get back an UnauthorizedException,
+ * and then he should be redirected to the login page in the client side.
+ */
+
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),

@@ -13,8 +13,8 @@ import { ConfigService } from '@nestjs/config'
 import { PrismaService } from '../prisma/prisma.service'
 import { PasswordService } from './password.service'
 
-import { Token } from './token.entity'
 import { SignupInput } from './dto/signup.input'
+import ms from 'ms'
 
 @Injectable()
 export class AuthService {
@@ -25,23 +25,33 @@ export class AuthService {
     private readonly configService: ConfigService
   ) {}
 
-  async createUser(payload: SignupInput): Promise<Token> {
+  async createUser(payload: SignupInput) {
     const hashedPassword = await this.passwordService.hashPassword(
       payload.password
     )
 
     try {
-      const user = await this.prisma.user.create({
+      const { refreshTokens, ...user } = await this.prisma.user.create({
         data: {
           ...payload,
           password: hashedPassword,
           role: 'USER',
+          refreshTokens: {
+            create: [
+              {
+                expiryDate: this.generateRefreshTokenExpiryDate(),
+              },
+            ],
+          },
+        },
+        include: {
+          refreshTokens: true,
         },
       })
 
-      return this.generateToken({
-        userId: user.id,
-      })
+      const accessToken = await this.jwtService.sign({ userId: user.id })
+
+      return { user, accessToken, refreshTokenId: refreshTokens[0].id }
     } catch (e) {
       if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
         throw new ConflictException(`Email ${payload.email} already used.`)
@@ -51,7 +61,7 @@ export class AuthService {
     }
   }
 
-  async login(email: string, password: string): Promise<Token> {
+  async login(email: string, password: string) {
     const user = await this.prisma.user.findUnique({ where: { email } })
 
     if (!user) {
@@ -67,26 +77,43 @@ export class AuthService {
       throw new BadRequestException('Invalid password')
     }
 
-    return this.generateToken({
+    const { accessToken, refreshToken } = await this.generateTokens({
       userId: user.id,
     })
+
+    return {
+      user,
+      accessToken,
+      refreshToken,
+    }
   }
 
-  validateUser(userId: number): Promise<User> {
-    return this.prisma.user.findUnique({ where: { id: userId } })
+  validateUserById(userId: number): Promise<User> {
+    return this.prisma.user.findFirst({ where: { id: userId } })
   }
 
-  getUserFromToken(token: string): Promise<User> {
-    const id = this.jwtService.decode(token)['userId']
-    return this.prisma.user.findUnique({ where: { id } })
+  getUserFromAccessToken(token: string): Promise<User> | null {
+    const id = this.jwtService.decode(token)?.['userId']
+
+    if (!id) {
+      throw new NotFoundException(`Invalid access token`)
+    }
+
+    return this.prisma.user.findFirst({ where: { id } })
   }
 
-  generateToken(payload: { userId: number }): Token {
-    const accessToken = this.jwtService.sign(payload)
+  async generateTokens({ userId }: { userId: number }) {
+    const accessToken = this.jwtService.sign({ userId })
 
-    const securityConfig = this.configService.get<SecurityConfig>('security')
-    const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: securityConfig.tokenRefreshIn,
+    const refreshToken = await this.prisma.refreshToken.create({
+      data: {
+        expiryDate: this.generateRefreshTokenExpiryDate(),
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
     })
 
     return {
@@ -95,15 +122,69 @@ export class AuthService {
     }
   }
 
-  refreshToken(token: string) {
+  async refreshAccessToken(refreshTokenId: string) {
     try {
-      const { userId } = this.jwtService.verify(token)
+      const {
+        user,
+        userId,
+        ...currentRefreshToken
+      } = await this.prisma.refreshToken.findFirst({
+        where: {
+          id: refreshTokenId,
+        },
+        include: {
+          user: true,
+        },
+      })
 
-      return this.generateToken({
+      if (
+        !currentRefreshToken ||
+        new Date().getTime() > currentRefreshToken.expiryDate.getTime() ||
+        currentRefreshToken.isRevoked
+      ) {
+        throw new Error()
+      }
+
+      // Here we revoke the existing RefreshToken because
+      // it should be used only one time (if it is compromised, it does not work anymore)
+      await this.removeRefreshToken(refreshTokenId)
+
+      // Generate new accessToken and refreshToken for the user
+      const { accessToken, refreshToken } = await this.generateTokens({
         userId,
       })
+
+      return {
+        user,
+        accessToken,
+        refreshToken,
+      }
     } catch (e) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException('Unauthorized! Please login again.')
     }
+  }
+
+  generateRefreshTokenExpiryDate() {
+    const securityConfig = this.configService.get<SecurityConfig>('security')
+    const refreshTime = ms(securityConfig.tokenRefreshIn)
+    return new Date(Date.now() + refreshTime)
+  }
+
+  removeRefreshToken(tokenId: string): Promise<any> {
+    return this.prisma.refreshToken.delete({
+      where: {
+        id: tokenId,
+      },
+    })
+  }
+
+  removeAllRefreshTokens(userId: number) {
+    return this.prisma.refreshToken.deleteMany({
+      where: {
+        userId: {
+          equals: userId,
+        },
+      },
+    })
   }
 }

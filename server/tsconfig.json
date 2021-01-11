@@ -14,8 +14,9 @@
     "baseUrl": "./",
     "paths": {
       "@config/*": ["src/config/*"],
-      "@resources/*": ["src/resources/*"],
+      "@decorators/*": ["src/decorators/*"],
       "@lib/*": ["src/lib/*"],
+      "@resources/*": ["src/resources/*"],
     }
   },
   "exclude": ["node_modules", "dist", "graphql"]

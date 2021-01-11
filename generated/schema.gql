@@ -2,12 +2,8 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  """JWT access token"""
+type AuthPayload {
   accessToken: String!
-
-  """JWT refresh token"""
-  refreshToken: String!
   user: User!
 }
 
@@ -22,23 +18,23 @@ input LoginInput {
 }
 
 type Mutation {
-  login(data: LoginInput!): Auth!
-  refreshToken(token: String!): Token!
-  signup(data: SignupInput!): Auth!
+  login(data: LoginInput!): AuthPayload!
+  refreshAccessToken: AuthPayload!
+  signup(data: SignupInput!): AuthPayload!
 }
 
 type Post {
   author: User
   content: String
 
-  """Identifies the date and time when the object was created."""
-  created_at: DateTime!
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
   id: ID!
   published: Boolean!
   title: String!
 
   """Identifies the date and time when the object was last updated."""
-  updated_at: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
@@ -51,7 +47,8 @@ type Query {
 """User role"""
 enum Role {
   ADMIN
-  USER
+  BUYER
+  SELLER
 }
 
 input SignupInput {
@@ -61,24 +58,16 @@ input SignupInput {
   password: String!
 }
 
-type Token {
-  """JWT access token"""
-  accessToken: String!
-
-  """JWT refresh token"""
-  refreshToken: String!
-}
-
 type User {
-  """Identifies the date and time when the object was created."""
-  created_at: DateTime!
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
   email: String!
   firstName: String
   id: ID!
   lastName: String
   posts: [Post!]
-  role: Role!
+  roles: [Role!]!
 
   """Identifies the date and time when the object was last updated."""
-  updated_at: DateTime!
+  updatedAt: DateTime!
 }

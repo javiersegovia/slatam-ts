@@ -23,7 +23,7 @@ import { UserModule, PostModule, AuthModule } from '@resources/modules'
             join(process.cwd(), '../generated/schema.gql'),
           debug: graphqlConfig.debug,
           playground: graphqlConfig.playgroundEnabled,
-          context: ({ req }) => ({ req }),
+          context: ({ req, res }) => ({ req, res }),
         }
       },
       inject: [ConfigService],

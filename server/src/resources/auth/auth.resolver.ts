@@ -1,46 +1,78 @@
-import { Resolver, Mutation, Args, Parent, ResolveField } from '@nestjs/graphql'
-import { Auth } from './auth.entity'
-import { Token } from './token.entity'
+import { Resolver, Mutation, Args, Context } from '@nestjs/graphql'
+import { AuthPayload } from './auth-payload.entity'
 import { AuthService } from './auth.service'
 import { LoginInput } from './dto/login.input'
 import { SignupInput } from './dto/signup.input'
-// import { User } from '../user/user.entity'
+import { Request, Response } from 'express'
 
-@Resolver((of) => Auth)
+export const REFRESH_TOKEN_ID_COOKIE = 'REFRESH_TOKEN_ID'
+
+// TODO: move this to securityConfig
+const refreshTokenConfig = { httpOnly: true }
+
+@Resolver((_of) => AuthPayload)
 export class AuthResolver {
   constructor(private readonly auth: AuthService) {}
 
-  @Mutation((returns) => Auth)
-  async signup(@Args('data') data: SignupInput) {
+  @Mutation((_returns) => AuthPayload)
+  async signup(@Args('data') data: SignupInput, @Context('res') res: Response) {
     data.email = data.email.toLowerCase()
 
-    const { accessToken, refreshToken } = await this.auth.createUser(data)
+    const { user, accessToken, refreshTokenId } = await this.auth.createUser(
+      data
+    )
+
+    res.cookie(REFRESH_TOKEN_ID_COOKIE, refreshTokenId, refreshTokenConfig)
+
     return {
+      user,
       accessToken,
-      refreshToken,
     }
   }
 
-  @Mutation((returns) => Auth)
-  async login(@Args('data') { email, password }: LoginInput) {
-    const { accessToken, refreshToken } = await this.auth.login(
+  @Mutation((_returns) => AuthPayload)
+  async login(
+    @Args('data') { email, password }: LoginInput,
+    @Context('res') res: Response
+  ) {
+    const { user, refreshToken, accessToken } = await this.auth.login(
       email.toLowerCase(),
       password
     )
 
+    res.cookie(REFRESH_TOKEN_ID_COOKIE, refreshToken.id, refreshTokenConfig)
+
     return {
+      user,
       accessToken,
-      refreshToken,
     }
   }
 
-  @Mutation((returns) => Token)
-  async refreshToken(@Args('token') token: string) {
-    return this.auth.refreshToken(token)
+  @Mutation((_returns) => AuthPayload)
+  refreshAccessToken(@Context('req') req: Request) {
+    const refreshTokenId = req.cookies[REFRESH_TOKEN_ID_COOKIE]
+    return this.auth.refreshAccessToken(refreshTokenId)
   }
 
-  @ResolveField('user')
-  async user(@Parent() auth: Auth) {
-    return await this.auth.getUserFromToken(auth.accessToken)
+  async logout(@Context('req') req: Request, @Context('res') res: Response) {
+    const refreshTokenId = req.cookies[REFRESH_TOKEN_ID_COOKIE]
+
+    if (refreshTokenId) {
+      await this.auth.removeRefreshToken(refreshTokenId)
+    }
+
+    res.clearCookie(REFRESH_TOKEN_ID_COOKIE)
+
+    return true
+  }
+
+  async logoutFromAllDevices(
+    @Args('userId') userId: number,
+    @Context('res') res: Response
+  ) {
+    await this.auth.removeAllRefreshTokens(userId)
+    res.clearCookie(REFRESH_TOKEN_ID_COOKIE)
+
+    return true
   }
 }

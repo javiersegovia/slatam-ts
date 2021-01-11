@@ -6,7 +6,8 @@ import { Post } from '../post/post.entity'
 
 export enum Role {
   ADMIN = 'ADMIN',
-  USER = 'USER',
+  BUYER = 'BUYER',
+  SELLER = 'BUYER',
 }
 
 registerEnumType(Role, {
@@ -18,7 +19,7 @@ registerEnumType(Role, {
 export class User extends BaseEntity<number> {
   @IsEmail()
   email: string
-  role: Role
+  roles: Role[]
 
   firstName?: string
   lastName?: string

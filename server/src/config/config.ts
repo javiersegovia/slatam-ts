@@ -15,8 +15,8 @@ const config: Config = {
     sortSchema: true,
   },
   security: {
-    tokenExpiresIn: '2m',
-    tokenRefreshIn: '7d',
+    tokenExpiresIn: '15s',
+    tokenRefreshIn: '1m',
     bcryptSaltOrRound: 10,
   },
 }

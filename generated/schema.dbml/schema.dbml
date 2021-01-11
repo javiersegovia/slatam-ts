@@ -10,8 +10,9 @@ Table User {
   password String [not null]
   firstName String
   lastName String
-  posts Post
   role Role [not null, default: 'USER']
+  posts Post
+  refreshTokens RefreshToken
 }
 
 Table Post {
@@ -25,9 +26,19 @@ Table Post {
   authorId Int
 }
 
+Table RefreshToken {
+  id String [pk]
+  expiryDate DateTime [not null]
+  isRevoked Boolean [not null, default: false]
+  user User [not null]
+  userId Int [not null]
+}
+
 Enum Role {
   ADMIN
   USER
 }
 
 Ref: Post.authorId > User.id
+
+Ref: RefreshToken.userId > User.id
