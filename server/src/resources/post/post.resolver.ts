@@ -12,6 +12,8 @@ import { IsNotEmpty } from 'class-validator'
 import { User } from '../user/user.entity'
 import { Post } from './post.entity'
 import { PostService } from './post.service'
+import { UseGuards } from '@nestjs/common'
+import { IsAuthenticatedGuard } from '@guards/is-authenticated.guard'
 
 @ArgsType()
 export class PostIdArgs {
@@ -30,6 +32,7 @@ export class PostResolver {
   }
 
   @Query(() => [Post], { nullable: true })
+  @UseGuards(IsAuthenticatedGuard)
   getPublishedPosts() {
     return this.postService.getPublishedPosts()
   }

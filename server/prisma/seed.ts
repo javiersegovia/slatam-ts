@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PrismaClient } from '@prisma/client'
 import * as dotenv from 'dotenv'
 
@@ -13,7 +14,6 @@ async function main() {
       firstName: 'Lisa',
       lastName: 'Simpson',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
-      roles: [],
       posts: {
         create: {
           title: 'Join us for Prisma Day 2019 in Berlin',
@@ -28,7 +28,6 @@ async function main() {
       email: 'bart@simpson.com',
       firstName: 'Bart',
       lastName: 'Simpson',
-      roles: ['ADMIN'],
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       posts: {
         create: [
@@ -46,8 +45,91 @@ async function main() {
       },
     },
   })
+  const user3 = await prisma.user.create({
+    data: {
+      email: 'homero@simpson.com',
+      firstName: 'Homero',
+      lastName: 'Simpson',
+      password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
+    },
+  })
+  const company1 = await prisma.company.create({
+    data: {
+      name: 'Slatam Company',
+      members: {
+        create: [
+          {
+            user: {
+              connect: {
+                id: user1.id,
+              },
+            },
+            roles: ['MEMBER'],
+          },
+        ],
+      },
+    },
+  })
+  const company2 = await prisma.company.create({
+    data: {
+      name: 'Example Company',
+      members: {
+        create: [
+          {
+            user: {
+              connect: {
+                id: user2.id,
+              },
+            },
+            roles: ['MEMBER', 'MANAGER'],
+          },
+        ],
+      },
+    },
+  })
+  const company3 = await prisma.company.create({
+    data: {
+      name: 'Example Company with Owner',
+      members: {
+        create: [
+          {
+            user: {
+              connect: {
+                id: user3.id,
+              },
+            },
+            roles: ['MEMBER', 'MANAGER', 'OWNER'],
+          },
+        ],
+      },
+    },
+  })
 
-  console.log({ user1, user2 })
+  const product1 = await prisma.product.create({
+    data: {
+      name: 'Nike Shoes',
+      description: 'Beautiful nike shoes size 24',
+      status: 'INACTIVE',
+      owner: {
+        connect: {
+          id: company1.id,
+        },
+      },
+    },
+  })
+  const product2 = await prisma.product.create({
+    data: {
+      name: 'Adidas Shoes',
+      description: 'Beautiful sport Adidas shoes',
+      status: 'ACTIVE',
+      owner: {
+        connect: {
+          id: company2.id,
+        },
+      },
+    },
+  })
+
   console.log('Seeding is done!')
 }
 

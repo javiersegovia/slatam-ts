@@ -24,6 +24,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException()
     }
+
+    // TODO: include here any information useful to the context
+
     return user
   }
 }

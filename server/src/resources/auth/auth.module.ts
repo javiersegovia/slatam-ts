@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { PassportModule } from '@nestjs/passport'
 import { PrismaService } from '../prisma/prisma.service'
 import { PasswordService } from './password.service'
-// import { GqlAuthGuard } from '../../guards/gql-auth.guard';
+import { IsAuthenticatedGuard } from '@guards/is-authenticated.guard'
 import { AuthService } from './auth.service'
 import { AuthResolver } from './auth.resolver'
 import { JwtStrategy } from './jwt.strategy'
@@ -52,10 +52,10 @@ import { SecurityConfig } from '@config/config.interface'
     AuthService,
     AuthResolver,
     JwtStrategy,
-    // GqlAuthGuard,
+    IsAuthenticatedGuard,
     PasswordService,
     PrismaService,
   ],
-  // exports: [GqlAuthGuard],
+  exports: [IsAuthenticatedGuard],
 })
 export class AuthModule {}

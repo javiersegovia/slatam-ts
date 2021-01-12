@@ -15,6 +15,7 @@
     "paths": {
       "@config/*": ["src/config/*"],
       "@decorators/*": ["src/decorators/*"],
+      "@guards/*": ["src/guards/*"],
       "@lib/*": ["src/lib/*"],
       "@resources/*": ["src/resources/*"],
     }

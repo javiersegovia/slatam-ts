@@ -35,7 +35,6 @@ export class AuthService {
         data: {
           ...payload,
           password: hashedPassword,
-          roles: [],
           refreshTokens: {
             create: [
               {
@@ -89,7 +88,12 @@ export class AuthService {
   }
 
   validateUserById(userId: number): Promise<User> {
-    return this.prisma.user.findFirst({ where: { id: userId } })
+    return this.prisma.user.findFirst({
+      where: { id: userId },
+      include: {
+        companyMember: true,
+      },
+    })
   }
 
   getUserFromAccessToken(token: string): Promise<User> | null {

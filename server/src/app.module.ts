@@ -5,7 +5,13 @@ import { getConfig } from '@config/config'
 import { GraphqlConfig } from '@config/config.interface'
 import { GraphQLModule } from '@nestjs/graphql'
 import { PrismaService } from '@resources/prisma/prisma.service'
-import { UserModule, PostModule, AuthModule } from '@resources/modules'
+import {
+  UserModule,
+  PostModule,
+  AuthModule,
+  CompanyModule,
+  ProductModule,
+} from '@resources/modules'
 
 @Module({
   imports: [
@@ -31,6 +37,8 @@ import { UserModule, PostModule, AuthModule } from '@resources/modules'
     AuthModule,
     UserModule,
     PostModule,
+    CompanyModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [PrismaService],

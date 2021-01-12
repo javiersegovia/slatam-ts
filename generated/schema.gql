@@ -7,6 +7,37 @@ type AuthPayload {
   user: User!
 }
 
+type Company {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: ID!
+  members: [CompanyMember!]!
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type CompanyMember {
+  company: Company!
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: ID!
+  roles: [CompanyMemberRole!]!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  user: User!
+}
+
+"""Company member role"""
+enum CompanyMemberRole {
+  MANAGER
+  MEMBER
+  OWNER
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -37,18 +68,34 @@ type Post {
   updatedAt: DateTime!
 }
 
+type Product {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  name: String!
+  owner: Company!
+  status: ProductStatus!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""Product status (visibility) role"""
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
+
 type Query {
+  getAllCompanies: [Company!]
+  getAllProducts: [Product!]
   getAllUsers: [User!]
   getPost(id: String!): Post
   getPublishedPosts: [Post!]
   getUser(id: Int!): User
-}
-
-"""User role"""
-enum Role {
-  ADMIN
-  BUYER
-  SELLER
+  helloCompany: String!
+  helloProduct: String!
 }
 
 input SignupInput {
@@ -66,7 +113,6 @@ type User {
   id: ID!
   lastName: String
   posts: [Post!]
-  roles: [Role!]!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!

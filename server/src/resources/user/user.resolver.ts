@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { Resolver, ResolveField, Root, Query, Args } from '@nestjs/graphql'
 import { User } from './user.entity'
 import { UserService } from './user.service'
@@ -7,7 +6,7 @@ import { UserService } from './user.service'
 export class UserResolver {
   constructor(private userService: UserService) {}
 
-  @ResolveField()
+  @ResolveField('posts')
   async posts(@Root() user: User) {
     return this.userService.getUserPosts(user.id)
   }
