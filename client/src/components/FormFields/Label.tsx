@@ -7,7 +7,7 @@ interface ILabelProps {
   children?: React.ReactNode
 }
 
-const Label = ({ htmlFor, description, children }: ILabelProps) => {
+const Label = ({ htmlFor = '', description, children }: ILabelProps) => {
   return (
     <label htmlFor={htmlFor} tw="block">
       {description && (

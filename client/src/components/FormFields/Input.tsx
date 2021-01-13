@@ -3,7 +3,6 @@ import _tw from 'twin.macro'
 import { FieldErrors, FieldError, RegisterOptions } from 'react-hook-form'
 import ErrorMessage from './ErrorMessage'
 import Label from './Label'
-import { RefReturn } from './shared'
 
 export const getBaseStyles = (
   hasError: boolean
@@ -15,10 +14,20 @@ export const getBaseStyles = (
           }
         `
 
-type TInputProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
-> & {
+export type RefReturn =
+  | string
+  | ((instance: HTMLInputElement | null) => void)
+  | ((instance: HTMLTextAreaElement | null) => void)
+  | React.RefObject<HTMLInputElement>
+  | React.RefObject<HTMLAreaElement>
+  | null
+  | undefined
+
+type TInputProps = {
+  name: string
+  value?: string
+  type: string
+  placeholder?: string | undefined
   label: string
   error?: FieldErrors | FieldError | undefined
   validations?: RegisterOptions

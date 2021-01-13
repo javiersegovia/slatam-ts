@@ -1,14 +1,12 @@
 import React from 'react'
 import _tw from 'twin.macro'
-import { Doughnut, Line, Bar } from 'react-chartjs-2'
+import { Doughnut, Line } from 'react-chartjs-2'
 import { ChartLegend, ChartCard } from '@components/Chart'
 import {
   doughnutOptions,
   doughnutLegends,
   lineOptions,
   lineLegends,
-  barOptions,
-  barLegends,
 } from '@lib/demo/chartData'
 
 // TODO: replace chart's data with real data
@@ -25,11 +23,6 @@ const StaticticCharts = () => {
         <Line {...lineOptions} />
         <ChartLegend legends={lineLegends} />
       </ChartCard>
-
-      {/* <ChartCard title="Orders created">
-        <Bar {...barOptions} />
-        <ChartLegend legends={barLegends} />
-      </ChartCard> */}
     </div>
   )
 }

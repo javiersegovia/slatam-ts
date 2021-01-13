@@ -17,7 +17,7 @@ type IFormValues = {
 // TODO: replace svg google icon
 
 const SignUp = () => {
-  const { register, handleSubmit, watch, errors } = useForm<IFormValues>()
+  const { register, handleSubmit, errors } = useForm<IFormValues>()
   const onSubmit = (data: IFormValues) => console.log(data)
 
   return (
@@ -30,7 +30,7 @@ const SignUp = () => {
             </h1>
             <form onSubmit={handleSubmit(onSubmit)} tw="mb-8 space-y-2">
               <Input
-                id="email"
+                name="email"
                 type="email"
                 label="Correo electrónico"
                 placeholder="Ex. james@bond.com"
@@ -44,7 +44,7 @@ const SignUp = () => {
                 error={errors?.email}
               />
               <Input
-                id="password"
+                name="password"
                 type="password"
                 label="Contraseña"
                 // placeholder="Escribe tu contraseña aquí"
@@ -62,7 +62,7 @@ const SignUp = () => {
                 error={errors?.password}
               />
               <Input
-                id="confirmPassword"
+                name="confirmPassword"
                 type="password"
                 label="Confirma tu contraseña"
                 // placeholder="Escribe tu contraseña aquí"

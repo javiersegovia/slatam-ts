@@ -15,7 +15,7 @@ type IFormValues = {
 // TODO: add Slatam Logo to top (with link to Home)
 
 const ChangePassword = () => {
-  const { register, handleSubmit, watch, errors } = useForm<IFormValues>()
+  const { register, handleSubmit, errors } = useForm<IFormValues>()
   const onSubmit = (data: IFormValues) => console.log(data)
 
   return (
@@ -28,7 +28,7 @@ const ChangePassword = () => {
             </h1>
             <form onSubmit={handleSubmit(onSubmit)} tw="mb-8 space-y-2">
               <Input
-                id="password"
+                name="password"
                 type="password"
                 label="Contraseña"
                 register={register}
@@ -45,7 +45,7 @@ const ChangePassword = () => {
                 error={errors?.password}
               />
               <Input
-                id="confirmPassword"
+                name="confirmPassword"
                 type="password"
                 label="Confirma tu contraseña"
                 register={register}

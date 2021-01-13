@@ -18,7 +18,7 @@ interface IFormValues {
 // TODO: validation of confirmPassword (should be the same as password!)
 
 const SignIn = () => {
-  const { register, handleSubmit, watch, errors } = useForm<IFormValues>()
+  const { register, handleSubmit, errors } = useForm<IFormValues>()
   const router = useRouter()
   const onSubmit = (data: IFormValues) => {
     console.log(data)
@@ -36,7 +36,7 @@ const SignIn = () => {
             </h1>
             <form onSubmit={handleSubmit(onSubmit)} tw="mb-8 space-y-2">
               <Input
-                id="email"
+                name="email"
                 type="email"
                 label="Your email"
                 placeholder="Ex. james@bond.com"
@@ -50,7 +50,7 @@ const SignIn = () => {
                 error={errors?.email}
               />
               <Input
-                id="password"
+                name="password"
                 type="password"
                 label="Your password"
                 placeholder="Type your password here"

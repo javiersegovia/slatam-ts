@@ -52,7 +52,6 @@
         "endOfLine": "auto"
       }
     ],
-
     "import/no-unresolved": "error",
 
     "react/react-in-jsx-scope": 0,
@@ -60,7 +59,14 @@
     "react/prop-types": 0,
 
     "jsx-a11y/anchor-is-valid": 0,
-
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-unused-vars": [
+      1,
+      {
+        "varsIgnorePattern": "_*",
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/explicit-member-accessibility": 0,
@@ -69,13 +75,7 @@
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-use-before-define": 0,
-    "@typescript-eslint/no-unused-vars": [
-      1,
-      {
-        "varsIgnorePattern": "tw",
-        "argsIgnorePattern": "^_"
-      }
-    ],
+
 
     "testing-library/await-async-query": "error",
     "testing-library/await-async-utils": "error",

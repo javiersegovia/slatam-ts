@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react'
-import _tw, { styled } from 'twin.macro'
+import _tw from 'twin.macro'
 
 export enum ButtonColorVariants {
   PRIMARY = 'primary',

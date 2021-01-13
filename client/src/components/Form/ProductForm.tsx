@@ -1,6 +1,6 @@
 import React from 'react'
 import _tw from 'twin.macro'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { Input } from '@components/FormFields'
 import Button from '@components/Button'
@@ -69,7 +69,7 @@ const ProductForm = () => {
 
   const { submitCount } = formState
 
-  const router = useRouter()
+  // const router = useRouter()
   const onSubmit = (data: IFormValues) => {
     console.log(data)
 
