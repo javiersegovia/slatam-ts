@@ -25,11 +25,15 @@ prisma/                                 # Entrypoint for the database schema
 │   └── schema.prisma
 specs/                                  # Tests folder
 src/
+├── config/                             # General configuration files
+├── decorators/                         # Reusable general-purpose decorators
+├── guards/                             # Reusable guards
 ├── lib/                                # Library folder, utilities used among the project
 │   resources/                          # Collection of resources grouped by features
 │   ├── [resourceName]
 │   │   ├── dto/       
 │   │   ├── index.ts                    # Entry file for re-exporting all the resourceName files
+│   │   ├── [resourceName].ability.ts   # Casl Ability class for custom ABAC authorization
 │   │   ├── [resourceName].entity.ts    # NestJS Entity model definition
 │   │   ├── [resourceName].module.ts    # NestJS Module
 │   │   ├── [resourceName].resolver.ts  # NestJS GraphQL Resolver
@@ -88,3 +92,28 @@ This commands should only be used as a prototyping tool for fast development, an
 We are using **Prisma Studio** to get direct access to the database.
 
 - Run `yarn prisma:studio` to open the application in your browser.
+
+## Authentication and Authorization
+
+For **Authentication**, we are using a JWT Strategy with PassportJS. Please refer to the PassportJS and NestJS Authentication docs for more information about it.
+
+In our server, we implemented a strategy using access and refresh tokens. The workflow is described in `resourcesauth/auth.module.ts` file.
+
+For **Authorization**, we are using the `@casl/ability` to generate our custom ABAC (*Attribute Based Access Control*). The custom permission rules are defined inside every `[resource]/[resource].ability` file, a class that extends the `BaseAbility` inside `base/base.ability` file. 
+
+To create a new ability, please follow this steps:
+
+1. Create a new `[resource.ability].ts` file inside the resource folder.
+2. Create a new type called `T[Resource]Subjects`, which should contain all the resource types that you will use inside the `defineRules` method.
+3. Create a new `[Resource]Ability` class which extends the `BaseAbility`.
+4. Define the `create` method, which should return an Ability created by `builder.build()` (*please see existing implementations for reference*)
+5. Define the `defineRules` method, where you should implement all the custom rules needed on the resource.
+6. Add the new class as a provider inside the resource module.
+7. Add the new class as a dependency in the resolver constructor.
+8. Create an ability by calling the `class.create` method and passing by the `user` *(if needed)*.
+9. Use the `ForbiddenError` class from the casl library to throw errors unless the action is allowed.
+
+*Optional*
+- If you need new actions, add them to the `base.ability` file.
+- If needed, inject dependencies inside the resource ability file.
+
