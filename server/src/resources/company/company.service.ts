@@ -6,6 +6,6 @@ export class CompanyService {
   constructor(private prisma: PrismaService) {}
 
   getAllCompanies() {
-    return this.prisma.company.findMany()
+    return this.prisma.company.findMany({ include: { members: true } })
   }
 }

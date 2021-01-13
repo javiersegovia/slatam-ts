@@ -106,6 +106,8 @@ input SignupInput {
 }
 
 type User {
+  companyMember: CompanyMember
+
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   email: String!

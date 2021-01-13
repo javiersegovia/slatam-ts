@@ -26,7 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     // TODO: include here any information useful to the context
-
     return user
   }
 }
