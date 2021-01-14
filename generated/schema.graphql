@@ -51,7 +51,7 @@ input LoginInput {
 type Mutation {
   login(data: LoginInput!): AuthPayload!
   refreshAccessToken: AuthPayload!
-  signup(data: SignupInput!): AuthPayload!
+  signup(data: SignupInput!): Boolean!
 }
 
 type Post {

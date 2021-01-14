@@ -11,11 +11,17 @@ import {
   AuthModule,
   CompanyModule,
   ProductModule,
+  MailModule,
 } from '@resources/modules'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [getConfig] }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+      load: [getConfig],
+      envFilePath: join(process.cwd(), '.env'),
+    }),
     GraphQLModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         const graphqlConfig = configService.get<GraphqlConfig>('graphql')
@@ -35,6 +41,7 @@ import {
       inject: [ConfigService],
     }),
     AuthModule,
+    MailModule,
     UserModule,
     PostModule,
     CompanyModule,

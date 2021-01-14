@@ -90,11 +90,12 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn generate && yarn lint:type-check"
+      "pre-push": "yarn lint:type-check"
     }
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
+      "yarn generate",
       "yarn lint:lint",
       "yarn lint:format"
     ]

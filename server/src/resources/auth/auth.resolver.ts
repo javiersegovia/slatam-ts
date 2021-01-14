@@ -14,20 +14,13 @@ const refreshTokenConfig = { httpOnly: true }
 export class AuthResolver {
   constructor(private readonly auth: AuthService) {}
 
-  @Mutation((_returns) => AuthPayload)
-  async signup(@Args('data') data: SignupInput, @Context('res') res: Response) {
+  @Mutation((_returns) => Boolean)
+  async signup(@Args('data') data: SignupInput) {
     data.email = data.email.toLowerCase()
 
-    const { user, accessToken, refreshTokenId } = await this.auth.createUser(
-      data
-    )
+    await this.auth.createUser(data)
 
-    res.cookie(REFRESH_TOKEN_ID_COOKIE, refreshTokenId, refreshTokenConfig)
-
-    return {
-      user,
-      accessToken,
-    }
+    return true
   }
 
   @Mutation((_returns) => AuthPayload)

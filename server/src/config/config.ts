@@ -19,6 +19,14 @@ const config: Config = {
     tokenRefreshIn: '3d',
     bcryptSaltOrRound: 10,
   },
+  mail: {
+    apiKey: process.env.SENDGRID_API_KEY,
+    defaultMailData: {
+      from: process.env.DEFAULT_MAIL_FROM,
+      replyTo: process.env.DEFAULT_REPLY_TO,
+      html: '',
+    },
+  },
 }
 
 export const getConfig = (): Config => config

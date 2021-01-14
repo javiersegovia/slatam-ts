@@ -1,8 +1,11 @@
+import { MailDataRequired } from '@sendgrid/mail'
+
 export interface Config {
   nest: NestConfig
   cors: CorsConfig
   graphql: GraphqlConfig
   security: SecurityConfig
+  mail: MailConfig
 }
 
 export interface NestConfig {
@@ -24,4 +27,10 @@ export interface SecurityConfig {
   tokenExpiresIn: string
   tokenRefreshIn: string
   bcryptSaltOrRound: string | number
+}
+
+export interface MailConfig {
+  apiKey: string
+  defaultMailData?: MailDataRequired
+  substitutionWrappers?: { left: string; right: string }
 }

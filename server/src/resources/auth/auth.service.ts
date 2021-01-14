@@ -31,7 +31,7 @@ export class AuthService {
     )
 
     try {
-      const { refreshTokens, ...user } = await this.prisma.user.create({
+      const user = await this.prisma.user.create({
         data: {
           ...payload,
           password: hashedPassword,
@@ -48,9 +48,10 @@ export class AuthService {
         },
       })
 
-      const accessToken = await this.jwtService.sign({ userId: user.id })
+      // TODO: send email with confirmation Link to User here
+      console.log(user)
 
-      return { user, accessToken, refreshTokenId: refreshTokens[0].id }
+      return true
     } catch (e) {
       if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
         throw new ConflictException(`Email ${payload.email} already used.`)
