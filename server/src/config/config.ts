@@ -11,7 +11,7 @@ const config: Config = {
   graphql: {
     playgroundEnabled: true,
     debug: true,
-    schemaDestination: join(process.cwd(), '../generated/schema.gql'),
+    schemaDestination: join(process.cwd(), '../generated/schema.graphql'),
     sortSchema: true,
   },
   security: {

@@ -26,7 +26,7 @@ import {
           sortSchema: graphqlConfig.sortSchema,
           autoSchemaFile:
             graphqlConfig.schemaDestination ||
-            join(process.cwd(), '../generated/schema.gql'),
+            join(process.cwd(), '../generated/schema.graphql'),
           debug: graphqlConfig.debug,
           playground: graphqlConfig.playgroundEnabled,
           context: ({ req, res }) => ({ req, res }),

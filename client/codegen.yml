@@ -1,0 +1,16 @@
+overwrite: true
+schema: '../generated/schema.graphql'
+generates:
+  ./graphql/schema.graphql.ts: # location for generated types, hooks and components
+    documents:
+      - 'graphql/**/*.graphql.ts' # parse graphql operations in matching files
+      - '!*.schema.graphql.ts'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withHooks: true
+    hooks:
+      afterOneFileWrite:
+        - yarn lint:format

@@ -76,7 +76,6 @@
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-use-before-define": 0,
 
-
     "testing-library/await-async-query": "error",
     "testing-library/await-async-utils": "error",
     "testing-library/await-fire-event": "off",

@@ -4,15 +4,18 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
+    "dev:generate": "concurrently \"yarn dev\" \"yarn generate --watch\"",
     "build": "next build",
+    "build:analyze": "BUNDLE_ANALYZE=true yarn build",
     "start": "next start",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "analyze": "BUNDLE_ANALYZE=true yarn build",
     "lint:format": "prettier --write .",
     "lint:lint": "eslint . --ext ts --ext tsx --ext js",
     "lint:type-check": "tsc --pretty --noEmit",
-    "find:unused": "next-unused"
+    "find:unused": "next-unused",
+    "generate": "graphql-codegen",
+    "prestart": "yarn generate"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
@@ -38,6 +41,10 @@
     "twin.macro": "^2.0.7"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.20.0",
+    "@graphql-codegen/typescript": "^1.20.0",
+    "@graphql-codegen/typescript-operations": "^1.17.13",
+    "@graphql-codegen/typescript-react-apollo": "^2.2.1",
     "@next/bundle-analyzer": "^10.0.1",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
@@ -56,6 +63,7 @@
     "autoprefixer": "^10.1.0",
     "babel-jest": "^26.6.3",
     "babel-plugin-styled-components": "^1.12.0",
+    "concurrently": "^5.3.0",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-import-resolver-typescript": "^2.3.0",
@@ -81,7 +89,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn generate && yarn lint:type-check"
     }
   },
   "lint-staged": {
