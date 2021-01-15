@@ -63,16 +63,42 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation'
   login: AuthPayload
+  logout: Scalars['Boolean']
+  logoutFromAllDevices: Scalars['Boolean']
   refreshAccessToken: AuthPayload
-  signup: Scalars['Boolean']
+  register: Scalars['Boolean']
+  requestResetPassword: Scalars['Boolean']
+  resendVerificationEmail: Scalars['Boolean']
+  resetPassword: Scalars['Boolean']
+  verifyEmail: AuthPayload
 }
 
 export type MutationLoginArgs = {
   data: LoginInput
 }
 
-export type MutationSignupArgs = {
+export type MutationLogoutFromAllDevicesArgs = {
+  userId: Scalars['Int']
+}
+
+export type MutationRegisterArgs = {
   data: SignupInput
+}
+
+export type MutationRequestResetPasswordArgs = {
+  email: Scalars['String']
+}
+
+export type MutationResendVerificationEmailArgs = {
+  email: Scalars['String']
+}
+
+export type MutationResetPasswordArgs = {
+  data: ResetPasswordInput
+}
+
+export type MutationVerifyEmailArgs = {
+  token: Scalars['String']
 }
 
 export type Post = {
@@ -127,6 +153,11 @@ export type QueryGetUserArgs = {
   id: Scalars['Int']
 }
 
+export type ResetPasswordInput = {
+  password: Scalars['String']
+  resetPasswordToken: Scalars['String']
+}
+
 export type SignupInput = {
   email: Scalars['String']
   firstName?: Maybe<Scalars['String']>
@@ -146,6 +177,12 @@ export type User = {
   posts?: Maybe<Array<Post>>
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']
+  verification: UserVerification
+}
+
+export type UserVerification = {
+  __typename?: 'UserVerification'
+  verifiedEmail: Scalars['Boolean']
 }
 
 export type HelloCompanyQueryVariables = Exact<{ [key: string]: never }>
