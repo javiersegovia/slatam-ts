@@ -14,7 +14,12 @@ import { PrismaService } from '../prisma/prisma.service'
 import { PasswordService } from './password.service'
 
 import { SignupInput } from './dto/signup.input'
+import { MailService } from '@mails/mail.service'
+import { randomBytes } from 'crypto'
+import { promisify } from 'util'
 import ms from 'ms'
+
+// TODO: move the "token" related methods to a new service inside this folder, named token.service
 
 @Injectable()
 export class AuthService {
@@ -22,7 +27,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
     private readonly passwordService: PasswordService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly mailService: MailService
   ) {}
 
   async createUser(payload: SignupInput) {
@@ -31,6 +37,8 @@ export class AuthService {
     )
 
     try {
+      const verifyEmailToken = await this.generateRandomToken()
+
       const user = await this.prisma.user.create({
         data: {
           ...payload,
@@ -42,16 +50,19 @@ export class AuthService {
               },
             ],
           },
-        },
-        include: {
-          refreshTokens: true,
+          verification: {
+            create: {
+              verifyEmailExpiration: this.generateVerifyEmailTokenExpiryDate(),
+              verifyEmailToken,
+            },
+          },
         },
       })
 
-      // TODO: send email with confirmation Link to User here
-      console.log(user)
-
-      return true
+      return this.sendVerificationEmail({
+        user,
+        verifyEmailToken,
+      })
     } catch (e) {
       if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
         throw new ConflictException(`Email ${payload.email} already used.`)
@@ -61,11 +72,110 @@ export class AuthService {
     }
   }
 
+  async verifyEmail(token: string) {
+    const {
+      user,
+      ...verification
+    } = await this.prisma.userVerification.findFirst({
+      where: { verifyEmailToken: token },
+      include: {
+        user: true,
+      },
+    })
+
+    if (!user) {
+      throw new BadRequestException('Your verification code is invalid.')
+    }
+
+    if (new Date().getTime() > verification.verifyEmailExpiration.getTime()) {
+      throw new BadRequestException('Your verification code has expired.')
+    }
+
+    await this.prisma.userVerification.update({
+      where: {
+        id: verification.id,
+      },
+      data: {
+        verifiedEmail: true,
+        verifyEmailToken: null,
+        verifyEmailExpiration: null,
+      },
+    })
+
+    const { accessToken, refreshToken } = await this.generateTokens({
+      userId: user.id,
+    })
+
+    return {
+      user,
+      accessToken,
+      refreshToken,
+    }
+  }
+
+  async resendVerificationEmail(email: string) {
+    const verifyEmailToken = await this.generateRandomToken()
+
+    const user = await this.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        verification: {
+          update: {
+            verifyEmailToken,
+            verifyEmailExpiration: this.generateVerifyEmailTokenExpiryDate(),
+          },
+        },
+      },
+    })
+
+    return this.sendVerificationEmail({
+      user,
+      verifyEmailToken,
+    })
+  }
+
+  async sendVerificationEmail({
+    user,
+    verifyEmailToken,
+    templateName = 'sign-up', // TODO: add a new template for "resend" verification email
+  }: {
+    user: User
+    verifyEmailToken: string
+    templateName?: string
+  }) {
+    const info = {
+      to: this.mailService.getSingleDestination(user),
+      subject: 'Welcome to Slatam!',
+    }
+
+    const clientURL = this.mailService.clientURL
+
+    return await this.mailService.generate({
+      templateName,
+      info,
+      data: {
+        verifyEmailLink: `${clientURL}/verify-email?${verifyEmailToken}`,
+        unsubscribeLink: `${clientURL}/unsubscribe?${user.id}`, // TODO: move the unsubscribe link to a default data object inside the mail service
+      },
+    })
+  }
+
   async login(email: string, password: string) {
-    const user = await this.prisma.user.findUnique({ where: { email } })
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      include: {
+        verification: true,
+      },
+    })
 
     if (!user) {
       throw new NotFoundException(`No user found for email: ${email}`)
+    }
+
+    if (!user.verification.verifiedEmail) {
+      throw new BadRequestException('Please, verify your email.')
     }
 
     const passwordValid = await this.passwordService.validatePassword(
@@ -86,6 +196,68 @@ export class AuthService {
       accessToken,
       refreshToken,
     }
+  }
+
+  async sendResetEmail(email: string) {
+    const resetPasswordToken = await this.generateRandomToken()
+    const user = await this.prisma.user.update({
+      where: { email },
+      data: {
+        resetPasswordToken,
+        resetPasswordExpiration: this.generateVerifyEmailTokenExpiryDate(),
+      },
+    })
+
+    const info = {
+      to: this.mailService.getSingleDestination(user),
+      subject: 'Reset your password',
+    }
+
+    const clientURL = this.mailService.clientURL
+
+    return await this.mailService.generate({
+      templateName: 'reset-password',
+      info,
+      data: {
+        resetPasswordLink: `${clientURL}/reset-password?${resetPasswordToken}`,
+        unsubscribeLink: `${clientURL}/unsubscribe?${user.id}`, // TODO: move the unsubscribe link to a default data object inside the mail service
+      },
+    })
+  }
+
+  async resetPassword({
+    password,
+    resetPasswordToken,
+  }: {
+    password: string
+    resetPasswordToken: string
+  }) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        resetPasswordToken,
+      },
+    })
+
+    if (!user) {
+      throw new BadRequestException('Invalid reset password link.')
+    }
+
+    if (new Date().getTime() > user.resetPasswordExpiration.getTime()) {
+      throw new BadRequestException(
+        'Your time to change the password has expired. Please ask for a new reset link.'
+      )
+    }
+
+    return await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: await this.passwordService.hashPassword(password),
+        resetPasswordExpiration: null,
+        resetPasswordToken: null,
+      },
+    })
   }
 
   validateUserById(userId: number): Promise<User> {
@@ -168,9 +340,15 @@ export class AuthService {
     }
   }
 
+  generateVerifyEmailTokenExpiryDate() {
+    const securityConfig = this.configService.get<SecurityConfig>('security')
+    const refreshTime = ms(securityConfig.verifyEmailTokenExpiresIn)
+    return new Date(Date.now() + refreshTime)
+  }
+
   generateRefreshTokenExpiryDate() {
     const securityConfig = this.configService.get<SecurityConfig>('security')
-    const refreshTime = ms(securityConfig.tokenRefreshIn)
+    const refreshTime = ms(securityConfig.refreshTokenExpiresIn)
     return new Date(Date.now() + refreshTime)
   }
 
@@ -190,5 +368,9 @@ export class AuthService {
         },
       },
     })
+  }
+
+  async generateRandomToken() {
+    return (await promisify(randomBytes)(20)).toString('hex')
   }
 }

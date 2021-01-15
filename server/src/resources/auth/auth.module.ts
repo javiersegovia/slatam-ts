@@ -9,6 +9,7 @@ import { AuthService } from './auth.service'
 import { AuthResolver } from './auth.resolver'
 import { JwtStrategy } from './jwt.strategy'
 import { SecurityConfig } from '@config/config.interface'
+import { MailModule } from '@mails/mail.module'
 
 // TODO: add authentication Guard
 
@@ -41,12 +42,13 @@ import { SecurityConfig } from '@config/config.interface'
         return {
           secret: configService.get<string>('JWT_SECRET'),
           signOptions: {
-            expiresIn: securityConfig.tokenExpiresIn,
+            expiresIn: securityConfig.accessTokenExpiresIn,
           },
         }
       },
       inject: [ConfigService],
     }),
+    MailModule,
   ],
   providers: [
     AuthService,

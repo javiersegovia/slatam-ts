@@ -17,10 +17,10 @@ export class CompanyResolver {
     private prisma: PrismaService
   ) {}
 
-  // @Query(() => String)
-  // helloCompany() {
-  //   return 'helloWorld'
-  // }
+  @Query(() => String)
+  helloCompany() {
+    return 'helloWorld'
+  }
 
   @UseGuards(IsAuthenticatedGuard)
   @Query(() => [Company], { nullable: true })

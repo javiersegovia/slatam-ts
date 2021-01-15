@@ -21,6 +21,11 @@ async function main() {
           published: true,
         },
       },
+      verification: {
+        create: {
+          verifiedEmail: true,
+        },
+      },
     },
   })
   const user2 = await prisma.user.create({
@@ -29,6 +34,11 @@ async function main() {
       firstName: 'Bart',
       lastName: 'Simpson',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
+      verification: {
+        create: {
+          verifiedEmail: true,
+        },
+      },
       posts: {
         create: [
           {
@@ -51,6 +61,11 @@ async function main() {
       firstName: 'Homero',
       lastName: 'Simpson',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
+      verification: {
+        create: {
+          verifiedEmail: true,
+        },
+      },
     },
   })
   const company1 = await prisma.company.create({

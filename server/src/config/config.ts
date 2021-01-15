@@ -15,14 +15,18 @@ const config: Config = {
     sortSchema: true,
   },
   security: {
-    tokenExpiresIn: '10m',
-    tokenRefreshIn: '3d',
+    verifyEmailTokenExpiresIn: '1h',
+    accessTokenExpiresIn: '10m',
+    refreshTokenExpiresIn: '3d',
     bcryptSaltOrRound: 10,
   },
   mail: {
     apiKey: process.env.SENDGRID_API_KEY,
     defaultMailData: {
-      from: process.env.DEFAULT_MAIL_FROM,
+      from: {
+        name: process.env.DEFAULT_MAIL_FROM_NAME,
+        email: process.env.DEFAULT_MAIL_FROM,
+      },
       replyTo: process.env.DEFAULT_REPLY_TO,
       html: '',
     },

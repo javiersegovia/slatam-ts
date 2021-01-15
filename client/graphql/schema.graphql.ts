@@ -64,7 +64,7 @@ export type Mutation = {
   __typename?: 'Mutation'
   login: AuthPayload
   refreshAccessToken: AuthPayload
-  signup: AuthPayload
+  signup: Scalars['Boolean']
 }
 
 export type MutationLoginArgs = {

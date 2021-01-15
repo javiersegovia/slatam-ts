@@ -50,8 +50,14 @@ input LoginInput {
 
 type Mutation {
   login(data: LoginInput!): AuthPayload!
+  logout: Boolean!
+  logoutFromAllDevices(userId: Int!): Boolean!
   refreshAccessToken: AuthPayload!
-  signup(data: SignupInput!): Boolean!
+  register(data: SignupInput!): Boolean!
+  requestResetPassword(email: String!): Boolean!
+  resendVerificationEmail(email: String!): Boolean!
+  resetPassword(data: ResetPasswordInput!): Boolean!
+  verifyEmail(token: String!): AuthPayload!
 }
 
 type Post {
@@ -98,6 +104,11 @@ type Query {
   helloProduct: String!
 }
 
+input ResetPasswordInput {
+  password: String!
+  resetPasswordToken: String!
+}
+
 input SignupInput {
   email: String!
   firstName: String
@@ -118,4 +129,9 @@ type User {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+  verification: UserVerification!
+}
+
+type UserVerification {
+  verifiedEmail: Boolean!
 }

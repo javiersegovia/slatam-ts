@@ -13,6 +13,18 @@ Table User {
   posts Post
   refreshTokens RefreshToken
   companyMember CompanyMember
+  verification UserVerification
+  resetPasswordToken String [unique]
+  resetPasswordExpiration DateTime
+}
+
+Table UserVerification {
+  id String [pk]
+  verifiedEmail Boolean [not null, default: false]
+  verifyEmailToken String [unique]
+  verifyEmailExpiration DateTime
+  user User [not null]
+  userId Int [not null]
 }
 
 Table Post {
@@ -74,6 +86,8 @@ Enum ProductStatus {
   INACTIVE
   ACTIVE
 }
+
+Ref: UserVerification.userId - User.id
 
 Ref: Post.authorId > User.id
 

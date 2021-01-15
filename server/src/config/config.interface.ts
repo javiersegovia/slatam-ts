@@ -24,8 +24,9 @@ export interface GraphqlConfig {
 }
 
 export interface SecurityConfig {
-  tokenExpiresIn: string
-  tokenRefreshIn: string
+  verifyEmailTokenExpiresIn: string
+  accessTokenExpiresIn: string
+  refreshTokenExpiresIn: string
   bcryptSaltOrRound: string | number
 }
 

@@ -13,16 +13,28 @@ generator dbml {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  email         String         @unique
-  password      String
-  firstName     String?
-  lastName      String?
-  posts         Post[]
-  refreshTokens RefreshToken[]
-  companyMember CompanyMember?
+  id                      Int               @id @default(autoincrement())
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  email                   String            @unique
+  password                String
+  firstName               String?
+  lastName                String?
+  posts                   Post[]
+  refreshTokens           RefreshToken[]
+  companyMember           CompanyMember?
+  verification            UserVerification?
+  resetPasswordToken      String?           @unique
+  resetPasswordExpiration DateTime?
+}
+
+model UserVerification {
+  id                    String    @id @default(cuid())
+  verifiedEmail         Boolean   @default(false)
+  verifyEmailToken      String?   @unique
+  verifyEmailExpiration DateTime?
+  user                  User      @relation(fields: [userId], references: [id])
+  userId                Int
 }
 
 model Post {
@@ -60,7 +72,7 @@ model CompanyMember {
   companyId Int
   user      User                @relation(fields: [userId], references: [id])
   userId    Int
-  roles      CompanyMemberRole[]
+  roles     CompanyMemberRole[]
 }
 
 enum CompanyMemberRole {

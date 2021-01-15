@@ -17,6 +17,7 @@
       "@decorators/*": ["src/decorators/*"],
       "@guards/*": ["src/guards/*"],
       "@lib/*": ["src/lib/*"],
+      "@mails/*": ["src/mails/*"],
       "@resources/*": ["src/resources/*"],
     }
   },
