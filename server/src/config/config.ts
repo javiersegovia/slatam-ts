@@ -16,8 +16,6 @@ const config: Config = {
   },
   security: {
     verifyEmailTokenExpiresIn: '1h',
-    accessTokenExpiresIn: '10m',
-    refreshTokenExpiresIn: '3d',
     bcryptSaltOrRound: 10,
   },
   mail: {

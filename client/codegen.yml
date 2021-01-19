@@ -1,16 +1,33 @@
+# This tool will generate two files:
+# 1. The schema.graphql file: All the graphql typed schema.
+# 2. The hooks file: Contain queries that use a custom fetcher with graphql-request.
+# Consider using the custom gqlFetcher under the following circumstances:
+# - Inside server requests.
+# - Using custom fetchParams (as example, multipart requests).
+
 overwrite: true
 schema: '../generated/schema.graphql'
 generates:
-  ./graphql/schema.graphql.ts: # location for generated types, hooks and components
+  ./src/graphql/schema.graphql.ts:
     documents:
-      - 'graphql/**/*.graphql.ts' # parse graphql operations in matching files
-      - '!*.schema.graphql.ts'
+      - 'src/graphql/**/*.graphql'
+      - '!*.ts'
     plugins:
       - 'typescript'
       - 'typescript-operations'
-      - 'typescript-react-apollo'
+
+  ./src/graphql/hooks.ts:
+    documents:
+      - 'src/graphql/**/*.graphql'
+      - '!*.ts'
+    preset: import-types
+    presetConfig:
+      typesPath: ./schema.graphql
+    plugins:
+      - 'typescript-react-query'
     config:
-      withHooks: true
-    hooks:
-      afterOneFileWrite:
-        - yarn lint:format
+      dedupeOperationSuffix: true
+      fetcher: 'src/lib/react-query/client#gqlFetcher'
+hooks:
+  afterOneFileWrite:
+    - yarn lint:format

@@ -1,0 +1,13 @@
+query allCompanies {
+  getAllCompanies {
+    id
+    name
+    members {
+      id
+      roles
+      user {
+        email
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ export enum ButtonColorVariants {
   SECONDARY = 'secondary',
   GOOGLE = 'google',
   APPLE = 'apple',
+  SUCCESS = 'success',
 }
 
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -14,6 +15,7 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     | ButtonColorVariants.SECONDARY
     | ButtonColorVariants.GOOGLE
     | ButtonColorVariants.APPLE
+    | ButtonColorVariants.SUCCESS
 }
 
 // const StyledButton = styled.button(
@@ -33,14 +35,15 @@ const Button = ({
   children,
   ...otherProps
 }: IButtonProps) => {
-  const { PRIMARY, GOOGLE, APPLE } = ButtonColorVariants
+  const { PRIMARY, GOOGLE, APPLE, SUCCESS } = ButtonColorVariants
 
   const isPrimary = variant === PRIMARY
   const isGoogle = variant === GOOGLE
   const isApple = variant === APPLE
+  const isSuccess = variant === SUCCESS
+
   return (
     <button
-      {...otherProps}
       type={type}
       disabled={disabled}
       css={[
@@ -48,6 +51,9 @@ const Button = ({
 
         isPrimary && _tw`transform active:scale-95 bg-blue-800 text-white`,
         isPrimary && !disabled && _tw`hover:bg-blue-900`,
+
+        isSuccess && _tw`transform active:scale-95 bg-green-400 text-white`,
+        isSuccess && !disabled && _tw`hover:bg-green-600`,
 
         isGoogle && _tw`transform active:scale-95 bg-red-500 text-white`,
         isGoogle && !disabled && _tw`hover:bg-red-700`,
@@ -57,6 +63,7 @@ const Button = ({
 
         disabled && _tw`opacity-30 cursor-not-allowed`,
       ]}
+      {...otherProps}
     >
       {children}
     </button>

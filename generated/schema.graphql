@@ -2,11 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuthPayload {
-  accessToken: String!
-  user: User!
-}
-
 type Company {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
@@ -49,15 +44,13 @@ input LoginInput {
 }
 
 type Mutation {
-  login(data: LoginInput!): AuthPayload!
+  login(data: LoginInput!): User!
   logout: Boolean!
-  logoutFromAllDevices(userId: Int!): Boolean!
-  refreshAccessToken: AuthPayload!
   register(data: SignupInput!): Boolean!
   requestResetPassword(email: String!): Boolean!
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(data: ResetPasswordInput!): Boolean!
-  verifyEmail(token: String!): AuthPayload!
+  verifyEmail(token: String!): User!
 }
 
 type Post {
@@ -94,13 +87,13 @@ enum ProductStatus {
 }
 
 type Query {
+  currentUser: User!
   getAllCompanies: [Company!]
   getAllProducts: [Product!]
   getAllUsers: [User!]
   getPost(id: String!): Post
   getPublishedPosts: [Post!]
   getUser(id: Int!): User
-  helloCompany: String!
   helloProduct: String!
 }
 

@@ -1,9 +1,9 @@
-import { IsAuthenticatedGuard } from '@guards/is-authenticated.guard'
 import { UseGuards } from '@nestjs/common'
 import { Resolver, Query, Parent, ResolveField } from '@nestjs/graphql'
 import { PrismaService } from '@resources/prisma/prisma.service'
 import { Product } from './product.entity'
 import { ProductService } from './product.service'
+import { IsAuthGuard } from '@guards/is-auth.guard'
 
 @Resolver(Product)
 export class ProductResolver {
@@ -17,7 +17,7 @@ export class ProductResolver {
     return 'helloWorld product'
   }
 
-  @UseGuards(IsAuthenticatedGuard)
+  @UseGuards(IsAuthGuard)
   @Query(() => [Product], { nullable: true })
   getAllProducts() {
     return this.productService.getAllProducts()

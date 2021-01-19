@@ -13,7 +13,7 @@ import { User } from '../user/user.entity'
 import { Post } from './post.entity'
 import { PostService } from './post.service'
 import { UseGuards } from '@nestjs/common'
-import { IsAuthenticatedGuard } from '@guards/is-authenticated.guard'
+import { IsAuthGuard } from '@guards/is-auth.guard'
 
 @ArgsType()
 export class PostIdArgs {
@@ -32,7 +32,7 @@ export class PostResolver {
   }
 
   @Query(() => [Post], { nullable: true })
-  @UseGuards(IsAuthenticatedGuard)
+  @UseGuards(IsAuthGuard)
   getPublishedPosts() {
     return this.postService.getPublishedPosts()
   }

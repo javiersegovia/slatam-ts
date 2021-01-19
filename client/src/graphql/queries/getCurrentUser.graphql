@@ -1,0 +1,18 @@
+query getCurrentUser {
+  currentUser {
+    id
+    email
+    firstName
+    lastName
+    verification {
+      verifiedEmail
+    }
+    companyMember {
+      roles
+      company {
+        id
+        name
+      }
+    }
+  }
+}

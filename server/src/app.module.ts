@@ -9,6 +9,7 @@ import {
   UserModule,
   PostModule,
   AuthModule,
+  ErrorModule,
   CompanyModule,
   ProductModule,
   MailModule,
@@ -25,6 +26,12 @@ import {
     GraphQLModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         const graphqlConfig = configService.get<GraphqlConfig>('graphql')
+
+        // TODO: set this clientURL in a securityConfig variable
+        const clientURL =
+          process.env.NODE_ENV === 'development'
+            ? process.env.DEV_CLIENT_URL
+            : process.env.PROD_CLIENT_URL
         return {
           buildSchemaOptions: {
             numberScalarMode: 'integer',
@@ -36,12 +43,17 @@ import {
           debug: graphqlConfig.debug,
           playground: graphqlConfig.playgroundEnabled,
           context: ({ req, res }) => ({ req, res }),
+          cors: {
+            credentials: true,
+            origin: clientURL,
+          },
         }
       },
       inject: [ConfigService],
     }),
     AuthModule,
     MailModule,
+    ErrorModule,
     UserModule,
     PostModule,
     CompanyModule,

@@ -1,5 +1,3 @@
-import { gql } from '@apollo/client'
-import * as Apollo from '@apollo/client'
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -17,12 +15,6 @@ export type Scalars = {
   Float: number
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any
-}
-
-export type AuthPayload = {
-  __typename?: 'AuthPayload'
-  accessToken: Scalars['String']
-  user: User
 }
 
 export type Company = {
@@ -62,23 +54,17 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  login: AuthPayload
+  login: User
   logout: Scalars['Boolean']
-  logoutFromAllDevices: Scalars['Boolean']
-  refreshAccessToken: AuthPayload
   register: Scalars['Boolean']
   requestResetPassword: Scalars['Boolean']
   resendVerificationEmail: Scalars['Boolean']
   resetPassword: Scalars['Boolean']
-  verifyEmail: AuthPayload
+  verifyEmail: User
 }
 
 export type MutationLoginArgs = {
   data: LoginInput
-}
-
-export type MutationLogoutFromAllDevicesArgs = {
-  userId: Scalars['Int']
 }
 
 export type MutationRegisterArgs = {
@@ -135,13 +121,13 @@ export enum ProductStatus {
 
 export type Query = {
   __typename?: 'Query'
+  currentUser: User
   getAllCompanies?: Maybe<Array<Company>>
   getAllProducts?: Maybe<Array<Product>>
   getAllUsers?: Maybe<Array<User>>
   getPost?: Maybe<Post>
   getPublishedPosts?: Maybe<Array<Post>>
   getUser?: Maybe<User>
-  helloCompany: Scalars['String']
   helloProduct: Scalars['String']
 }
 
@@ -185,63 +171,71 @@ export type UserVerification = {
   verifiedEmail: Scalars['Boolean']
 }
 
-export type HelloCompanyQueryVariables = Exact<{ [key: string]: never }>
+export type SignUpMutationVariables = Exact<{
+  data: SignupInput
+}>
 
-export type HelloCompanyQuery = { __typename?: 'Query' } & Pick<
-  Query,
-  'helloCompany'
+export type SignUpMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'register'
 >
 
-export const HelloCompanyDocument = gql`
-  query helloCompany {
-    helloCompany
-  }
-`
+export type VerifyEmailMutationVariables = Exact<{
+  token: Scalars['String']
+}>
 
-/**
- * __useHelloCompanyQuery__
- *
- * To run a query within a React component, call `useHelloCompanyQuery` and pass it any options that fit your needs.
- * When your component renders, `useHelloCompanyQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useHelloCompanyQuery({
- *   variables: {
- *   },
- * });
- */
-export function useHelloCompanyQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    HelloCompanyQuery,
-    HelloCompanyQueryVariables
+export type VerifyEmailMutation = { __typename?: 'Mutation' } & {
+  verifyEmail: { __typename?: 'User' } & Pick<
+    User,
+    'id' | 'email' | 'firstName' | 'lastName'
   >
-) {
-  return Apollo.useQuery<HelloCompanyQuery, HelloCompanyQueryVariables>(
-    HelloCompanyDocument,
-    baseOptions
-  )
 }
-export function useHelloCompanyLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    HelloCompanyQuery,
-    HelloCompanyQueryVariables
+
+export type AllCompaniesQueryVariables = Exact<{ [key: string]: never }>
+
+export type AllCompaniesQuery = { __typename?: 'Query' } & {
+  getAllCompanies?: Maybe<
+    Array<
+      { __typename?: 'Company' } & Pick<Company, 'id' | 'name'> & {
+          members: Array<
+            { __typename?: 'CompanyMember' } & Pick<
+              CompanyMember,
+              'id' | 'roles'
+            > & { user: { __typename?: 'User' } & Pick<User, 'email'> }
+          >
+        }
+    >
   >
-) {
-  return Apollo.useLazyQuery<HelloCompanyQuery, HelloCompanyQueryVariables>(
-    HelloCompanyDocument,
-    baseOptions
-  )
 }
-export type HelloCompanyQueryHookResult = ReturnType<
-  typeof useHelloCompanyQuery
->
-export type HelloCompanyLazyQueryHookResult = ReturnType<
-  typeof useHelloCompanyLazyQuery
->
-export type HelloCompanyQueryResult = Apollo.QueryResult<
-  HelloCompanyQuery,
-  HelloCompanyQueryVariables
->
+
+export type AllUsersQueryVariables = Exact<{ [key: string]: never }>
+
+export type AllUsersQuery = { __typename?: 'Query' } & {
+  getAllUsers?: Maybe<
+    Array<
+      { __typename?: 'User' } & Pick<
+        User,
+        'id' | 'email' | 'firstName' | 'lastName'
+      >
+    >
+  >
+}
+
+export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetCurrentUserQuery = { __typename?: 'Query' } & {
+  currentUser: { __typename?: 'User' } & Pick<
+    User,
+    'id' | 'email' | 'firstName' | 'lastName'
+  > & {
+      verification: { __typename?: 'UserVerification' } & Pick<
+        UserVerification,
+        'verifiedEmail'
+      >
+      companyMember?: Maybe<
+        { __typename?: 'CompanyMember' } & Pick<CompanyMember, 'roles'> & {
+            company: { __typename?: 'Company' } & Pick<Company, 'id' | 'name'>
+          }
+      >
+    }
+}
