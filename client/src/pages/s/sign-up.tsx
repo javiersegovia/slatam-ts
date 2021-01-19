@@ -68,7 +68,7 @@ const SignUp = () => {
         },
         onError: (e: any) => {
           // TODO: move this logic to a reusable function across forms
-          const { info, message } = getExceptionErrors(e.response.errors)
+          const { info /* message */ } = getExceptionErrors(e.response.errors)
 
           // TODO: use the "message" on an alert pop-up
 

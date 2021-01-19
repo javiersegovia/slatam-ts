@@ -31,7 +31,7 @@ type TInputProps = {
   label: string
   error?: FieldErrors | FieldError | undefined
   validations?: RegisterOptions
-  register: (props: RegisterOptions) => RefReturn
+  register: (props: RegisterOptions) => any
   isTextArea?: boolean
 }
 
