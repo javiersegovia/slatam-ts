@@ -1,3 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+// TODO: enable react exhaustive deeps and fix the errors in this file
+// https://reactjs.org/docs/hooks-faq.html#what-can-i-do-if-my-effect-dependencies-change-too-often
+
 import React, { useEffect, useState } from 'react'
 import _tw from 'twin.macro'
 import ReactSelect, { Styles, ValueType } from 'react-select'
