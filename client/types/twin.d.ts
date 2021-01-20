@@ -1,3 +1,4 @@
+import 'react-icons'
 // twin.d.ts
 import 'twin.macro'
 import styledImport, { CSSProp, css as cssImport } from 'styled-components'
@@ -15,6 +16,12 @@ declare module 'react' {
   }
   // The inline svg css prop
   interface SVGProps extends SVGProps<SVGSVGElement> {
+    css?: CSSProp
+  }
+}
+
+declare module 'react-icons' {
+  interface IconType {
     css?: CSSProp
   }
 }

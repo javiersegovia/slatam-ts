@@ -2,21 +2,29 @@ import React from 'react'
 import _tw from 'twin.macro'
 import Avatar, { AvatarSize } from './Avatar'
 import { Menu, Transition } from '@headlessui/react'
+import { HiOutlineUser } from 'react-icons/hi'
 import Link from 'next/link'
+import { User } from '@graphql/schema'
+import routes from '@lib/utils/routes'
+import { NestedPartialExcept } from '@lib/utils/types'
 
-const AvatarWithMenu = () => {
+interface IAvatarWithMenu {
+  user: NestedPartialExcept<User, 'email'>
+}
+
+const AvatarWithMenu = ({ user }: IAvatarWithMenu) => {
   return (
     <>
-      <div className="relative inline-block text-left">
+      <div tw="relative inline-block text-left">
         <Menu>
           {({ open }) => (
             <>
-              <span className="rounded-md shadow-sm">
+              <span tw="rounded-md shadow-sm">
                 <Menu.Button as={React.Fragment}>
                   <button type="button">
                     <Avatar
                       size={AvatarSize.XS}
-                      imagePath="/images/avatar-sample.jpg"
+                      imagePath={null} //TODO: replace when we have the dynamic image urls
                     />
                   </button>
                 </Menu.Button>
@@ -33,16 +41,24 @@ const AvatarWithMenu = () => {
               >
                 <Menu.Items
                   static
-                  className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                  tw="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
                 >
-                  <div className="px-4 py-3">
-                    <p className="text-sm leading-5">Signed in as</p>
-                    <p className="text-sm font-medium leading-5 text-gray-900 truncate">
-                      example@mail.com
-                    </p>
+                  <div tw="px-4 py-3">
+                    {user.firstName ? (
+                      <span tw="font-medium text-center w-full block text-gray-700 text-sm">
+                        {`Hello ${user.firstName}!`}
+                      </span>
+                    ) : (
+                      <>
+                        <p tw="text-sm leading-5">Signed in as</p>
+                        <p tw="text-sm font-medium leading-5 text-gray-900 truncate">
+                          {user.email}
+                        </p>
+                      </>
+                    )}
                   </div>
 
-                  <div className="py-1">
+                  <div tw="py-1">
                     <Menu.Item
                       as="span"
                       disabled
@@ -52,8 +68,9 @@ const AvatarWithMenu = () => {
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <Link href="/dashboard/settings">
+                        <Link href={routes.dashboard.settings}>
                           <a
+                            href={routes.dashboard.settings}
                             className={`${
                               active
                                 ? 'bg-gray-100 text-gray-900'
@@ -67,8 +84,9 @@ const AvatarWithMenu = () => {
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <Link href="/support">
+                        <Link href={routes.contactUs}>
                           <a
+                            href={routes.contactUs}
                             className={`${
                               active
                                 ? 'bg-gray-100 text-gray-900'
@@ -82,10 +100,10 @@ const AvatarWithMenu = () => {
                     </Menu.Item>
                   </div>
 
-                  <div className="py-1">
+                  <div tw="py-1">
                     <Menu.Item>
                       {({ active }) => (
-                        <Link href="/sign-out">
+                        <Link href={routes.session.signOut}>
                           <a
                             className={`${
                               active

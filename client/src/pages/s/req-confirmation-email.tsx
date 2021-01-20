@@ -1,20 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import _tw from 'twin.macro'
 import Link from 'next/link'
 import Input from '@components/FormFields/Input'
-import Button from '@components/Button'
+import Button, { ButtonColorVariants } from '@components/Button'
 import { useForm } from 'react-hook-form'
+import Router from 'next/router'
+import routes from '@lib/utils/routes'
+import { useRequestConfirmationEmailMutation } from '@graphql/hooks'
 
 type IFormValues = {
   email: string
 }
 
-// TODO: handleSubmit data
 // TODO: add Slatam Logo to top (with link to Home)
 
 const RequestConfirmationEmail = () => {
-  const { register, handleSubmit, errors } = useForm<IFormValues>()
-  const onSubmit = (data: IFormValues) => console.log(data)
+  const [success, setSuccess] = useState(false)
+  const {
+    mutate: requestEmail,
+    isLoading,
+  } = useRequestConfirmationEmailMutation()
+
+  const { register, handleSubmit, formState, errors } = useForm<IFormValues>()
+
+  const { isSubmitting } = formState
+  const submitting = isLoading || isSubmitting
+
+  const onSubmit = ({ email }: IFormValues) => {
+    return requestEmail(
+      {
+        email,
+      },
+      {
+        onSettled: () => {
+          setSuccess(true)
+          Router.push(routes.session.pleaseVerify)
+        },
+      }
+    )
+  }
+
+  useEffect(() => {
+    Router.prefetch(routes.session.pleaseVerify)
+  }, [])
 
   return (
     <>
@@ -28,7 +56,7 @@ const RequestConfirmationEmail = () => {
               Specify your email below and we will send you a new confirmation
               link.
             </p>
-            <div tw="border-t block border-gray-300 my-6 w-full" />
+            <br />
             <form onSubmit={handleSubmit(onSubmit)} tw="mb-8 space-y-2">
               <Input
                 name="email"
@@ -45,31 +73,39 @@ const RequestConfirmationEmail = () => {
                 error={errors?.email}
               />
 
-              <Button type="submit">Send confirmation email</Button>
+              <Button
+                type="submit"
+                variant={success ? ButtonColorVariants.SUCCESS : undefined}
+                isLoading={submitting}
+                disabled={submitting || success}
+                showCheckOnSuccess
+              >
+                Send confirmation email
+              </Button>
             </form>
           </div>
           <p className="mb-4 text-xs text-center text-gray-400">
-            <Link href="/s/sign-up">
+            <Link href={routes.session.signUp}>
               <a
-                href="/s/sign-up"
+                href={routes.session.signUp}
                 className="text-blue-900 underline hover:text-black"
               >
                 Sign up
               </a>
             </Link>
             <span className="mx-1">·</span>
-            <Link href="/s/sign-in">
+            <Link href={routes.session.signIn}>
               <a
-                href="/s/sign-in"
+                href={routes.session.signIn}
                 className="text-blue-900 underline hover:text-black"
               >
                 Sign in
               </a>
             </Link>
             <span className="mx-1">·</span>
-            <Link href="/s/privacy-terms">
+            <Link href={routes.legal.privacyTerms}>
               <a
-                href="/s/privacy-terms"
+                href={routes.legal.privacyTerms}
                 className="text-blue-900 underline hover:text-black"
               >
                 Privacy terms

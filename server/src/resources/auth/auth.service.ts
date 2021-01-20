@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common'
 
 import { User } from '@prisma/client'
@@ -12,12 +13,13 @@ import { PrismaService } from '../prisma/prisma.service'
 import { PasswordService } from './password.service'
 import { ErrorService } from '@resources/error/error.service'
 
-import { SignupInput } from './dto/signup.input'
+import { SignupInput } from './dto/sign-up.input'
 import { MailService } from '@mails/mail.service'
 import { randomBytes } from 'crypto'
 import { promisify } from 'util'
 import ms from 'ms'
 import { Request } from 'express'
+import { UserVerification } from '@resources/user/user-verification.entity'
 
 @Injectable()
 export class AuthService {
@@ -65,24 +67,22 @@ export class AuthService {
       throw new BadRequestException('Your verification code is invalid.')
     }
 
-    const result = await this.prisma.userVerification.findFirst({
+    const verification = await this.prisma.userVerification.findFirst({
       where: { verifyEmailToken: token },
-      include: {
-        user: true,
-      },
     })
 
-    if (!result) {
+    if (!verification) {
       throw new BadRequestException('Your verification code is invalid.')
     }
-
-    const { user, ...verification } = result
 
     if (new Date().getTime() > verification.verifyEmailExpiration.getTime()) {
       throw new BadRequestException('Your verification code has expired.')
     }
 
-    await this.prisma.userVerification.update({
+    const {
+      user: verifiedUser,
+      ...updatedVerification
+    } = await this.prisma.userVerification.update({
       where: {
         id: verification.id,
       },
@@ -91,13 +91,31 @@ export class AuthService {
         verifyEmailToken: null,
         verifyEmailExpiration: null,
       },
+      include: {
+        user: true,
+      },
     })
 
-    return { ...user, verification }
+    return {
+      ...verifiedUser,
+      verification: updatedVerification,
+    }
   }
 
   async resendVerificationEmail(email: string) {
     const verifyEmailToken = await this.generateRandomToken()
+
+    const userVerification = await this.prisma.user
+      .findUnique({
+        where: {
+          email,
+        },
+      })
+      .verification()
+
+    if (userVerification.verifiedEmail) {
+      return false
+    }
 
     const user = await this.prisma.user.update({
       where: {
@@ -139,13 +157,20 @@ export class AuthService {
       templateName,
       info,
       data: {
-        verifyEmailLink: `${clientURL}/verify-email?token=${verifyEmailToken}`,
+        verifyEmailLink: `${clientURL}/s/verify-email?token=${verifyEmailToken}`,
         unsubscribeLink: `${clientURL}/unsubscribe?userId=${user.id}`, // TODO: move the unsubscribe link to a default data object inside the mail service
       },
     })
   }
 
-  async sessionLogIn(req: Request, user: Omit<User, 'password'>) {
+  // TODO: create a config with the client-side routes to handle links in emails
+
+  async sessionLogIn(
+    req: Request,
+    user: Omit<User, 'password'> & {
+      verification: UserVerification
+    }
+  ) {
     return req.logIn(user, (err) => {
       if (err) {
         throw new Error(err)
@@ -156,23 +181,18 @@ export class AuthService {
   // TOOD: refactor this login to work directly on the Local Guard auth
 
   async signIn(email: string, password: string) {
-    const {
-      password: userPassword,
-      ...user
-    } = await this.prisma.user.findUnique({
+    const result = await this.prisma.user.findUnique({
       where: { email },
       include: {
         verification: true,
       },
     })
 
-    if (!user) {
-      throw new NotFoundException(`No user found for email: ${email}`)
+    if (!result) {
+      throw new BadRequestException('INVALID')
     }
 
-    if (!user.verification.verifiedEmail) {
-      throw new BadRequestException('Please, verify your email.')
-    }
+    const { password: userPassword, ...user } = result
 
     const passwordValid = await this.passwordService.validatePassword(
       password,
@@ -180,7 +200,12 @@ export class AuthService {
     )
 
     if (!passwordValid) {
-      throw new BadRequestException('Invalid password')
+      throw new BadRequestException('INVALID')
+    }
+
+    if (!user.verification?.verifiedEmail) {
+      // TODO: move this error messages to a enum
+      throw new UnauthorizedException('UNVERIFIED')
     }
 
     return user
@@ -203,11 +228,12 @@ export class AuthService {
 
     const clientURL = this.mailService.clientURL
 
-    return await this.mailService.generate({
+    // TODO: move the routes to a centralized file in config
+    return this.mailService.generate({
       templateName: 'reset-password',
       info,
       data: {
-        resetPasswordLink: `${clientURL}/reset-password?${resetPasswordToken}`,
+        resetPasswordLink: `${clientURL}/s/change-password?resetPasswordToken=${resetPasswordToken}`,
         unsubscribeLink: `${clientURL}/unsubscribe?${user.id}`, // TODO: move the unsubscribe link to a default data object inside the mail service
       },
     })

@@ -1,14 +1,22 @@
 import '@styles/main.css'
+import '@styles/nprogress.css'
 import { createGlobalStyle } from 'styled-components'
-import tw from 'twin.macro'
 
 import type { FC } from 'react'
-import type { AppProps } from 'next/app'
-
+import tw from 'twin.macro'
 import { QueryClientProvider } from 'react-query'
 import { Hydrate } from 'react-query/hydration'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { createQueryClient } from '@lib/react-query/client'
+
+import type { AppProps } from 'next/app'
+import Head from 'next/head'
+import Router from 'next/router'
+import NProgress from 'nprogress'
+
+Router.events.on('routeChangeStart', () => NProgress.start())
+Router.events.on('routeChangeComplete', () => NProgress.done())
+Router.events.on('routeChangeError', () => NProgress.done())
 
 const queryClient = createQueryClient()
 

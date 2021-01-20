@@ -1,4 +1,4 @@
-import * as Types from './schema.graphql'
+import * as Types from './schema'
 
 import {
   useMutation,
@@ -8,6 +8,142 @@ import {
 } from 'react-query'
 import { gqlFetcher } from 'src/lib/react-query/client'
 
+export const ChangePasswordDocument = `
+    mutation changePassword($data: ResetPasswordInput!) {
+  resetPassword(data: $data)
+}
+    `
+export const useChangePasswordMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Types.ChangePasswordMutation,
+    TError,
+    Types.ChangePasswordMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<
+    Types.ChangePasswordMutation,
+    TError,
+    Types.ChangePasswordMutationVariables,
+    TContext
+  >(
+    (variables?: Types.ChangePasswordMutationVariables) =>
+      gqlFetcher<
+        Types.ChangePasswordMutation,
+        Types.ChangePasswordMutationVariables
+      >(ChangePasswordDocument, variables)(),
+    options
+  )
+export const RequestConfirmationEmailDocument = `
+    mutation requestConfirmationEmail($email: String!) {
+  resendVerificationEmail(email: $email)
+}
+    `
+export const useRequestConfirmationEmailMutation = <
+  TError = unknown,
+  TContext = unknown
+>(
+  options?: UseMutationOptions<
+    Types.RequestConfirmationEmailMutation,
+    TError,
+    Types.RequestConfirmationEmailMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<
+    Types.RequestConfirmationEmailMutation,
+    TError,
+    Types.RequestConfirmationEmailMutationVariables,
+    TContext
+  >(
+    (variables?: Types.RequestConfirmationEmailMutationVariables) =>
+      gqlFetcher<
+        Types.RequestConfirmationEmailMutation,
+        Types.RequestConfirmationEmailMutationVariables
+      >(RequestConfirmationEmailDocument, variables)(),
+    options
+  )
+export const RequestPasswordDocument = `
+    mutation requestPassword($email: String!) {
+  requestResetPassword(email: $email)
+}
+    `
+export const useRequestPasswordMutation = <
+  TError = unknown,
+  TContext = unknown
+>(
+  options?: UseMutationOptions<
+    Types.RequestPasswordMutation,
+    TError,
+    Types.RequestPasswordMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<
+    Types.RequestPasswordMutation,
+    TError,
+    Types.RequestPasswordMutationVariables,
+    TContext
+  >(
+    (variables?: Types.RequestPasswordMutationVariables) =>
+      gqlFetcher<
+        Types.RequestPasswordMutation,
+        Types.RequestPasswordMutationVariables
+      >(RequestPasswordDocument, variables)(),
+    options
+  )
+export const SignInDocument = `
+    mutation signIn($data: SignInInput!) {
+  login(data: $data)
+}
+    `
+export const useSignInMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Types.SignInMutation,
+    TError,
+    Types.SignInMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<
+    Types.SignInMutation,
+    TError,
+    Types.SignInMutationVariables,
+    TContext
+  >(
+    (variables?: Types.SignInMutationVariables) =>
+      gqlFetcher<Types.SignInMutation, Types.SignInMutationVariables>(
+        SignInDocument,
+        variables
+      )(),
+    options
+  )
+export const SignOutDocument = `
+    mutation signOut {
+  logout
+}
+    `
+export const useSignOutMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Types.SignOutMutation,
+    TError,
+    Types.SignOutMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<
+    Types.SignOutMutation,
+    TError,
+    Types.SignOutMutationVariables,
+    TContext
+  >(
+    (variables?: Types.SignOutMutationVariables) =>
+      gqlFetcher<Types.SignOutMutation, Types.SignOutMutationVariables>(
+        SignOutDocument,
+        variables
+      )(),
+    options
+  )
 export const SignUpDocument = `
     mutation signUp($data: SignupInput!) {
   register(data: $data)
@@ -36,12 +172,7 @@ export const useSignUpMutation = <TError = unknown, TContext = unknown>(
   )
 export const VerifyEmailDocument = `
     mutation verifyEmail($token: String!) {
-  verifyEmail(token: $token) {
-    id
-    email
-    firstName
-    lastName
-  }
+  verifyEmail(token: $token)
 }
     `
 export const useVerifyEmailMutation = <TError = unknown, TContext = unknown>(

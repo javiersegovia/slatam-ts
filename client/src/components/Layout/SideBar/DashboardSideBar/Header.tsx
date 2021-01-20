@@ -1,6 +1,9 @@
 import React from 'react'
+import _tw from 'twin.macro'
 import AvatarWithMenu from '@components/Avatar/AvatarMenu'
 import { NotificationMenu } from '@components/Notification'
+import { useGetCurrentUserQuery } from '@graphql/hooks'
+
 // TODO: replace inline svgs for icons from react-icons
 
 const notificationList = [
@@ -23,16 +26,21 @@ const Header = ({
 }: {
   setShowSideBar: (arg: boolean) => void
 }) => {
+  const { data } = useGetCurrentUserQuery(undefined, {
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+
   return (
-    <header className="flex items-center justify-between w-full px-4 bg-white border-b h-14">
+    <header tw="flex items-center justify-between w-full px-4 bg-white border-b h-16">
       <button
         type="button"
         className="block btn btn-light md:hidden"
         onClick={() => setShowSideBar(true)}
       >
-        <span className="sr-only">Menu</span>
+        <span tw="sr-only">Menu</span>
         <svg
-          className="w-4 h-4"
+          tw="w-4 h-4"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -45,13 +53,9 @@ const Header = ({
         </svg>
       </button>
 
-      <div className="hidden -ml-3 form-icon md:block w-96">
-        <i>Available space</i>
-      </div>
-
-      <div className="flex items-center space-x-4">
+      <div tw="ml-auto flex items-center space-x-4">
         <NotificationMenu notifications={notificationList} />
-        <AvatarWithMenu />
+        {data?.currentUser && <AvatarWithMenu user={data.currentUser} />}
       </div>
     </header>
   )

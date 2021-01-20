@@ -1,33 +1,80 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import _tw from 'twin.macro'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Router from 'next/router'
 import Input from '@components/FormFields/Input'
 import Button, { ButtonColorVariants } from '@components/Button'
 import { useForm } from 'react-hook-form'
-
+import routes from '@lib/utils/routes'
+import { useSignInMutation } from '@graphql/hooks'
+import { getExceptionErrors } from '@lib/utils/errors'
+import IsNotAuthenticated from '@components/Auth/IsNotAuthenticated'
 interface IFormValues {
   email: string
   password: string
 }
 
-// TODO: handleSubmit data
-// TODO: handle defaultValues of form
 // TODO: add Slatam Logo to top (with link to Home)
 // TODO: replace svg google icon
-// TODO: validation of confirmPassword (should be the same as password!)
 
 const SignIn = () => {
-  const { register, handleSubmit, errors } = useForm<IFormValues>()
-  const router = useRouter()
-  const onSubmit = (data: IFormValues) => {
-    console.log(data)
+  const [success, setSuccess] = useState(false)
 
-    router.push('/dashboard')
+  const {
+    register,
+    handleSubmit,
+    errors,
+    setError,
+    formState,
+  } = useForm<IFormValues>()
+  const { isSubmitting } = formState
+  const { mutate: signIn, isLoading } = useSignInMutation()
+
+  const submitting = isSubmitting || isLoading
+
+  const onSubmit = async (formData: IFormValues) => {
+    const { email, password } = formData
+
+    return signIn(
+      {
+        data: {
+          email,
+          password,
+        },
+      },
+      {
+        onSuccess: () => {
+          setSuccess(true)
+          Router.push(routes.dashboard.index)
+        },
+        onError: (result: any) => {
+          const { message } = getExceptionErrors(result?.response?.errors)
+
+          // TODO: move this error code to an enum shared with Backend
+          // when we have the monorepo setup
+          if (message === 'UNVERIFIED') {
+            Router.push(routes.session.pleaseVerify)
+            return
+          }
+
+          setError('email', {
+            shouldFocus: true,
+            message: 'Invalid email or password',
+          })
+          setError('password', {
+            message: 'Invalid email or password',
+          })
+        },
+      }
+    )
   }
 
+  useEffect(() => {
+    Router.prefetch(routes.dashboard.index)
+  }, [])
+
   return (
-    <>
+    <IsNotAuthenticated>
       <section className="bg-gray-100 min-h-screen">
         <div className="container px-0 py-20 mx-auto sm:px-4">
           <div className="w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 bg-white rounded-none shadow-2xl sm:rounded-lg sm:w-10/12 md:w-6/12 lg:w-5/12 xl:w-4/12 sm:px-6">
@@ -44,7 +91,7 @@ const SignIn = () => {
                 validations={{
                   required: {
                     value: true,
-                    message: 'Please specify your email address',
+                    message: 'Please, specify your email address',
                   },
                 }}
                 error={errors?.email}
@@ -57,17 +104,21 @@ const SignIn = () => {
                 validations={{
                   required: {
                     value: true,
-                    message: 'Please specify your password',
+                    message: 'Please, specify your password',
                   },
-                  // minLength: {
-                  //   value: 8,
-                  //   message: 'La contraseña debe tener mínimo 8 caracteres',
-                  // },
                 }}
                 error={errors?.password}
               />
 
-              <Button type="submit">Sign in</Button>
+              <Button
+                type="submit"
+                variant={success ? ButtonColorVariants.SUCCESS : undefined}
+                isLoading={submitting}
+                disabled={submitting || success}
+                showCheckOnSuccess
+              >
+                Sign in
+              </Button>
             </form>
             <div className="space-y-8">
               <div
@@ -78,7 +129,7 @@ const SignIn = () => {
                   className="p-2 text-xs font-semibold tracking-wide text-gray-600 uppercase bg-white"
                   style={{ lineHeight: 0 }}
                 >
-                  O
+                  OR
                 </span>
               </div>
               <div className="w-full">
@@ -101,27 +152,27 @@ const SignIn = () => {
             </div>
           </div>
           <p className="mb-4 text-xs text-center text-gray-400">
-            <Link href="/s/sign-up">
+            <Link href={routes.session.signUp}>
               <a
-                href="/s/sign-up"
+                href={routes.session.signUp}
                 className="text-blue-900 underline hover:text-black"
               >
                 Sign up
               </a>
             </Link>
             <span className="mx-1">·</span>
-            <Link href="/s/request-password">
+            <Link href={routes.session.requestPassword}>
               <a
-                href="/s/request-password"
+                href={routes.session.requestPassword}
                 className="text-blue-900 underline hover:text-black"
               >
                 Forgot password?
               </a>
             </Link>
             <span className="mx-1">·</span>
-            <Link href="/s/privacy-terms">
+            <Link href={routes.legal.privacyTerms}>
               <a
-                href="/s/privacy-terms"
+                href={routes.legal.privacyTerms}
                 className="text-blue-900 underline hover:text-black"
               >
                 Privacy terms
@@ -130,7 +181,7 @@ const SignIn = () => {
           </p>
         </div>
       </section>
-    </>
+    </IsNotAuthenticated>
   )
 }
 

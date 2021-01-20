@@ -1,12 +1,11 @@
 import { Request } from 'express'
 import { Resolver, Mutation, Args, Context } from '@nestjs/graphql'
 import { AuthService } from './auth.service'
-import { SignupInput } from './dto/signup.input'
+import { SignInInput } from './dto/sign-in.input'
+import { SignupInput } from './dto/sign-up.input'
 import { ResetPasswordInput } from './dto/reset-password.input'
 
 // import { CurrentUser } from '@decorators/current-user.decorator'
-import { User } from '@resources/user/user.entity'
-import { LoginInput } from './dto/login.input'
 
 export const REFRESH_TOKEN_ID_COOKIE = 'REFRESH_TOKEN_ID'
 export const ACCESS_TOKEN_COOKIE = 'ACCESS_TOKEN_COOKIE'
@@ -25,38 +24,40 @@ export class AuthResolver {
     return true
   }
 
-  @Mutation((_returns) => User)
+  @Mutation((_returns) => Boolean)
   async verifyEmail(
     @Args('token') token: string,
     @Context('req') req: Request
   ) {
-    const user = await this.auth.verifyEmail(token)
-    await this.auth.sessionLogIn(req, user)
+    const verifiedUser = await this.auth.verifyEmail(token)
+    await this.auth.sessionLogIn(req, verifiedUser)
 
-    return user
+    return true
   }
 
   @Mutation((_returns) => Boolean)
   async resendVerificationEmail(@Args('email') email: string) {
-    await this.auth.resendVerificationEmail(email)
-    return true
+    const success = await this.auth.resendVerificationEmail(email)
+    return !!success
   }
 
-  @Mutation((_returns) => User)
+  @Mutation((_returns) => Boolean)
   async login(
     @Context('req') req: Request,
-    @Args('data') { email, password }: LoginInput
+    @Args('data') { email, password }: SignInInput
   ) {
     const user = await this.auth.signIn(email, password)
     await this.auth.sessionLogIn(req, user)
 
-    return user
+    return true
   }
 
   @Mutation((_returns) => Boolean)
   async logout(@Context('req') req: Request) {
     await req.logout()
-    return req.session.destroy(() => true)
+    await req.session.destroy(() => true)
+
+    return true
   }
 
   // TODO: implement logoutFromAllDevices when we have a Session Store

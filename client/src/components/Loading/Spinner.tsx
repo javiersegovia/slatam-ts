@@ -11,7 +11,7 @@ const Spinner = ({ size = 6, color = 'white' }) => {
       css={[
         color === 'white' && _tw`text-white`,
         color === 'black' && _tw`text-black`,
-        color === 'blue' && _tw`text-blue-700`,
+        color === 'blue' && _tw`text-blue-800`,
         size === 6 && _tw`h-6 w-6`,
         size === 7 && _tw`h-7 w-7`,
         size === 8 && _tw`h-8 w-8`,

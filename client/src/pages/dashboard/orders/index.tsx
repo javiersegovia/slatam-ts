@@ -1,6 +1,7 @@
 import React from 'react'
 import _tw from 'twin.macro'
 import DashboardSideBar from '@components/Layout/SideBar/DashboardSideBar'
+import { IsAuthenticated } from '@components/Auth'
 
 const Title: React.FC = ({ children }) => (
   <div tw="prose mb-10 prose-xl">
@@ -10,9 +11,11 @@ const Title: React.FC = ({ children }) => (
 
 const DashboardOrders = () => {
   return (
-    <DashboardSideBar>
-      <Title>My orders</Title>
-    </DashboardSideBar>
+    <IsAuthenticated>
+      <DashboardSideBar>
+        <Title>My orders</Title>
+      </DashboardSideBar>
+    </IsAuthenticated>
   )
 }
 

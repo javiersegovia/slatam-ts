@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import _tw from 'twin.macro'
 import Link from 'next/link'
 import Input from '@components/FormFields/Input'
 import Button, { ButtonColorVariants } from '@components/Button'
 import { useForm } from 'react-hook-form'
 import { useSignUpMutation } from '@graphql/hooks'
-import { GraphQLError } from 'graphql'
 import Router from 'next/router'
-import { HiCheck } from 'react-icons/hi'
-import { Spinner } from '@components/Loading'
+import { getExceptionErrors } from '@lib/utils/errors'
+import routes from '@lib/utils/routes'
+import IsNotAuthenticated from '@components/Auth/IsNotAuthenticated'
 
 type IFormValues = {
   email: string
@@ -16,21 +16,8 @@ type IFormValues = {
   confirmPassword: string
 }
 
-// TODO: handleSubmit data
-// TODO: handle defaultValues of form
 // TODO: add Slatam Logo to top (with link to Home)
 // TODO: replace svg google icon
-
-const getExceptionErrors = (errors: readonly GraphQLError[]) => {
-  const exceptionErrors = errors.map(({ message, extensions }) => {
-    return {
-      message,
-      info: extensions?.exception?.response?.data,
-    }
-  })
-
-  return exceptionErrors[0]
-}
 
 const FIELD_NAMES: (keyof IFormValues)[] = ['email', 'password']
 
@@ -48,13 +35,13 @@ const SignUp = () => {
   const password = useRef({})
   password.current = watch('password', '')
 
-  const { mutate, isLoading } = useSignUpMutation()
+  const { mutate: signUp, isLoading } = useSignUpMutation()
   const [success, setSuccess] = useState(false)
 
   const onSubmit = async (formData: IFormValues) => {
     const { email, password } = formData
 
-    await mutate(
+    await signUp(
       {
         data: {
           email,
@@ -64,13 +51,10 @@ const SignUp = () => {
       {
         onSuccess: () => {
           setSuccess(true)
-          Router.push('/please-verify')
+          Router.push(routes.session.pleaseVerify)
         },
         onError: (e: any) => {
-          // TODO: move this logic to a reusable function across forms
-          const { info /* message */ } = getExceptionErrors(e.response.errors)
-
-          // TODO: use the "message" on an alert pop-up
+          const { info } = getExceptionErrors(e.response.errors)
 
           if (info) {
             Object.keys(info).forEach((errorKey: any, index: number) => {
@@ -87,10 +71,14 @@ const SignUp = () => {
     )
   }
 
+  useEffect(() => {
+    Router.prefetch(routes.session.pleaseVerify)
+  }, [])
+
   const submitting = isSubmitting || isLoading
 
   return (
-    <>
+    <IsNotAuthenticated>
       <section className="bg-gray-100 min-h-screen">
         <div className="container px-0 py-20 mx-auto sm:px-4">
           <div className="w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 bg-white rounded-none shadow-2xl sm:rounded-lg sm:w-10/12 md:w-6/12 lg:w-5/12 xl:w-4/12 sm:px-6">
@@ -149,15 +137,11 @@ const SignUp = () => {
               <Button
                 type="submit"
                 variant={success ? ButtonColorVariants.SUCCESS : undefined}
+                isLoading={submitting}
                 disabled={submitting || success}
+                showCheckOnSuccess
               >
-                {submitting ? (
-                  <Spinner />
-                ) : success ? (
-                  <HiCheck tw="text-2xl" />
-                ) : (
-                  'Sign up'
-                )}
+                Sign up
               </Button>
             </form>
             <div className="space-y-8">
@@ -192,18 +176,18 @@ const SignUp = () => {
             </div>
           </div>
           <p className="mb-4 text-xs text-center text-gray-400">
-            <Link href="/s/sign-in">
+            <Link href={routes.session.signIn}>
               <a
-                href="/s/sign-in"
+                href={routes.session.signIn}
                 className="text-blue-900 underline hover:text-black"
               >
                 Sign in
               </a>
             </Link>
             <span className="mx-1">·</span>
-            <Link href="/s/privacy-terms">
+            <Link href={routes.legal.privacyTerms}>
               <a
-                href="/s/privacy-terms"
+                href={routes.legal.privacyTerms}
                 className="text-blue-900 underline hover:text-black"
               >
                 Privacy terms
@@ -212,7 +196,7 @@ const SignUp = () => {
           </p>
         </div>
       </section>
-    </>
+    </IsNotAuthenticated>
   )
 }
 
