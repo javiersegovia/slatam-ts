@@ -51,19 +51,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-input LoginInput {
-  email: String!
-  password: String!
-}
-
 type Mutation {
-  login(data: LoginInput!): User!
+  login(data: SignInInput!): Boolean!
   logout: Boolean!
   register(data: SignupInput!): Boolean!
   requestResetPassword(email: String!): Boolean!
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(data: ResetPasswordInput!): Boolean!
-  verifyEmail(token: String!): User!
+  verifyEmail(token: String!): Boolean!
 }
 
 type Post {
@@ -115,6 +110,11 @@ type Query {
 input ResetPasswordInput {
   password: String!
   resetPasswordToken: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
 }
 
 input SignupInput {
