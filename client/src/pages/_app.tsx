@@ -10,7 +10,6 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { createQueryClient } from '@lib/react-query/client'
 
 import type { AppProps } from 'next/app'
-import Head from 'next/head'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 

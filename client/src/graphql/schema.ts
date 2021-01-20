@@ -47,6 +47,18 @@ export enum CompanyMemberRole {
   Owner = 'OWNER',
 }
 
+export type Country = {
+  __typename?: 'Country'
+  code2: Scalars['String']
+  /** Identifies the date and time when the object was created */
+  createdAt: Scalars['DateTime']
+  flag: Scalars['String']
+  id: Scalars['ID']
+  name: Scalars['String']
+  /** Identifies the date and time when the object was last updated. */
+  updatedAt: Scalars['DateTime']
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
   login: Scalars['Boolean']
@@ -118,12 +130,18 @@ export type Query = {
   __typename?: 'Query'
   currentUser: User
   getAllCompanies?: Maybe<Array<Company>>
+  getAllCountries: Array<Country>
   getAllProducts?: Maybe<Array<Product>>
   getAllUsers?: Maybe<Array<User>>
+  getCountry: Country
   getPost?: Maybe<Post>
   getPublishedPosts?: Maybe<Array<Post>>
   getUser?: Maybe<User>
   helloProduct: Scalars['String']
+}
+
+export type QueryGetCountryArgs = {
+  id: Scalars['Int']
 }
 
 export type QueryGetPostArgs = {

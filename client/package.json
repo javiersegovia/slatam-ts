@@ -92,8 +92,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn generate && yarn lint:type-check"
+      "pre-commit": "concurrently \"lint-staged\" \"yarn generate\"",
+      "pre-push": "yarn lint:type-check"
     }
   },
   "lint-staged": {

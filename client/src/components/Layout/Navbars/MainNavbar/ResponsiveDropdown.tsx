@@ -11,11 +11,7 @@ interface IResponsiveDropdownProps {
   user?: NestedPartialExcept<User, 'email'>
 }
 
-const UserInfoLoggedIn = ({
-  user,
-}: {
-  user: NestedPartialExcept<User, 'email'>
-}) => (
+const UserInfoLoggedIn = () => (
   <div>
     <Link href={routes.dashboard.index}>
       <a
