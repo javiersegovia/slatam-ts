@@ -5,7 +5,7 @@
 # - Inside server requests.
 # - Using custom fetchParams (as example, multipart requests).
 
-overwrite: true
+overwrite: false
 schema: '../generated/schema.graphql'
 generates:
   ./src/graphql/schema.ts:

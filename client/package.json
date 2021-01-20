@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently \"yarn dev:base\" \"yarn generate --watch --errors-only\"",
+    "dev": "concurrently \"yarn dev:base\" \"yarn generate --watch --overwrite --errors-only\"",
     "dev:base": "next dev",
     "build": "next build",
     "build:analyze": "BUNDLE_ANALYZE=true yarn build",
@@ -15,8 +15,8 @@
     "lint:type-check": "tsc --pretty --noEmit",
     "find:unused": "next-unused",
     "generate": "graphql-codegen",
-    "prestart": "yarn generate",
-    "prebuild": "yarn generate"
+    "prestart": "yarn generate --overwrite",
+    "prebuild": "yarn generate --overwrite"
   },
   "dependencies": {
     "@headlessui/react": "^0.2.0",
@@ -93,7 +93,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "yarn generate && lint-staged",
       "pre-push": "yarn lint:type-check"
     }
   },
