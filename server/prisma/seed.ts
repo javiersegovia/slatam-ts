@@ -145,6 +145,14 @@ async function main() {
     },
   })
 
+  const country1 = await prisma.country.create({
+    data: {
+      name: 'Venezuela',
+      flag: 'https://restcountries.eu/data/ven.svg',
+      code2: 'VE',
+    },
+  })
+
   console.log('Seeding is done!')
 }
 

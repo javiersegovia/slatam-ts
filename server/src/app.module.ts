@@ -13,6 +13,7 @@ import {
   CompanyModule,
   ProductModule,
   MailModule,
+  CountryModule,
 } from '@resources/modules'
 
 @Module({
@@ -58,6 +59,7 @@ import {
     PostModule,
     CompanyModule,
     ProductModule,
+    CountryModule,
   ],
   controllers: [],
   providers: [PrismaService],
