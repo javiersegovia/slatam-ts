@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { ErrorService } from '../error/error.service'
 import { UpdateCountryInput } from './dto/update-country.input'
+import { CountryInput } from '../country/dto/country.input'
 
 @Injectable()
 export class CountryService {

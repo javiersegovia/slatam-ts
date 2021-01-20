@@ -61,6 +61,7 @@ type Country {
 }
 
 input CreateCountryInput {
+input CountryInput {
   code2: String!
   flag: String!
   name: String!
@@ -86,6 +87,13 @@ enum Gender {
 type Mutation {
   createCountry(data: CreateCountryInput!): Country!
   login(data: SignInInput!): Boolean!
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  login(data: LoginInput!): User!
   logout: Boolean!
   register(data: SignupInput!): Boolean!
   requestResetPassword(email: String!): Boolean!
@@ -94,6 +102,7 @@ type Mutation {
   updateCountry(data: UpdateCountryInput!): Country!
   updateCurrentUser(data: UpdateUserInput!): Boolean!
   verifyEmail(token: String!): Boolean!
+  updateCountry(data: CountryInput!, id: Int!): Country!
 }
 
 type Post {
@@ -145,11 +154,6 @@ type Query {
 input ResetPasswordInput {
   password: String!
   resetPasswordToken: String!
-}
-
-input SignInInput {
-  email: String!
-  password: String!
 }
 
 input SignupInput {
