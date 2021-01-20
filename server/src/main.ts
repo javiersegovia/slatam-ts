@@ -1,12 +1,15 @@
 import { NestFactory } from '@nestjs/core'
 // import cookieParser from 'cookie-parser' // TODO: remove this library
 import { AppModule } from './app.module'
+import { ValidationPipe } from '@nestjs/common'
 
 import session from 'express-session'
 import passport from 'passport'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+
+  app.useGlobalPipes(new ValidationPipe())
 
   const clientURL =
     process.env.NODE_ENV === 'development'

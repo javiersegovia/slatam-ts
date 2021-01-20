@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common'
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { PrismaClientKnownRequestError } from '@prisma/client'
 
 // We should use this service for formatting errors across the codebase
@@ -21,6 +25,8 @@ export class ErrorService {
     switch (error.code) {
       case 'P2002':
         return this.handlePrismaConflictError(error)
+      case 'P2015':
+        return this.handlePrismaNotFoundError(error)
       default:
         console.warn(
           `Not found error handler for Prisma Error Code: ${error.code}`
@@ -40,6 +46,19 @@ export class ErrorService {
     throw new ConflictException({
       data,
       message: 'There is a conflict error.',
+    })
+  }
+
+  handlePrismaNotFoundError(error: any) {
+    const data = {}
+
+    error.meta?.['target']?.forEach((fieldName) => {
+      data[fieldName] = 'The thing you are looking for was not found'
+    })
+
+    throw new NotFoundException({
+      data,
+      message: 'There is a not found error',
     })
   }
 }
