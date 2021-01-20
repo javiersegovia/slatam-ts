@@ -217,7 +217,7 @@ const ResponsiveDropdown = ({ user, close }: IResponsiveDropdownProps) => {
         </div>
 
         <div className="py-6 px-5 space-y-6">
-          {user ? <UserInfoLoggedIn user={user} /> : <UserInfoNotLoggedIn />}
+          {user ? <UserInfoLoggedIn /> : <UserInfoNotLoggedIn />}
         </div>
       </div>
     </Menu.Items>

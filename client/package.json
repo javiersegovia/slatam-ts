@@ -15,7 +15,8 @@
     "lint:type-check": "tsc --pretty --noEmit",
     "find:unused": "next-unused",
     "generate": "graphql-codegen",
-    "prestart": "yarn generate"
+    "prestart": "yarn generate",
+    "prebuild": "yarn generate"
   },
   "dependencies": {
     "@headlessui/react": "^0.2.0",
@@ -92,7 +93,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn generate && lint-staged",
+      "pre-commit": "lint-staged",
       "pre-push": "yarn lint:type-check"
     }
   },

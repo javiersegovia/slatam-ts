@@ -10,16 +10,15 @@ import { useQueryClient } from 'react-query'
 const VerifyEmail = () => {
   const queryClient = useQueryClient()
 
-  const clearCache = async () => {
-    await queryClient.clear()
-    await queryClient.resetQueries()
-
-    Router.push(routes.home)
-  }
-
   useEffect(() => {
+    const clearCache = async () => {
+      await queryClient.clear()
+      await queryClient.resetQueries()
+
+      Router.push(routes.home)
+    }
     clearCache()
-  }, [])
+  }, [queryClient])
 
   return null
 }
