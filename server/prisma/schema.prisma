@@ -96,3 +96,12 @@ enum ProductStatus {
   INACTIVE
   ACTIVE
 }
+
+model Country {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  name        String
+  flag        String
+  code2       String
+}
