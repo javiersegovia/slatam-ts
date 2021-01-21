@@ -5,10 +5,11 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf ../generated/schema.graphql dist",
-    "prebuild": "yarn clean",
+    "generate": "yarn clean && yarn prisma:generate",
+    "prebuild": "yarn generate",
     "build": "nest build",
     "dev": "cross-env NODE_ENV=development nest start --watch",
-    "predev:generate": "yarn clean",
+    "predev:generate": "yarn generate",
     "dev:generate": "cross-env NODE_ENV=development GENERATE=true nest start",
     "dev:debug": "cross-env NODE_ENV=development nest start --debug --watch",
     "start": "node -r ./tsconfig-paths dist/main",
@@ -107,8 +108,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn run lint:type-check",
-      "post-merge": "yarn prisma:generate && yarn dev:generate"
+      "pre-push": "yarn run lint:type-check && yarn dev:generate"
     }
   },
   "lint-staged": {
