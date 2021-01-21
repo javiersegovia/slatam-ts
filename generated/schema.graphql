@@ -16,6 +16,16 @@ type Address {
   updatedAt: DateTime!
 }
 
+type Category {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
 type Company {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
@@ -60,8 +70,11 @@ type Country {
   updatedAt: DateTime!
 }
 
+input CreateCategoryInput {
+  name: String!
+}
+
 input CreateCountryInput {
-input CountryInput {
   code2: String!
   flag: String!
   name: String!
@@ -85,24 +98,20 @@ enum Gender {
 }
 
 type Mutation {
+  createCategory(data: CreateCategoryInput!): Category!
   createCountry(data: CreateCountryInput!): Country!
+  deleteCategory(id: Int!): Boolean!
+  deleteCountry(id: Int!): Boolean!
   login(data: SignInInput!): Boolean!
-input LoginInput {
-  email: String!
-  password: String!
-}
-
-type Mutation {
-  login(data: LoginInput!): User!
   logout: Boolean!
   register(data: SignupInput!): Boolean!
   requestResetPassword(email: String!): Boolean!
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(data: ResetPasswordInput!): Boolean!
+  updateCategory(data: UpdateCategoryInput!): Category!
   updateCountry(data: UpdateCountryInput!): Country!
   updateCurrentUser(data: UpdateUserInput!): Boolean!
   verifyEmail(token: String!): Boolean!
-  updateCountry(data: CountryInput!, id: Int!): Country!
 }
 
 type Post {
@@ -140,10 +149,12 @@ enum ProductStatus {
 
 type Query {
   currentUser: User!
+  getAllCategories: [Category!]
   getAllCompanies: [Company!]
   getAllCountries: [Country!]
   getAllProducts: [Product!]
   getAllUsers: [User!]
+  getCategory(id: Int!): Category!
   getCountry(id: Int!): Country!
   getPost(id: String!): Post
   getPublishedPosts: [Post!]
@@ -156,11 +167,21 @@ input ResetPasswordInput {
   resetPasswordToken: String!
 }
 
+input SignInInput {
+  email: String!
+  password: String!
+}
+
 input SignupInput {
   email: String!
   firstName: String
   lastName: String
   password: String!
+}
+
+input UpdateCategoryInput {
+  id: Int!
+  name: String!
 }
 
 input UpdateCountryInput {

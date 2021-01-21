@@ -136,3 +136,10 @@ model Country {
   code2     String
   address   Address[]
 }
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String
+}
