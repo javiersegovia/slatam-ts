@@ -21,9 +21,9 @@ export class CompanyAbility extends BaseAbility<TCompanySubjects> {
 
     cannot(MANAGE, Company)
 
-    // if (permissions.isMember) {
-    //   can(READ, Company)
-    // }
+    if (permissions.isMember) {
+      can(READ, Company)
+    }
     if (permissions.isManager) {
       can(READ, Company)
       can(UPDATE, Company)
