@@ -23,7 +23,9 @@ export const MIN_LENGTH_FOR_SEARCH = 40
 
 export const customStyles: Partial<Styles<TOption, false>> = {
   control: (_, state) => ({
-    ..._tw`bg-white flex items-center shadow w-full py-2 px-3 border rounded-md border-gray-400`,
+    ..._tw`bg-white flex items-center shadow-sm w-full text-sm leading-6 py-3 px-3 border rounded-md border-gray-300`,
+
+    ...(state.hasValue && _tw`py-2`),
 
     ...(state.selectProps.hasError &&
       _tw`text-red-600 border-red-500 hover:border-red-500`),
@@ -61,7 +63,7 @@ export const customStyles: Partial<Styles<TOption, false>> = {
   }),
   placeholder: (provided) => ({
     ...provided,
-    ..._tw`m-0`,
+    ..._tw`m-0 text-transparent sm:text-gray-500`,
   }),
   valueContainer: (provided) => ({
     ...provided,

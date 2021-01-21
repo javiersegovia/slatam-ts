@@ -1,1 +1,1 @@
-export { default, ButtonColorVariants } from './Button'
+export { default } from './Button'

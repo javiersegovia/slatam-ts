@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import _tw from 'twin.macro'
 // import Link from 'next/link'
 import Input from '@components/FormFields/Input'
-import Button, { ButtonColorVariants } from '@components/Button'
+import Button from '@components/Button'
 import { useForm } from 'react-hook-form'
 import { useChangePasswordMutation } from '@graphql/hooks'
 import { GetServerSideProps } from 'next'
@@ -116,7 +116,7 @@ const ChangePassword = ({
 
                   <Button
                     type="submit"
-                    variant={success ? ButtonColorVariants.SUCCESS : undefined}
+                    variant={success ? 'SUCCESS' : undefined}
                     isLoading={submitting}
                     disabled={submitting || success}
                     showCheckOnSuccess

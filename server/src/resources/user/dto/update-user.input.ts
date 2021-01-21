@@ -13,6 +13,8 @@ export class UpdateUserInput {
 @InputType()
 export class UpdateUserInformationInput {
   address?: CreateOrUpdateAddressInput
-  age?: Date
+  occupation?: string
+  birthDate?: Date
   gender?: Gender
+  nationality?: number[]
 }

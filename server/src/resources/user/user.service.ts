@@ -29,7 +29,7 @@ export class UserService {
     const { information, userId, ...userData } = data
 
     if (information) {
-      const { address, ...dataInfo } = information
+      const { address, nationality, ...dataInfo } = information
 
       const existingInfo = await this.prisma.userInformation.findFirst({
         where: {
@@ -45,12 +45,22 @@ export class UserService {
               id: userId,
             },
           },
+          nationality: {
+            connect: nationality?.map((countryId) => ({
+              id: countryId,
+            })),
+          },
         },
         update: {
           ...dataInfo,
+          nationality: {
+            set: nationality?.map((countryId) => ({
+              id: countryId,
+            })),
+          },
         },
         where: {
-          id: existingInfo?.id,
+          id: existingInfo?.id || '',
         },
       })
 

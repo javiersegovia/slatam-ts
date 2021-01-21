@@ -3,26 +3,14 @@ import React, { ButtonHTMLAttributes } from 'react'
 import { HiCheck } from 'react-icons/hi'
 import _tw from 'twin.macro'
 
-export enum ButtonColorVariants {
-  PRIMARY = 'primary',
-  SECONDARY = 'secondary',
-  GOOGLE = 'google',
-  APPLE = 'apple',
-  SUCCESS = 'success',
-}
-
 type TButtonSizes = 'XS' | 'SM' | 'MD' | 'LG' | 'XL'
+type TButtonVariants = 'PRIMARY' | 'SECONDARY' | 'GOOGLE' | 'APPLE' | 'SUCCESS'
 
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean
   showCheckOnSuccess?: boolean
   size?: TButtonSizes
-  variant?:
-    | ButtonColorVariants.PRIMARY
-    | ButtonColorVariants.SECONDARY
-    | ButtonColorVariants.GOOGLE
-    | ButtonColorVariants.APPLE
-    | ButtonColorVariants.SUCCESS
+  variant?: TButtonVariants
 }
 
 // const StyledButton = styled.button(
@@ -38,19 +26,17 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = ({
   type = 'button',
   size = 'MD',
-  variant = ButtonColorVariants.PRIMARY,
+  variant = 'PRIMARY',
   disabled = false,
   children,
   isLoading = false,
   showCheckOnSuccess = false,
   ...otherProps
 }: IButtonProps) => {
-  const { PRIMARY, GOOGLE, APPLE, SUCCESS } = ButtonColorVariants
-
-  const isPrimary = variant === PRIMARY
-  const isGoogle = variant === GOOGLE
-  const isApple = variant === APPLE
-  const isSuccess = variant === SUCCESS
+  const isPrimary = variant === 'PRIMARY'
+  const isGoogle = variant === 'GOOGLE'
+  const isApple = variant === 'APPLE'
+  const isSuccess = variant === 'SUCCESS'
 
   return (
     <button

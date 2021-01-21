@@ -72,6 +72,12 @@ export type Country = {
   updatedAt: Scalars['DateTime']
 }
 
+export type CreateCountryInput = {
+  code2: Scalars['String']
+  flag: Scalars['String']
+  name: Scalars['String']
+}
+
 export type CreateOrUpdateAddressInput = {
   countryId: Scalars['Int']
   description?: Maybe<Scalars['String']>
@@ -86,14 +92,20 @@ export enum Gender {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  createCountry: Country
   login: Scalars['Boolean']
   logout: Scalars['Boolean']
   register: Scalars['Boolean']
   requestResetPassword: Scalars['Boolean']
   resendVerificationEmail: Scalars['Boolean']
   resetPassword: Scalars['Boolean']
-  updateUser: User
+  updateCountry: Country
+  updateCurrentUser: Scalars['Boolean']
   verifyEmail: Scalars['Boolean']
+}
+
+export type MutationCreateCountryArgs = {
+  data: CreateCountryInput
 }
 
 export type MutationLoginArgs = {
@@ -116,7 +128,11 @@ export type MutationResetPasswordArgs = {
   data: ResetPasswordInput
 }
 
-export type MutationUpdateUserArgs = {
+export type MutationUpdateCountryArgs = {
+  data: UpdateCountryInput
+}
+
+export type MutationUpdateCurrentUserArgs = {
   data: UpdateUserInput
 }
 
@@ -160,7 +176,7 @@ export type Query = {
   __typename?: 'Query'
   currentUser: User
   getAllCompanies?: Maybe<Array<Company>>
-  getAllCountries: Array<Country>
+  getAllCountries?: Maybe<Array<Country>>
   getAllProducts?: Maybe<Array<Product>>
   getAllUsers?: Maybe<Array<User>>
   getCountry: Country
@@ -199,10 +215,19 @@ export type SignupInput = {
   password: Scalars['String']
 }
 
+export type UpdateCountryInput = {
+  code2: Scalars['String']
+  flag: Scalars['String']
+  id: Scalars['Int']
+  name: Scalars['String']
+}
+
 export type UpdateUserInformationInput = {
   address?: Maybe<CreateOrUpdateAddressInput>
-  age?: Maybe<Scalars['DateTime']>
+  birthDate?: Maybe<Scalars['DateTime']>
   gender?: Maybe<Gender>
+  nationality?: Maybe<Array<Scalars['Int']>>
+  occupation?: Maybe<Scalars['String']>
 }
 
 export type UpdateUserInput = {
@@ -229,12 +254,14 @@ export type User = {
 
 export type UserInformation = {
   __typename?: 'UserInformation'
-  address: Address
-  age?: Maybe<Scalars['DateTime']>
+  address?: Maybe<Address>
+  birthDate?: Maybe<Scalars['DateTime']>
   /** Identifies the date and time when the object was created */
   createdAt: Scalars['DateTime']
   gender?: Maybe<Gender>
   id: Scalars['ID']
+  nationality?: Maybe<Array<Country>>
+  occupation?: Maybe<Scalars['String']>
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']
   user: User
@@ -296,6 +323,15 @@ export type SignUpMutation = { __typename?: 'Mutation' } & Pick<
   'register'
 >
 
+export type UpdateCurrentUserMutationVariables = Exact<{
+  data: UpdateUserInput
+}>
+
+export type UpdateCurrentUserMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'updateCurrentUser'
+>
+
 export type VerifyEmailMutationVariables = Exact<{
   token: Scalars['String']
 }>
@@ -304,6 +340,39 @@ export type VerifyEmailMutation = { __typename?: 'Mutation' } & Pick<
   Mutation,
   'verifyEmail'
 >
+
+export type CurrentUserProfileDataQueryVariables = Exact<{
+  [key: string]: never
+}>
+
+export type CurrentUserProfileDataQuery = { __typename?: 'Query' } & {
+  currentUser: { __typename?: 'User' } & Pick<
+    User,
+    'id' | 'email' | 'firstName' | 'lastName'
+  > & {
+      information?: Maybe<
+        { __typename?: 'UserInformation' } & Pick<
+          UserInformation,
+          'gender' | 'birthDate' | 'occupation'
+        > & {
+            nationality?: Maybe<
+              Array<{ __typename?: 'Country' } & Pick<Country, 'id'>>
+            >
+            address?: Maybe<
+              { __typename?: 'Address' } & Pick<Address, 'description'> & {
+                  country: { __typename?: 'Country' } & Pick<
+                    Country,
+                    'id' | 'name'
+                  >
+                }
+            >
+          }
+      >
+    }
+  getAllCountries?: Maybe<
+    Array<{ __typename?: 'Country' } & Pick<Country, 'id' | 'name'>>
+  >
+}
 
 export type AllCompaniesQueryVariables = Exact<{ [key: string]: never }>
 
@@ -319,6 +388,14 @@ export type AllCompaniesQuery = { __typename?: 'Query' } & {
           >
         }
     >
+  >
+}
+
+export type GetAllCountriesQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllCountriesQuery = { __typename?: 'Query' } & {
+  getAllCountries?: Maybe<
+    Array<{ __typename?: 'Country' } & Pick<Country, 'id' | 'name' | 'flag'>>
   >
 }
 

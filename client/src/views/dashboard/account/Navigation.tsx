@@ -4,8 +4,23 @@ import Avatar from '@components/Avatar'
 import Box from '@components/UI/Box'
 import routes from '@lib/utils/routes'
 import Link from 'next/link'
+import { NestedPartial } from '@lib/utils/types'
+import { User } from '@graphql/schema'
 
-const Navigation = () => {
+interface INavigationProps {
+  user: NestedPartial<User>
+}
+
+const Navigation = ({ user }: INavigationProps) => {
+  const getUsername = () => {
+    const { firstName, lastName, email } = user
+
+    return firstName
+      ? lastName
+        ? `${firstName} ${lastName}`
+        : firstName
+      : email
+  }
   return (
     <>
       <div tw="col-span-12 lg:col-span-4 2xl:col-span-3 flex lg:block flex-col-reverse">
@@ -17,8 +32,12 @@ const Navigation = () => {
               <Avatar />
             </div>
             <div tw="ml-4 mr-auto">
-              <div tw="font-medium text-base">Brad Pitt</div>
-              <div tw="text-gray-600 text-xs">DevOps Engineer</div>
+              <div tw="font-medium text-base">{getUsername()}</div>
+              {user.information?.occupation && (
+                <div tw="text-gray-600 text-xs">
+                  {user.information.occupation}
+                </div>
+              )}
             </div>
           </div>
           <div tw="p-5 border-t border-gray-200 text-sm pb-6">

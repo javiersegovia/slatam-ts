@@ -31,8 +31,8 @@ const AvatarWithMenu = ({ user }: IAvatarWithMenu) => {
 
               <Transition
                 show={open}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
+                enter="transition ease-out duration-80"
+                enterFrom="transform opacity-0 scale-95 z-20"
                 enterTo="transform opacity-100 scale-100"
                 leave="transition ease-in duration-65"
                 leaveFrom="transform opacity-100 scale-100"
@@ -40,7 +40,7 @@ const AvatarWithMenu = ({ user }: IAvatarWithMenu) => {
               >
                 <Menu.Items
                   static
-                  tw="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                  tw="absolute right-0 z-20 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
                 >
                   <div tw="px-4 py-3">
                     {user.firstName ? (

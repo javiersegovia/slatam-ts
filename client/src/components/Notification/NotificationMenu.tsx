@@ -56,8 +56,8 @@ const NotificationMenu = ({
 
               <Transition
                 show={open}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
+                enter="transition ease-out duration-80"
+                enterFrom="transform opacity-0 z-20 scale-95"
                 enterTo="transform opacity-100 scale-100"
                 leave="transition ease-in duration-65"
                 leaveFrom="transform opacity-100 scale-100"
@@ -65,7 +65,7 @@ const NotificationMenu = ({
               >
                 <Menu.Items
                   static
-                  className="absolute right-0 w-64 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none overflow-hidden border-b-0"
+                  className="absolute z-20 right-0 w-64 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none overflow-hidden border-b-0"
                 >
                   {notifications.map(({ description, path }) => (
                     <NotificationItem

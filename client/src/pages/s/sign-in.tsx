@@ -3,7 +3,7 @@ import _tw from 'twin.macro'
 import Link from 'next/link'
 import Router from 'next/router'
 import Input from '@components/FormFields/Input'
-import Button, { ButtonColorVariants } from '@components/Button'
+import Button from '@components/Button'
 import { useForm } from 'react-hook-form'
 import routes from '@lib/utils/routes'
 import { useSignInMutation } from '@graphql/hooks'
@@ -112,7 +112,7 @@ const SignIn = () => {
 
               <Button
                 type="submit"
-                variant={success ? ButtonColorVariants.SUCCESS : undefined}
+                variant={success ? 'SUCCESS' : undefined}
                 isLoading={submitting}
                 disabled={submitting || success}
                 showCheckOnSuccess
@@ -133,7 +133,7 @@ const SignIn = () => {
                 </span>
               </div>
               <div className="w-full">
-                <Button variant={ButtonColorVariants.GOOGLE} disabled>
+                <Button variant="GOOGLE" disabled>
                   <>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

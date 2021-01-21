@@ -1,5 +1,6 @@
 import { ObjectType, registerEnumType } from '@nestjs/graphql'
 import { BaseEntity } from '@resources/base/base.entity'
+import { Country } from '@resources/country/country.entity'
 import { Address } from '@resources/location/address/address.entity'
 import { User } from './user.entity'
 
@@ -17,8 +18,9 @@ registerEnumType(Gender, {
 @ObjectType()
 export class UserInformation extends BaseEntity<string> {
   user: User
-
   address?: Address
+  occupation?: string
   gender?: Gender
-  age?: Date
+  birthDate?: Date
+  nationality?: Country[]
 }

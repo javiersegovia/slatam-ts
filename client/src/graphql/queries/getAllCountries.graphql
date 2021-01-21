@@ -1,0 +1,7 @@
+query getAllCountries {
+  getAllCountries {
+    id
+    name
+    flag
+  }
+}

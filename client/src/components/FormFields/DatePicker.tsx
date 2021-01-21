@@ -1,63 +1,68 @@
-import React, { useState } from 'react'
-import DayPickerInput from 'react-day-picker/DayPickerInput'
-import { DayModifiers } from 'react-day-picker/types/Modifiers'
-// import {
-//   Control,
-//   Controller,
-//   FieldName,
-//   FieldValues,
-//   FieldErrors,
-//   FieldError,
-//   RegisterOptions,
-// } from 'react-hook-form'
+// import React, { useState } from 'react'
+// import DayPickerInput from 'react-day-picker/DayPickerInput'
+// import { DayModifiers } from 'react-day-picker/types/Modifiers'
+// import 'react-day-picker/lib/style.css'
 
-const DatePicker = () => {
-  const [currentDate, setCurrentDate] = useState<Date>()
-  const [, setDateInfo] = useState<{
-    isEmpty: boolean
-    isDisabled: boolean
-  } | null>(null)
+// // import {
+// //   Control,
+// //   Controller,
+// //   FieldName,
+// //   FieldValues,
+// //   FieldErrors,
+// //   FieldError,
+// //   RegisterOptions,
+// // } from 'react-hook-form'
 
-  const handleDayChange = (
-    selectedDay: Date,
-    modifiers: DayModifiers,
-    dayPickerInput: DayPickerInput
-  ) => {
-    const input = dayPickerInput.getInput()
-    setCurrentDate(selectedDay)
-    setDateInfo({
-      isEmpty: !input.value.trim(),
-      isDisabled: modifiers.disabled === true,
-    })
-  }
+// const DatePicker = () => {
+//   const [currentDate, setCurrentDate] = useState<Date>()
+//   const [, setDateInfo] = useState<{
+//     isEmpty: boolean
+//     isDisabled: boolean
+//   } | null>(null)
 
-  console.log('rendering DatePicker')
+//   const handleDayChange = (
+//     selectedDay: Date,
+//     modifiers: DayModifiers,
+//     dayPickerInput: DayPickerInput
+//   ) => {
+//     const input = dayPickerInput.getInput()
+//     setCurrentDate(selectedDay)
+//     setDateInfo({
+//       isEmpty: !input.value.trim(),
+//       isDisabled: modifiers.disabled === true,
+//     })
+//   }
 
-  return (
-    <div>
-      <DayPickerInput
-        value={currentDate}
-        onDayChange={handleDayChange}
-        // ref={ref}
-        dayPickerProps={{
-          selectedDays: currentDate,
-          disabledDays: {
-            daysOfWeek: [0, 6],
-          },
-        }}
-      />
-      {/* <Controller
-        name={name}
-        control={control}
-        render={({ onChange, onBlur, value, ref }) => {
-          console.log({ value, ref })
-          return (
-            
-          )
-        }} */}
-      {/* /> */}
-    </div>
-  )
-}
+//   console.log('rendering DatePicker')
+//   console.log(currentDate)
 
-export default DatePicker
+//   return (
+//     <div>
+//       <DayPickerInput
+//         value={currentDate}
+//         onDayChange={handleDayChange}
+//         // ref={ref}
+//         dayPickerProps={{
+//           selectedDays: currentDate,
+//           disabledDays: {
+//             daysOfWeek: [0, 6],
+//           },
+//         }}
+//       />
+//       {/* <Controller
+//         name={name}
+//         control={control}
+//         render={({ onChange, onBlur, value, ref }) => {
+//           console.log({ value, ref })
+//           return (
+
+//           )
+//         }} */}
+//       {/* /> */}
+//     </div>
+//   )
+// }
+
+// export default DatePicker
+
+export default ''

@@ -193,8 +193,10 @@ input UpdateCountryInput {
 
 input UpdateUserInformationInput {
   address: CreateOrUpdateAddressInput
-  age: DateTime
+  birthDate: DateTime
   gender: Gender
+  nationality: [Int!]
+  occupation: String
 }
 
 input UpdateUserInput {
@@ -222,12 +224,14 @@ type User {
 
 type UserInformation {
   address: Address
-  age: DateTime
+  birthDate: DateTime
 
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   gender: Gender
   id: ID!
+  nationality: [Country!]
+  occupation: String
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!

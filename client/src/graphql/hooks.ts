@@ -170,6 +170,35 @@ export const useSignUpMutation = <TError = unknown, TContext = unknown>(
       )(),
     options
   )
+export const UpdateCurrentUserDocument = `
+    mutation updateCurrentUser($data: UpdateUserInput!) {
+  updateCurrentUser(data: $data)
+}
+    `
+export const useUpdateCurrentUserMutation = <
+  TError = unknown,
+  TContext = unknown
+>(
+  options?: UseMutationOptions<
+    Types.UpdateCurrentUserMutation,
+    TError,
+    Types.UpdateCurrentUserMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<
+    Types.UpdateCurrentUserMutation,
+    TError,
+    Types.UpdateCurrentUserMutationVariables,
+    TContext
+  >(
+    (variables?: Types.UpdateCurrentUserMutationVariables) =>
+      gqlFetcher<
+        Types.UpdateCurrentUserMutation,
+        Types.UpdateCurrentUserMutationVariables
+      >(UpdateCurrentUserDocument, variables)(),
+    options
+  )
 export const VerifyEmailDocument = `
     mutation verifyEmail($token: String!) {
   verifyEmail(token: $token)
@@ -194,6 +223,50 @@ export const useVerifyEmailMutation = <TError = unknown, TContext = unknown>(
         VerifyEmailDocument,
         variables
       )(),
+    options
+  )
+export const CurrentUserProfileDataDocument = `
+    query currentUserProfileData {
+  currentUser {
+    id
+    email
+    firstName
+    lastName
+    information {
+      gender
+      birthDate
+      nationality {
+        id
+      }
+      occupation
+      address {
+        country {
+          id
+          name
+        }
+        description
+      }
+    }
+  }
+  getAllCountries {
+    id
+    name
+  }
+}
+    `
+export const useCurrentUserProfileDataQuery = <
+  TData = Types.CurrentUserProfileDataQuery,
+  TError = unknown
+>(
+  variables?: Types.CurrentUserProfileDataQueryVariables,
+  options?: UseQueryOptions<Types.CurrentUserProfileDataQuery, TError, TData>
+) =>
+  useQuery<Types.CurrentUserProfileDataQuery, TError, TData>(
+    ['currentUserProfileData', variables],
+    gqlFetcher<
+      Types.CurrentUserProfileDataQuery,
+      Types.CurrentUserProfileDataQueryVariables
+    >(CurrentUserProfileDataDocument, variables),
     options
   )
 export const AllCompaniesDocument = `
@@ -222,6 +295,30 @@ export const useAllCompaniesQuery = <
     ['allCompanies', variables],
     gqlFetcher<Types.AllCompaniesQuery, Types.AllCompaniesQueryVariables>(
       AllCompaniesDocument,
+      variables
+    ),
+    options
+  )
+export const GetAllCountriesDocument = `
+    query getAllCountries {
+  getAllCountries {
+    id
+    name
+    flag
+  }
+}
+    `
+export const useGetAllCountriesQuery = <
+  TData = Types.GetAllCountriesQuery,
+  TError = unknown
+>(
+  variables?: Types.GetAllCountriesQueryVariables,
+  options?: UseQueryOptions<Types.GetAllCountriesQuery, TError, TData>
+) =>
+  useQuery<Types.GetAllCountriesQuery, TError, TData>(
+    ['getAllCountries', variables],
+    gqlFetcher<Types.GetAllCountriesQuery, Types.GetAllCountriesQueryVariables>(
+      GetAllCountriesDocument,
       variables
     ),
     options
