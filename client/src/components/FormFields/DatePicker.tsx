@@ -13,7 +13,7 @@ import { DayModifiers } from 'react-day-picker/types/Modifiers'
 
 const DatePicker = () => {
   const [currentDate, setCurrentDate] = useState<Date>()
-  const [dateInfo, setDateInfo] = useState<{
+  const [, setDateInfo] = useState<{
     isEmpty: boolean
     isDisabled: boolean
   } | null>(null)

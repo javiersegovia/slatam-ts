@@ -2,17 +2,13 @@ import React from 'react'
 import _tw from 'twin.macro'
 import Avatar from '@components/Avatar'
 import Box from '@components/UI/Box'
-import Button from '@components/Button'
 import routes from '@lib/utils/routes'
 import Link from 'next/link'
-
-// const box = _tw`shadow-sm bg-white rounded-md relative`
 
 const Navigation = () => {
   return (
     <>
       <div tw="col-span-12 lg:col-span-4 2xl:col-span-3 flex lg:block flex-col-reverse">
-        {/* intro-y box */}
         <Box tw="mt-5">
           <div tw="relative flex items-center p-5">
             {/*  image-fit */}

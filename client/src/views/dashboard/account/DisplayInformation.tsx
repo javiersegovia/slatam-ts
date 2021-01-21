@@ -2,10 +2,10 @@ import Button from '@components/Button'
 import Box from '@components/UI/Box'
 import React from 'react'
 import _tw from 'twin.macro'
-import Input from '@components/FormFields/Input'
-import { useForm } from 'react-hook-form'
+// import Input from '@components/FormFields/Input'
+// import { useForm } from 'react-hook-form'
 // import { useSignUpMutation } from '@graphql/hooks'
-import { getExceptionErrors } from '@lib/utils/errors'
+// import { getExceptionErrors } from '@lib/utils/errors'
 
 // import { User } from '@graphql/schema'
 
