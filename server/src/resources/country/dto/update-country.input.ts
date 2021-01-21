@@ -2,7 +2,10 @@ import { IsNotEmpty, Length, IsUppercase, IsUrl } from 'class-validator'
 import { InputType } from '@nestjs/graphql'
 
 @InputType()
-export class CountryInput {
+export class UpdateCountryInput {
+  @IsNotEmpty()
+  id: number
+
   @IsNotEmpty()
   name: string
 

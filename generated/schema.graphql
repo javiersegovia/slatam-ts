@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Address {
+  country: Country!
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  owner: UserInformation!
+  postalCode: String
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
 type Company {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
@@ -47,23 +61,35 @@ type Country {
 }
 
 input CountryInput {
+input CreateCountryInput {
   code2: String!
   flag: String!
   name: String!
 }
 
+  description: String
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
 scalar DateTime
 
+"""User gender"""
+enum Gender {
+  FEMALE
+  MALE
+  NON_BINARY
+}
+
 type Mutation {
+  createCountry(data: CreateCountryInput!): Country!
   login(data: SignInInput!): Boolean!
   logout: Boolean!
   register(data: SignupInput!): Boolean!
   requestResetPassword(email: String!): Boolean!
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(data: ResetPasswordInput!): Boolean!
+  updateCurrentUser(data: UpdateUserInput!): Boolean!
   verifyEmail(token: String!): Boolean!
   updateCountry(data: CountryInput!, id: Int!): Country!
 }
@@ -131,6 +157,18 @@ input SignupInput {
   password: String!
 }
 
+input UpdateUserInformationInput {
+  address: CreateOrUpdateAddressInput
+  age: DateTime
+  gender: Gender
+}
+
+input UpdateUserInput {
+  firstName: String
+  information: UpdateUserInformationInput
+  lastName: String
+}
+
 type User {
   companyMember: CompanyMember
 
@@ -139,12 +177,27 @@ type User {
   email: String!
   firstName: String
   id: ID!
+  information: UserInformation
   lastName: String
   posts: [Post!]
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   verification: UserVerification!
+}
+
+type UserInformation {
+  address: Address
+  age: DateTime
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  gender: Gender
+  id: ID!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  user: User!
 }
 
 type UserVerification {

@@ -11,9 +11,12 @@ export enum ButtonColorVariants {
   SUCCESS = 'success',
 }
 
+type TButtonSizes = 'XS' | 'SM' | 'MD' | 'LG' | 'XL'
+
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean
   showCheckOnSuccess?: boolean
+  size?: TButtonSizes
   variant?:
     | ButtonColorVariants.PRIMARY
     | ButtonColorVariants.SECONDARY
@@ -34,6 +37,7 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = ({
   type = 'button',
+  size = 'MD',
   variant = ButtonColorVariants.PRIMARY,
   disabled = false,
   children,
@@ -53,7 +57,10 @@ const Button = ({
       type={type}
       disabled={disabled}
       css={[
-        _tw`w-full py-3 flex justify-center rounded-md font-medium transition duration-100 text-center`,
+        _tw`w-full flex justify-center rounded-md font-medium transition duration-100 text-center`,
+
+        size === 'MD' && _tw`py-3`,
+        size === 'SM' && _tw`py-2`,
 
         disabled && _tw`opacity-40 cursor-not-allowed`,
 

@@ -12,38 +12,34 @@ import {
 import NavItemDropdown from './NavDropdownItem'
 import NavItem from './NavItem'
 import Header from './Header'
+import routes from '@lib/utils/routes'
 
 const linkPaths = [
   {
     icon: HiOutlineHome,
-    path: '/dashboard',
+    path: routes.dashboard.index,
     title: 'Overview',
   },
   {
     icon: HiOutlineShoppingCart,
     title: 'Products',
-    path: '/dashboard/products',
+    path: routes.dashboard.products.index,
     subPaths: [
       {
-        path: '/dashboard/products',
+        path: routes.dashboard.products.index,
         title: 'All products',
       },
       {
-        path: '/dashboard/products/create',
+        path: routes.dashboard.products.create,
         title: 'Create new product',
       },
     ],
   },
   {
     icon: HiOutlineClipboardList,
-    path: '/dashboard/orders',
+    path: routes.dashboard.orders,
     title: 'Orders',
   },
-  // {
-  //   icon: HiOutlineCog,
-  //   path: '/dashboard/settings',
-  //   title: 'Settings',
-  // },
 ]
 
 const SideBar: React.FC = ({ children }) => {
@@ -54,11 +50,11 @@ const SideBar: React.FC = ({ children }) => {
 
   return (
     <>
-      <section tw="min-h-screen bg-gray-50">
+      <section tw="min-h-screen bg-blue-900">
         <nav
           ref={navRef}
           css={[
-            _tw`fixed top-0 left-0 z-20 h-full pb-10 overflow-x-hidden overflow-y-auto transition origin-left transform bg-blue-900 border-r w-60 md:translate-x-0`,
+            _tw`fixed top-0 left-0 z-20 h-full pb-10 overflow-x-hidden overflow-y-auto transition origin-left transform bg-blue-900 w-60 md:translate-x-0`,
             showSideBar ? _tw`translate-x-0` : _tw`-translate-x-full`,
           ]}
         >
@@ -89,17 +85,17 @@ const SideBar: React.FC = ({ children }) => {
             })}
 
             <NavItem
-              title="Account settings"
+              title="My account"
               icon={HiOutlineCog}
-              path="/dashboard/settings"
-              className="absolute bottom-2 w-full"
+              path={routes.dashboard.account.index}
+              tw="absolute bottom-2 w-full"
             />
           </nav>
         </nav>
 
-        <div className="ml-0 transition md:ml-60">
+        <div tw="ml-0 transition md:ml-60 py-6 px-3 md:(p-4 pl-0)">
           <Header setShowSideBar={setShowSideBar} />
-          <div className="p-4">{children}</div>
+          <div tw="p-4 bg-gray-100 rounded-b-3xl">{children}</div>
         </div>
 
         <Transition
@@ -111,7 +107,7 @@ const SideBar: React.FC = ({ children }) => {
           leaveFrom="opacity-100 translate-y-0"
           leaveTo="opacity-0 translate-y-1"
         >
-          <div className="fixed inset-0 z-10 w-screen h-screen bg-black bg-opacity-25 md:hidden"></div>
+          <div tw="fixed inset-0 z-10 w-screen h-screen bg-black bg-opacity-25 md:hidden"></div>
         </Transition>
       </section>
     </>

@@ -67,9 +67,9 @@ const AvatarWithMenu = ({ user }: IAvatarWithMenu) => {
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <Link href={routes.dashboard.settings}>
+                        <Link href={routes.dashboard.account.settings}>
                           <a
-                            href={routes.dashboard.settings}
+                            href={routes.dashboard.account.settings}
                             className={`${
                               active
                                 ? 'bg-gray-100 text-gray-900'

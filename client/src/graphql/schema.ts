@@ -17,6 +17,19 @@ export type Scalars = {
   DateTime: any
 }
 
+export type Address = {
+  __typename?: 'Address'
+  country: Country
+  /** Identifies the date and time when the object was created */
+  createdAt: Scalars['DateTime']
+  description?: Maybe<Scalars['String']>
+  id: Scalars['ID']
+  owner: UserInformation
+  postalCode?: Maybe<Scalars['String']>
+  /** Identifies the date and time when the object was last updated. */
+  updatedAt: Scalars['DateTime']
+}
+
 export type Company = {
   __typename?: 'Company'
   /** Identifies the date and time when the object was created */
@@ -59,6 +72,18 @@ export type Country = {
   updatedAt: Scalars['DateTime']
 }
 
+export type CreateOrUpdateAddressInput = {
+  countryId: Scalars['Int']
+  description?: Maybe<Scalars['String']>
+}
+
+/** User gender */
+export enum Gender {
+  Female = 'FEMALE',
+  Male = 'MALE',
+  NonBinary = 'NON_BINARY',
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
   login: Scalars['Boolean']
@@ -67,6 +92,7 @@ export type Mutation = {
   requestResetPassword: Scalars['Boolean']
   resendVerificationEmail: Scalars['Boolean']
   resetPassword: Scalars['Boolean']
+  updateUser: User
   verifyEmail: Scalars['Boolean']
 }
 
@@ -88,6 +114,10 @@ export type MutationResendVerificationEmailArgs = {
 
 export type MutationResetPasswordArgs = {
   data: ResetPasswordInput
+}
+
+export type MutationUpdateUserArgs = {
+  data: UpdateUserInput
 }
 
 export type MutationVerifyEmailArgs = {
@@ -169,6 +199,18 @@ export type SignupInput = {
   password: Scalars['String']
 }
 
+export type UpdateUserInformationInput = {
+  address?: Maybe<CreateOrUpdateAddressInput>
+  age?: Maybe<Scalars['DateTime']>
+  gender?: Maybe<Gender>
+}
+
+export type UpdateUserInput = {
+  firstName?: Maybe<Scalars['String']>
+  information?: Maybe<UpdateUserInformationInput>
+  lastName?: Maybe<Scalars['String']>
+}
+
 export type User = {
   __typename?: 'User'
   companyMember?: Maybe<CompanyMember>
@@ -177,11 +219,25 @@ export type User = {
   email: Scalars['String']
   firstName?: Maybe<Scalars['String']>
   id: Scalars['ID']
+  information?: Maybe<UserInformation>
   lastName?: Maybe<Scalars['String']>
   posts?: Maybe<Array<Post>>
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']
   verification: UserVerification
+}
+
+export type UserInformation = {
+  __typename?: 'UserInformation'
+  address: Address
+  age?: Maybe<Scalars['DateTime']>
+  /** Identifies the date and time when the object was created */
+  createdAt: Scalars['DateTime']
+  gender?: Maybe<Gender>
+  id: Scalars['ID']
+  /** Identifies the date and time when the object was last updated. */
+  updatedAt: Scalars['DateTime']
+  user: User
 }
 
 export type UserVerification = {

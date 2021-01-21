@@ -1,3 +1,18 @@
+interface DashboardRoutes {
+  index: string
+  orders: string
+  products: {
+    index: string
+    create: string
+  }
+  account: {
+    index: string
+    settings: string
+    preferences: string
+    changePassword: string
+  }
+}
+
 export const dashboard = {
   index: '/dashboard/',
   orders: '/dashboard/orders',
@@ -5,7 +20,23 @@ export const dashboard = {
     index: '/dashboard/products',
     create: '/dashboard/products/create',
   },
-  settings: '/dashboard/settings',
+  account: {
+    index: '/dashboard/account',
+    settings: '/dashboard/account/settings',
+    preferences: '/dashboard/account/preferences',
+    changePassword: '/dashboard/account/change-password',
+  },
+}
+
+interface SessionRoutes {
+  changePassword: string
+  pleaseVerify: string
+  requestConfirmationEmail: string
+  requestPassword: string
+  signIn: string
+  signUp: string
+  signOut: string
+  verifyEmail: string
 }
 
 export const session = {
@@ -19,7 +50,13 @@ export const session = {
   verifyEmail: '/s/verify-email',
 }
 
-export const user = {
+interface UserRoutes {
+  profile: {
+    start: string
+  }
+}
+
+export const user: UserRoutes = {
   profile: {
     start: '/u/profile/start',
   },
@@ -27,8 +64,16 @@ export const user = {
 
 export const home = '/'
 
+interface ProductsRoutes {
+  index: string
+}
+
 export const products = {
   index: '/products',
+}
+
+interface LegalRoutes {
+  privacyTerms: string
 }
 
 export const legal = {
@@ -37,7 +82,17 @@ export const legal = {
 
 export const contactUs = '/contact-us'
 
-export default {
+interface IRoutes {
+  contactUs: string
+  dashboard: DashboardRoutes
+  home: string
+  user: UserRoutes
+  legal: LegalRoutes
+  session: SessionRoutes
+  products: ProductsRoutes
+}
+
+const routes: IRoutes = {
   dashboard,
   session,
   user,
@@ -46,3 +101,5 @@ export default {
   legal,
   contactUs,
 }
+
+export default routes

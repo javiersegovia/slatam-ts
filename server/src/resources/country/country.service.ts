@@ -1,48 +1,37 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { ErrorService } from '../error/error.service'
-import { CountryInput } from '../country/dto/country.input'
+import { UpdateCountryInput } from './dto/update-country.input'
 
 @Injectable()
 export class CountryService {
   constructor(private prisma: PrismaService, private error: ErrorService) {}
 
   async getCountry(countryId: number) {
-    const resultCountry = await this.prisma.country.findUnique({
+    const country = await this.prisma.country.findUnique({
       where: { id: countryId },
     })
-    if (!resultCountry) {
-      return this.error.handlePrismaNotFoundError({
-        code: 'P2015',
-        meta: { target: ['country'] },
-      })
+
+    if (!country) {
+      throw new NotFoundException('NOT_FOUND')
     }
-    return resultCountry
+
+    return country
   }
 
   getAllCountries() {
     return this.prisma.country.findMany()
   }
 
-  async updateCountry(countryId: number, countryInput: CountryInput) {
-    const resultCountry = await this.prisma.country.findUnique({
-      where: { id: countryId },
-    })
-    if (!resultCountry) {
-      return this.error.handlePrismaNotFoundError({
-        code: 'P2015',
-        meta: { target: ['country'] },
-      })
-    }
+  async updateCountry(data: UpdateCountryInput) {
+    const { id, ...countryData } = data
 
     return this.prisma.country.update({
       where: {
-        id: countryId,
+        id,
       },
       data: {
-        name: countryInput.name,
-        flag: countryInput.flag,
-        code2: countryInput.code2,
+        ...countryData,
       },
     })
   }

@@ -32,7 +32,7 @@ const Header = ({
   })
 
   return (
-    <header tw="flex items-center justify-between w-full px-4 bg-white border-b h-16">
+    <header tw="flex items-center justify-between w-full px-4 bg-white rounded-t-3xl border-b h-16">
       <button
         type="button"
         className="block btn btn-light md:hidden"

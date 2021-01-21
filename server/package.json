@@ -4,7 +4,8 @@
   "description": "Slatam API Server",
   "license": "MIT",
   "scripts": {
-    "prebuild": "rimraf dist",
+    "clean": "rimraf ../generated/schema.graphql dist",
+    "prebuild": "yarn clean",
     "build": "nest build",
     "dev": "cross-env NODE_ENV=development nest start --watch",
     "dev:debug": "cross-env NODE_ENV=development nest start --debug --watch",
@@ -104,7 +105,8 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn run lint:type-check"
+      "pre-push": "yarn run lint:type-check",
+      "post-merge": "yarn clean"
     }
   },
   "lint-staged": {
