@@ -116,3 +116,7 @@ _Optional_
 
 - If you need new actions, add them to the `base.ability` file.
 - If needed, inject dependencies inside the resource ability file.
+
+## Notes
+
+- After any local merge (by rebase or pull), the Nest Server will automatically run in development mode. This is a workaround to make sure the Nest Server updates the `generated/schema.graphql` file with the latest changes. Later, we should optimize this workflow by introducing automated tests and a new development integration script.

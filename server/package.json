@@ -106,7 +106,7 @@
     "hooks": {
       "pre-commit": "lint-staged",
       "pre-push": "yarn run lint:type-check",
-      "post-merge": "yarn clean"
+      "post-merge": "yarn prisma:generate && yarn dev"
     }
   },
   "lint-staged": {
