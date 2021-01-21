@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { ErrorService } from '../error/error.service'
 import { UpdateCountryInput } from './dto/update-country.input'
+import { CreateCountryInput } from './dto/create-country.input'
 
 @Injectable()
 export class CountryService {
@@ -23,7 +24,13 @@ export class CountryService {
     return this.prisma.country.findMany()
   }
 
-  async updateCountry(data: UpdateCountryInput) {
+  createCountry(data: CreateCountryInput) {
+    return this.prisma.country.create({
+      data,
+    })
+  }
+
+  updateCountry(data: UpdateCountryInput) {
     const { id, ...countryData } = data
 
     return this.prisma.country.update({
@@ -32,6 +39,14 @@ export class CountryService {
       },
       data: {
         ...countryData,
+      },
+    })
+  }
+
+  deleteCountry(countryId: number) {
+    return this.prisma.country.delete({
+      where: {
+        id: countryId,
       },
     })
   }

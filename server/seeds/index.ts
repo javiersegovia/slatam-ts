@@ -4,6 +4,7 @@ import { userSeeds } from './user.seed'
 import { companySeeds } from './company.seed'
 import { productSeeds } from './product.seed'
 import { countrySeeds } from './country.seed'
+import { categorySeeds } from './category.seed'
 
 const prisma = new PrismaClient()
 
@@ -15,6 +16,7 @@ async function seedTheDB(prisma) {
   await companySeeds(prisma)
   await productSeeds(prisma)
   await countrySeeds(prisma)
+  await categorySeeds(prisma)
 
   console.log('Seeding is done!')
 }

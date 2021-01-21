@@ -16,6 +16,16 @@ type Address {
   updatedAt: DateTime!
 }
 
+type Category {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
 type Company {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
@@ -60,6 +70,10 @@ type Country {
   updatedAt: DateTime!
 }
 
+input CreateCategoryInput {
+  name: String!
+}
+
 input CreateCountryInput {
   code2: String!
   flag: String!
@@ -84,13 +98,17 @@ enum Gender {
 }
 
 type Mutation {
+  createCategory(data: CreateCategoryInput!): Category!
   createCountry(data: CreateCountryInput!): Country!
+  deleteCategory(id: Int!): Boolean!
+  deleteCountry(id: Int!): Boolean!
   login(data: SignInInput!): Boolean!
   logout: Boolean!
   register(data: SignupInput!): Boolean!
   requestResetPassword(email: String!): Boolean!
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(data: ResetPasswordInput!): Boolean!
+  updateCategory(data: UpdateCategoryInput!): Category!
   updateCountry(data: UpdateCountryInput!): Country!
   updateCurrentUser(data: UpdateUserInput!): Boolean!
   verifyEmail(token: String!): Boolean!
@@ -131,10 +149,12 @@ enum ProductStatus {
 
 type Query {
   currentUser: User!
+  getAllCategories: [Category!]
   getAllCompanies: [Company!]
   getAllCountries: [Country!]
   getAllProducts: [Product!]
   getAllUsers: [User!]
+  getCategory(id: Int!): Category!
   getCountry(id: Int!): Country!
   getPost(id: String!): Post
   getPublishedPosts: [Post!]
@@ -157,6 +177,11 @@ input SignupInput {
   firstName: String
   lastName: String
   password: String!
+}
+
+input UpdateCategoryInput {
+  id: Int!
+  name: String!
 }
 
 input UpdateCountryInput {

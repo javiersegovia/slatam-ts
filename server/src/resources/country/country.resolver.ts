@@ -27,11 +27,15 @@ export class CountryResolver {
     return this.countryService.updateCountry(data)
   }
 
-  // TODO: refactor this logic, move to a service
   @Mutation(() => Country)
   createCountry(@Args('data') data: CreateCountryInput) {
-    return this.prisma.country.create({
-      data,
-    })
+    return this.countryService.createCountry(data)
+  }
+
+  @Mutation(() => Boolean)
+  async deleteCountry(@Args('id') id: number) {
+    await this.countryService.deleteCountry(id)
+
+    return true
   }
 }
