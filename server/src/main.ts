@@ -37,6 +37,11 @@ async function bootstrap() {
   })
 
   await app.listen(process.env.PORT || 4000)
+
+  if (process.env.GENERATE) {
+    console.log('Generated new schema.graphql file. Exiting...')
+    process.exit()
+  }
 }
 
 bootstrap()
