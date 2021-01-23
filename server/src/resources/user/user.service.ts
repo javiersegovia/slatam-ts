@@ -46,16 +46,16 @@ export class UserService {
             },
           },
           nationality: {
-            connect: nationality?.map((countryId) => ({
-              id: countryId,
+            connect: nationality?.map((country) => ({
+              id: country.id,
             })),
           },
         },
         update: {
           ...dataInfo,
           nationality: {
-            set: nationality?.map((countryId) => ({
-              id: countryId,
+            set: nationality?.map((country) => ({
+              id: country.id,
             })),
           },
         },
@@ -66,7 +66,7 @@ export class UserService {
 
       if (address) {
         // TODO: move this update logic to the ADDRESS SERVICE inside location module
-        const { countryId, ...dataAddress } = address
+        const { country, ...dataAddress } = address
 
         const existingAddress = await this.prisma.address.findFirst({
           where: {
@@ -81,7 +81,7 @@ export class UserService {
             ...dataAddress,
             country: {
               connect: {
-                id: countryId,
+                id: country.id,
               },
             },
             owner: {
@@ -94,7 +94,7 @@ export class UserService {
             ...dataAddress,
             country: {
               connect: {
-                id: countryId,
+                id: country.id,
               },
             },
           },

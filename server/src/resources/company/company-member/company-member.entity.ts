@@ -1,7 +1,7 @@
 import { ObjectType, registerEnumType } from '@nestjs/graphql'
-import { BaseEntity } from '@resources/base/base.entity'
 import { User } from '@resources/user/user.entity'
 import { Company } from '../company.entity'
+import { BaseEntityInt } from '../../base/base.entity'
 
 export enum CompanyMemberRole {
   MEMBER = 'MEMBER',
@@ -15,7 +15,7 @@ registerEnumType(CompanyMemberRole, {
 })
 
 @ObjectType()
-export class CompanyMember extends BaseEntity<number> {
+export class CompanyMember extends BaseEntityInt {
   user: User
   company: Company
   roles: CompanyMemberRole[]

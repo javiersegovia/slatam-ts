@@ -19,6 +19,9 @@ export class AuthResolver {
   @Mutation((_returns) => Boolean)
   async register(@Args('data') data: SignupInput) {
     data.email = data.email.toLowerCase()
+
+    console.log('register')
+    console.log(data)
     await this.auth.createUser(data)
 
     return true

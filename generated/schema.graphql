@@ -19,7 +19,7 @@ type Address {
 type Category {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
-  id: ID!
+  id: Int!
   name: String!
 
   """Identifies the date and time when the object was last updated."""
@@ -29,7 +29,7 @@ type Category {
 type Company {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
-  id: ID!
+  id: Int!
   members: [CompanyMember!]!
   name: String!
 
@@ -42,7 +42,7 @@ type CompanyMember {
 
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
-  id: ID!
+  id: Int!
   roles: [CompanyMemberRole!]!
 
   """Identifies the date and time when the object was last updated."""
@@ -63,11 +63,15 @@ type Country {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   flag: String!
-  id: ID!
+  id: Int!
   name: String!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+input CountryInput {
+  id: Int!
 }
 
 input CreateCategoryInput {
@@ -81,8 +85,9 @@ input CreateCountryInput {
 }
 
 input CreateOrUpdateAddressInput {
-  countryId: Int!
+  country: CountryInput!
   description: String
+  postalCode: String
 }
 
 """
@@ -132,7 +137,7 @@ type Product {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   description: String
-  id: ID!
+  id: Int!
   name: String!
   owner: Company!
   status: ProductStatus!
@@ -195,7 +200,7 @@ input UpdateUserInformationInput {
   address: CreateOrUpdateAddressInput
   birthDate: DateTime
   gender: Gender
-  nationality: [Int!]
+  nationality: [CountryInput!]
   occupation: String
 }
 
@@ -212,7 +217,7 @@ type User {
   createdAt: DateTime!
   email: String!
   firstName: String
-  id: ID!
+  id: Int!
   information: UserInformation
   lastName: String
   posts: [Post!]

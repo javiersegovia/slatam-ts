@@ -8,7 +8,14 @@ import { useUpdateCurrentUserMutation } from '@graphql/hooks'
 
 // import { getExceptionErrors } from '@lib/utils/errors'
 
-import { User, Gender, UserInformation, Country } from '@graphql/schema'
+import {
+  User,
+  Gender,
+  UserInformation,
+  Country,
+  UpdateUserInformationInput,
+  CurrentUserProfileDataQuery,
+} from '@graphql/schema'
 import { Select } from '@components/FormFields'
 import { NestedPartial } from '@lib/utils/types'
 
@@ -28,12 +35,18 @@ const genderOptions = [
 ]
 
 interface IPersonalInformationProps {
-  user: NestedPartial<User>
-  countries?: Partial<Country>[]
+  user: CurrentUserProfileDataQuery['currentUser']
+  countries?: CurrentUserProfileDataQuery['getAllCountries']
 }
 
 type IFormValues = {
-  information: NestedPartial<UserInformation>
+  information?:
+    | null
+    | (Omit<UpdateUserInformationInput, 'gender'> & {
+        gender: {
+          value?: Gender | null
+        }
+      })
 }
 
 const PersonalInformation = ({
@@ -45,6 +58,9 @@ const PersonalInformation = ({
   const defaultValues: IFormValues = {
     information: {
       ...information,
+      gender: {
+        value: information?.gender,
+      },
     },
   }
 
@@ -63,26 +79,40 @@ const PersonalInformation = ({
   })
 
   const [success, setSuccess] = useState(false)
-  const { mutate: signUp, isLoading } = useUpdateCurrentUserMutation()
+  const { mutate: updateInfo, isLoading } = useUpdateCurrentUserMutation()
 
   const { isSubmitting } = formState
   const submitting = isSubmitting || isLoading
 
   const defaultGender = genderOptions.find(
-    (option) => option.value === defaultValues.information?.gender
-  )
-
-  const countryOptions = countries.map((country) => ({
-    value: country.id,
-    label: country.name,
-  }))
-
-  const defaultCountry = countryOptions.find(
-    (option) => option.value === defaultValues.information?.address?.country?.id
+    (option) => option.value === defaultValues.information?.gender.value
   )
 
   const onSubmit = async (formData: IFormValues) => {
-    console.log(formData)
+    const { information } = formData
+
+    console.log('information?.gender')
+    console.log(information?.gender)
+
+    await updateInfo(
+      {
+        data: {
+          information: {
+            ...information,
+            gender: information?.gender?.value,
+          },
+        },
+      },
+      {
+        onSuccess: () => {
+          setSuccess(true)
+          setTimeout(() => setSuccess(false), 3000)
+        },
+        onError: () => {
+          //TODO: handle backend errors here //
+        },
+      }
+    )
   }
 
   return (
@@ -117,12 +147,12 @@ const PersonalInformation = ({
               <Select
                 name="information.address.country"
                 label="Country of residence"
-                options={countryOptions}
+                options={countries}
                 control={control}
                 register={register}
                 unregister={unregister}
                 setFormValue={setValue}
-                initialValue={defaultCountry}
+                initialValue={defaultValues.information?.address?.country}
                 error={get(errors, 'information.address.country') as FieldError}
                 validations={{
                   required: {
@@ -161,7 +191,8 @@ const PersonalInformation = ({
                   variant={success ? 'SUCCESS' : undefined}
                   isLoading={submitting}
                   disabled={submitting || success}
-                  tw="bg-blue-800 text-white mt-3 w-full md:w-20"
+                  tw="text-white mt-3 w-full md:w-20"
+                  showCheckOnSuccess
                 >
                   Save
                 </Button>

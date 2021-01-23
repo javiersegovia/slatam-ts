@@ -6,7 +6,7 @@ import Router from 'next/router'
 
 const Unauthenticated = () => {
   useEffect(() => {
-    const redirect = setTimeout(() => Router.push(routes.session.signIn), 3000)
+    const redirect = setTimeout(() => Router.push(routes.session.signIn), 2500)
     return () => {
       clearTimeout(redirect)
     }
@@ -14,7 +14,6 @@ const Unauthenticated = () => {
 
   return (
     <div tw="w-full mx-auto text-center lg:w-2/3">
-      <h1 tw="mb-4 text-5xl font-normal text-red-500">Unauthenticated</h1>
       <br />
       <p tw="mb-3 text-xl font-medium text-gray-900 md:text-2xl">
         Sorry! You must be logged in to access this page.

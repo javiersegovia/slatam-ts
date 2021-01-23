@@ -8,6 +8,7 @@ import {
   HiOutlineClipboardList,
   HiOutlineShoppingCart,
   HiOutlineCog,
+  HiLogout,
 } from 'react-icons/hi'
 import NavItemDropdown from './NavDropdownItem'
 import NavItem from './NavItem'
@@ -39,6 +40,11 @@ const linkPaths = [
     icon: HiOutlineClipboardList,
     path: routes.dashboard.orders,
     title: 'Orders',
+  },
+  {
+    icon: HiOutlineCog,
+    path: routes.dashboard.account.index,
+    title: 'My account',
   },
 ]
 
@@ -85,9 +91,9 @@ const SideBar: React.FC = ({ children }) => {
             })}
 
             <NavItem
-              title="My account"
-              icon={HiOutlineCog}
-              path={routes.dashboard.account.index}
+              title="Logout"
+              icon={HiLogout}
+              path={routes.session.signOut}
               tw="absolute bottom-2 w-full"
             />
           </nav>

@@ -1,6 +1,7 @@
 import { InputType } from '@nestjs/graphql'
 import { Gender } from '../user-information.entity'
 import { CreateOrUpdateAddressInput } from '@resources/location/address/dto/create-or-update-address.input'
+import { CountryInput } from '../../country/dto/country.input'
 
 @InputType()
 export class UpdateUserInput {
@@ -16,5 +17,5 @@ export class UpdateUserInformationInput {
   occupation?: string
   birthDate?: Date
   gender?: Gender
-  nationality?: number[]
+  nationality?: CountryInput[]
 }

@@ -85,8 +85,11 @@ export type TSelectProps = React.DetailedHTMLProps<
 >
 
 export type TOption = {
-  value: string
+  id?: string | number
+  name?: string | number
+  value?: string
   label?: string
+  description?: string
 }
 
 export type TPossibleValues = TOption | null
@@ -95,7 +98,7 @@ export interface ISelectProps extends TSelectProps {
   name: string
   control: Control
   label?: string
-  options?: TOption[]
+  options?: TOption[] | null
   placeholder?: string
   validations?: RegisterOptions
   error?: FieldErrors | FieldError | undefined
@@ -144,10 +147,28 @@ const Select = ({
   }, [name, register, unregister])
 
   useEffect(() => {
-    setFormValue(name, selectedOption, {
+    let newOption = selectedOption
+
+    if (selectedOption) {
+      const { name, description, label, ...option } = selectedOption
+
+      newOption = option
+    }
+
+    setFormValue(name, newOption, {
       shouldValidate: isSubmitClicked,
     })
   }, [name, selectedOption, setFormValue])
+
+  const handleOptionLabel = (option: TOption) => {
+    const currentOption = options?.find((opt) =>
+      opt.id ? opt.id === option.id : opt.value === option.value
+    )
+
+    return (
+      currentOption?.name ?? currentOption?.label ?? currentOption?.description
+    )
+  }
 
   return (
     <Label htmlFor={name} description={label}>
@@ -162,6 +183,8 @@ const Select = ({
         placeholder={placeholder}
         onChange={handleChange}
         options={options}
+        getOptionLabel={handleOptionLabel}
+        getOptionValue={(option: TOption) => option.id ?? option.value}
         isClearable={Boolean(!validations?.required)}
         isSearchable={Boolean(
           options && options.length >= MIN_LENGTH_FOR_SEARCH

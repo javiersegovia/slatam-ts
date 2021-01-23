@@ -1,5 +1,5 @@
 import { ObjectType, registerEnumType } from '@nestjs/graphql'
-import { BaseEntity } from '../base/base.entity'
+import { BaseEntityInt } from '../base/base.entity'
 import { Company } from '../company/company.entity'
 
 export enum ProductStatus {
@@ -13,7 +13,7 @@ registerEnumType(ProductStatus, {
 })
 
 @ObjectType()
-export class Product extends BaseEntity<number> {
+export class Product extends BaseEntityInt {
   name: string
   description?: string
   status: ProductStatus

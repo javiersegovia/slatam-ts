@@ -9,7 +9,9 @@ import { FullScreen } from '@components/UI'
  * place it on the top of component tree, preferably at page level
  */
 const IsAuthenticated: React.FC = ({ children }) => {
-  const { data, isLoading, error } = useGetCurrentUserQuery()
+  const { data, isLoading, error } = useGetCurrentUserQuery(undefined, {
+    retry: false,
+  })
 
   if (isLoading) {
     return (

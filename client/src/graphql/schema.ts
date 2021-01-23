@@ -30,11 +30,21 @@ export type Address = {
   updatedAt: Scalars['DateTime']
 }
 
+export type Category = {
+  __typename?: 'Category'
+  /** Identifies the date and time when the object was created */
+  createdAt: Scalars['DateTime']
+  id: Scalars['Int']
+  name: Scalars['String']
+  /** Identifies the date and time when the object was last updated. */
+  updatedAt: Scalars['DateTime']
+}
+
 export type Company = {
   __typename?: 'Company'
   /** Identifies the date and time when the object was created */
   createdAt: Scalars['DateTime']
-  id: Scalars['ID']
+  id: Scalars['Int']
   members: Array<CompanyMember>
   name: Scalars['String']
   /** Identifies the date and time when the object was last updated. */
@@ -46,7 +56,7 @@ export type CompanyMember = {
   company: Company
   /** Identifies the date and time when the object was created */
   createdAt: Scalars['DateTime']
-  id: Scalars['ID']
+  id: Scalars['Int']
   roles: Array<CompanyMemberRole>
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']
@@ -66,10 +76,18 @@ export type Country = {
   /** Identifies the date and time when the object was created */
   createdAt: Scalars['DateTime']
   flag: Scalars['String']
-  id: Scalars['ID']
+  id: Scalars['Int']
   name: Scalars['String']
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']
+}
+
+export type CountryInput = {
+  id: Scalars['Int']
+}
+
+export type CreateCategoryInput = {
+  name: Scalars['String']
 }
 
 export type CreateCountryInput = {
@@ -79,8 +97,9 @@ export type CreateCountryInput = {
 }
 
 export type CreateOrUpdateAddressInput = {
-  countryId: Scalars['Int']
+  country: CountryInput
   description?: Maybe<Scalars['String']>
+  postalCode?: Maybe<Scalars['String']>
 }
 
 /** User gender */
@@ -92,20 +111,36 @@ export enum Gender {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  createCategory: Category
   createCountry: Country
+  deleteCategory: Scalars['Boolean']
+  deleteCountry: Scalars['Boolean']
   login: Scalars['Boolean']
   logout: Scalars['Boolean']
   register: Scalars['Boolean']
   requestResetPassword: Scalars['Boolean']
   resendVerificationEmail: Scalars['Boolean']
   resetPassword: Scalars['Boolean']
+  updateCategory: Category
   updateCountry: Country
   updateCurrentUser: Scalars['Boolean']
   verifyEmail: Scalars['Boolean']
 }
 
+export type MutationCreateCategoryArgs = {
+  data: CreateCategoryInput
+}
+
 export type MutationCreateCountryArgs = {
   data: CreateCountryInput
+}
+
+export type MutationDeleteCategoryArgs = {
+  id: Scalars['Int']
+}
+
+export type MutationDeleteCountryArgs = {
+  id: Scalars['Int']
 }
 
 export type MutationLoginArgs = {
@@ -126,6 +161,10 @@ export type MutationResendVerificationEmailArgs = {
 
 export type MutationResetPasswordArgs = {
   data: ResetPasswordInput
+}
+
+export type MutationUpdateCategoryArgs = {
+  data: UpdateCategoryInput
 }
 
 export type MutationUpdateCountryArgs = {
@@ -158,7 +197,7 @@ export type Product = {
   /** Identifies the date and time when the object was created */
   createdAt: Scalars['DateTime']
   description?: Maybe<Scalars['String']>
-  id: Scalars['ID']
+  id: Scalars['Int']
   name: Scalars['String']
   owner: Company
   status: ProductStatus
@@ -175,15 +214,21 @@ export enum ProductStatus {
 export type Query = {
   __typename?: 'Query'
   currentUser: User
+  getAllCategories?: Maybe<Array<Category>>
   getAllCompanies?: Maybe<Array<Company>>
   getAllCountries?: Maybe<Array<Country>>
   getAllProducts?: Maybe<Array<Product>>
   getAllUsers?: Maybe<Array<User>>
+  getCategory: Category
   getCountry: Country
   getPost?: Maybe<Post>
   getPublishedPosts?: Maybe<Array<Post>>
   getUser?: Maybe<User>
   helloProduct: Scalars['String']
+}
+
+export type QueryGetCategoryArgs = {
+  id: Scalars['Int']
 }
 
 export type QueryGetCountryArgs = {
@@ -215,6 +260,11 @@ export type SignupInput = {
   password: Scalars['String']
 }
 
+export type UpdateCategoryInput = {
+  id: Scalars['Int']
+  name: Scalars['String']
+}
+
 export type UpdateCountryInput = {
   code2: Scalars['String']
   flag: Scalars['String']
@@ -226,7 +276,7 @@ export type UpdateUserInformationInput = {
   address?: Maybe<CreateOrUpdateAddressInput>
   birthDate?: Maybe<Scalars['DateTime']>
   gender?: Maybe<Gender>
-  nationality?: Maybe<Array<Scalars['Int']>>
+  nationality?: Maybe<Array<CountryInput>>
   occupation?: Maybe<Scalars['String']>
 }
 
@@ -243,7 +293,7 @@ export type User = {
   createdAt: Scalars['DateTime']
   email: Scalars['String']
   firstName?: Maybe<Scalars['String']>
-  id: Scalars['ID']
+  id: Scalars['Int']
   information?: Maybe<UserInformation>
   lastName?: Maybe<Scalars['String']>
   posts?: Maybe<Array<Post>>
@@ -359,7 +409,10 @@ export type CurrentUserProfileDataQuery = { __typename?: 'Query' } & {
               Array<{ __typename?: 'Country' } & Pick<Country, 'id'>>
             >
             address?: Maybe<
-              { __typename?: 'Address' } & Pick<Address, 'description'> & {
+              { __typename?: 'Address' } & Pick<
+                Address,
+                'description' | 'postalCode'
+              > & {
                   country: { __typename?: 'Country' } & Pick<
                     Country,
                     'id' | 'name'

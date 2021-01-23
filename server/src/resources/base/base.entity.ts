@@ -1,13 +1,7 @@
-import { Field, ObjectType, ID } from '@nestjs/graphql'
+import { Field, ObjectType, ID, Int } from '@nestjs/graphql'
 
 @ObjectType({ isAbstract: true })
-export abstract class BaseEntity<TId = string> {
-  /*
-   * Object ID defaults to string, but can receive an optional generic
-   */
-  @Field(() => ID)
-  id: TId
-
+abstract class Base {
   /*
    * Identifies the date and time when the object was created
    */
@@ -17,4 +11,18 @@ export abstract class BaseEntity<TId = string> {
    * Identifies the date and time when the object was last updated.
    */
   updatedAt: Date
+}
+@ObjectType({ isAbstract: true })
+export abstract class BaseEntity extends Base {
+  @Field(() => ID)
+  id: string
+}
+
+/*
+ * Used for entities with ID as a number
+ */
+@ObjectType({ isAbstract: true })
+export abstract class BaseEntityInt extends Base {
+  @Field(() => Int)
+  id: number
 }

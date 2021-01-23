@@ -16,7 +16,7 @@ registerEnumType(Gender, {
 })
 
 @ObjectType()
-export class UserInformation extends BaseEntity<string> {
+export class UserInformation extends BaseEntity {
   user: User
   address?: Address
   occupation?: string

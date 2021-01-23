@@ -17,6 +17,7 @@ query currentUserProfileData {
           name
         }
         description
+        postalCode
       }
     }
   }

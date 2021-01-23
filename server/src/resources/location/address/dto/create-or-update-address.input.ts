@@ -1,5 +1,6 @@
 import { IsNotEmpty, MinLength } from 'class-validator'
 import { InputType } from '@nestjs/graphql'
+import { CountryInput } from '../../../country/dto/country.input'
 
 @InputType()
 export class CreateOrUpdateAddressInput {
@@ -7,5 +8,7 @@ export class CreateOrUpdateAddressInput {
   description?: string
 
   @IsNotEmpty()
-  countryId: number
+  country: CountryInput
+
+  postalCode?: string
 }

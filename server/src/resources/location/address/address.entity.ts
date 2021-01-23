@@ -4,7 +4,7 @@ import { Country } from '@resources/country/country.entity'
 import { UserInformation } from '@resources/user/user-information.entity'
 
 @ObjectType()
-export class Address extends BaseEntity<string> {
+export class Address extends BaseEntity {
   country: Country
   owner: UserInformation
 

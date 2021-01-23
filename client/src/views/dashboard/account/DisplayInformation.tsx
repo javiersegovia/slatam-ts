@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import Button from '@components/Button'
 import Box from '@components/UI/Box'
 import _tw from 'twin.macro'
@@ -8,10 +8,19 @@ import { useUpdateCurrentUserMutation } from '@graphql/hooks'
 
 // import { getExceptionErrors } from '@lib/utils/errors'
 
-import { User, Gender, UserInformation, Country } from '@graphql/schema'
+import {
+  User,
+  Gender,
+  UserInformation,
+  Country,
+  CurrentUserProfileDataQuery,
+  UpdateUserInput,
+  Address,
+} from '@graphql/schema'
 import { Select } from '@components/FormFields'
 import { NestedPartial } from '@lib/utils/types'
 import { SelectMultiple } from '@components/FormFields/Select'
+import { UserInfo } from 'os'
 
 const genderOptions = [
   {
@@ -27,19 +36,41 @@ const genderOptions = [
     label: 'Non-binary',
   },
 ]
-
 interface IDisplayInformationProps {
-  user: NestedPartial<User>
-  countries?: Partial<Country>[]
+  user: CurrentUserProfileDataQuery['currentUser']
+  countries?: CurrentUserProfileDataQuery['getAllCountries']
 }
 
-type IFormValues = Omit<NestedPartial<User>, 'email'>
+// type IFormValues = NestedPartial<User> & {
+//   information?: NestedPartial<UserInformation> & {
+//     address?: NestedPartial<Address> & {
+//       country
+//     }
+//   }
+// }
+
+type IFormValues = UpdateUserInput
 
 const DisplayInformation = ({
   user,
   countries = [],
 }: IDisplayInformationProps) => {
   const { firstName, lastName, information } = user
+
+  // const nationalityOptions = countries?.map((country) => ({
+  //   value: country.id,
+  //   label: country.name,
+  // }))
+
+  // const defaultNationalities = useMemo(() => {
+  //   const defaultIds = defaultValues.information?.nationality?.map(
+  //     (item) => item?.id
+  //   )
+
+  //   return nationalityOptions?.filter((option) =>
+  //     defaultIds?.includes(option.value)
+  //   )
+  // }, [])
 
   const defaultValues: IFormValues = {
     firstName,
@@ -54,70 +85,37 @@ const DisplayInformation = ({
     errors,
     control,
     setValue,
-    setError,
     formState,
-    getValues,
   } = useForm<IFormValues>({
     defaultValues,
   })
-  const { isSubmitting } = formState
+  const { isSubmitting, isDirty } = formState
 
-  const { mutate: signUp, isLoading } = useUpdateCurrentUserMutation()
+  const { mutate: updateUser, isLoading } = useUpdateCurrentUserMutation()
   const [success, setSuccess] = useState(false)
 
   const onSubmit = async (formData: IFormValues) => {
-    console.log(formData)
+    const { firstName, lastName, information } = formData
 
-    // await signUp(
-    //   {
-    //     data: {
-    //       email,
-    //       password,
-    //     },
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       setSuccess(true)
-    //       Router.push(routes.session.pleaseVerify)
-    //     },
-    //     onError: (e: any) => {
-    //       const { info } = getExceptionErrors(e.response.errors)
-
-    //       if (info) {
-    //         Object.keys(info).forEach((errorKey: any, index: number) => {
-    //           if (FIELD_NAMES.includes(errorKey)) {
-    //             setError(errorKey, {
-    //               message: info[errorKey],
-    //               shouldFocus: index === 0,
-    //             })
-    //           }
-    //         })
-    //       }
-    //     },
-    //   }
-    // )
+    await updateUser(
+      {
+        data: {
+          firstName,
+          lastName,
+          information,
+        },
+      },
+      {
+        onSuccess: () => {
+          setSuccess(true)
+          setTimeout(() => setSuccess(false), 5000)
+        },
+        onError: () => {
+          //TODO: handle backend errors here //
+        },
+      }
+    )
   }
-
-  console.log({ errors })
-
-  const nationalityOptions = countries.map((country) => ({
-    value: country.id,
-    label: country.name,
-  }))
-
-  // const defaultNationalities = nationalityOptions.filter((option) =>
-  //   defaultValues.information?.nationality?.includes(option.value)
-  // )
-
-  const defaultNationalities = useMemo(() => {
-    const defaultIds = defaultValues.information?.nationality?.map(
-      (item) => item?.id
-    )
-
-    return nationalityOptions.filter((option) =>
-      defaultIds?.includes(option.value)
-    )
-  }, [])
 
   const submitting = isSubmitting || isLoading
 
@@ -228,14 +226,14 @@ const DisplayInformation = ({
 
                 <SelectMultiple
                   name="information.nationality"
-                  label="Country of residence"
+                  label="Nationalities"
                   placeholder="Tip: You can choose multiple countries"
-                  options={nationalityOptions}
+                  options={countries}
                   control={control}
                   register={register}
                   unregister={unregister}
                   setFormValue={setValue}
-                  initialValue={defaultNationalities}
+                  initialValue={defaultValues.information?.nationality}
                   error={get(errors, 'information.nationality') as FieldError}
                   validations={{
                     required: {
@@ -252,7 +250,8 @@ const DisplayInformation = ({
                     variant={success ? 'SUCCESS' : undefined}
                     isLoading={submitting}
                     disabled={submitting || success}
-                    tw="bg-blue-800 text-white mt-3 w-full md:w-20"
+                    tw="text-white mt-3 w-full md:w-20"
+                    showCheckOnSuccess
                   >
                     Save
                   </Button>

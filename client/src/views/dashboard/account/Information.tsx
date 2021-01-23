@@ -11,6 +11,7 @@ const Information = () => {
   const { data, isLoading } = useCurrentUserProfileDataQuery()
 
   if (isLoading) {
+    // TODO
     return <>Should render a Big Skeleton Here</>
   }
 

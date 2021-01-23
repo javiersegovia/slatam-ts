@@ -2,7 +2,7 @@
 // TODO: enable react exhaustive deeps and fix the errors in this file
 // https://reactjs.org/docs/hooks-faq.html#what-can-i-do-if-my-effect-dependencies-change-too-often
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import _tw from 'twin.macro'
 import ReactSelect, { Styles, ValueType } from 'react-select'
 import Label from '@components/FormFields/Label'
@@ -28,7 +28,7 @@ const multipleCustomStyles: Partial<Styles<TOption, true>> = {
   ...(customStyles as Partial<Styles<TOption, true>>),
   multiValue: (provided) => ({
     ...provided,
-    ..._tw`bg-orange-100 rounded-sm font-medium`,
+    ..._tw`bg-gray-200 rounded-sm font-medium`,
   }),
   // multiValueLabel: (provided) => ({
   //   ...provided,
@@ -36,7 +36,7 @@ const multipleCustomStyles: Partial<Styles<TOption, true>> = {
   // }),
   multiValueRemove: (provided) => ({
     ...provided,
-    ..._tw`bg-orange-100 text-orange-500`,
+    ..._tw`bg-gray-200 text-gray-500`,
   }),
 }
 
@@ -55,10 +55,24 @@ const SelectMultiple = ({
   maxLimit,
   isSubmitClicked = false,
 }: ISelectMultipleProps) => {
-  const [selectedOption, setSelectedOption] = useState<ValueType<
+  const defaultValues = initialValue?.map((opt) => opt.id || opt.value) ?? []
+  const initialValueWithInfo = useMemo(
+    () =>
+      options?.filter((opt) =>
+        opt.id
+          ? defaultValues.includes(opt.id)
+          : defaultValues.includes(opt.value)
+      ),
+    []
+  )
+
+  const [selectedOptions, setSelectedOptions] = useState<ValueType<
     TOption,
     true
-  > | null>(initialValue)
+  > | null>(initialValueWithInfo)
+
+  // console.log({ initialValue })
+  // console.log({ options })
 
   const handleChange = (newOptions: ValueType<TOption, true>) => {
     if (maxLimit && newOptions && newOptions?.length > maxLimit) {
@@ -67,7 +81,7 @@ const SelectMultiple = ({
       return
     }
 
-    setSelectedOption(newOptions)
+    setSelectedOptions(newOptions)
   }
 
   useEffect(() => {
@@ -76,17 +90,25 @@ const SelectMultiple = ({
   }, [name, register, unregister])
 
   useEffect(() => {
-    setFormValue(name, selectedOption, {
+    let newOptions = selectedOptions
+
+    if (selectedOptions) {
+      newOptions = selectedOptions.map((opt) => ({
+        id: opt.id || opt.value,
+      }))
+    }
+
+    setFormValue(name, newOptions, {
       shouldValidate: isSubmitClicked,
     })
-  }, [name, selectedOption, setFormValue])
+  }, [name, selectedOptions, setFormValue])
 
   return (
     <Label htmlFor={name} description={label}>
       <Controller
         name={name}
         control={control}
-        defaultValue={selectedOption}
+        defaultValue={selectedOptions}
         render={({ name, ref }) => (
           <ReactSelect
             ref={ref}
@@ -99,13 +121,15 @@ const SelectMultiple = ({
             placeholder={placeholder}
             aria-labelledby={name}
             closeMenuOnSelect={Boolean(
-              maxLimit && maxLimit - 1 <= (selectedOption?.length || 0)
+              maxLimit && maxLimit - 1 <= (selectedOptions?.length || 0)
             )}
-            value={selectedOption}
-            options={options}
+            value={selectedOptions}
+            options={options || undefined}
+            getOptionValue={(option: TOption) => `${option['id']}`}
+            getOptionLabel={(option: TOption) => `${option['name']}`}
             isClearable={
-              Array.isArray(selectedOption) &&
-              selectedOption.length > MIN_LENGTH_FOR_MULTIPLE_CLEARABLE
+              Array.isArray(selectedOptions) &&
+              selectedOptions.length > MIN_LENGTH_FOR_MULTIPLE_CLEARABLE
             }
             isSearchable={Boolean(
               options && options.length >= MIN_LENGTH_FOR_SEARCH

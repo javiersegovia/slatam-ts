@@ -245,6 +245,7 @@ export const CurrentUserProfileDataDocument = `
           name
         }
         description
+        postalCode
       }
     }
   }
