@@ -49,7 +49,7 @@ export class ProductService {
     })
   }
 
-  async deleteProduct(productId: number, user: any) {
+  deleteProduct(productId: number, user: any) {
     return this.prisma.company.update({
       where: {
         id: user.companyMember.companyId,

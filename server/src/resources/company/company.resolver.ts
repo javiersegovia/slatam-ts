@@ -27,13 +27,12 @@ export class CompanyResolver {
   ) {}
 
   @Query(() => [Company], { nullable: true })
-  async getAllCompanies(@CurrentUser() user: User) {
+  getAllCompanies(@CurrentUser() user: User) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.READ, Company)) {
-      return this.companyService.getAllCompanies()
-    } else {
+    if (!ability.can(Action.READ, Company)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    return this.companyService.getAllCompanies()
   }
   @ResolveField('members')
   async members(@Parent() company: Company) {
@@ -43,13 +42,12 @@ export class CompanyResolver {
   }
 
   @Query(() => Company)
-  async getCompany(@Args('id') id: number, @CurrentUser() user: User) {
+  getCompany(@Args('id') id: number, @CurrentUser() user: User) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.READ, Company)) {
-      return this.companyService.getCompany(id)
-    } else {
+    if (!ability.can(Action.READ, Company)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    return this.companyService.getCompany(id)
   }
   @UseGuards(IsAuthGuard)
   @Mutation(() => Company)
@@ -58,11 +56,10 @@ export class CompanyResolver {
     @CurrentUser() user: User
   ) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.CREATE, Company)) {
-      return this.companyService.createCompany(data, user.id)
-    } else {
+    if (!ability.can(Action.CREATE, Company)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    return this.companyService.createCompany(data, user.id)
   }
 
   @UseGuards(IsAuthGuard)
@@ -72,22 +69,20 @@ export class CompanyResolver {
     @CurrentUser() user: User
   ) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.UPDATE, Company)) {
-      return this.companyService.updateCompany(data)
-    } else {
+    if (!ability.can(Action.UPDATE, Company)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    return this.companyService.updateCompany(data)
   }
 
   @UseGuards(IsAuthGuard)
   @Mutation(() => Boolean)
   async deleteCompany(@Args('id') id: number, @CurrentUser() user: User) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.DELETE, Company)) {
-      await this.companyService.deleteCompany(id)
-      return true
-    } else {
+    if (!ability.can(Action.DELETE, Company)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    await this.companyService.deleteCompany(id)
+    return true
   }
 }

@@ -27,7 +27,11 @@ export class ProductResolver {
   ) {}
 
   @Query(() => [Product], { nullable: true })
-  getAllProducts() {
+  getAllProducts(@CurrentUser() user: User) {
+    const ability = this.ability.create(user)
+    if (!ability.can(Action.READ, Product)) {
+      throw new ForbiddenException('FORBIDDEN_ACCESS')
+    }
     return this.productService.getAllProducts()
   }
 
@@ -37,13 +41,12 @@ export class ProductResolver {
   }
 
   @Query(() => Product)
-  async getProduct(@Args('id') id: number, @CurrentUser() user: User) {
+  getProduct(@Args('id') id: number, @CurrentUser() user: User) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.READ, Product)) {
-      return this.productService.getProduct(id)
-    } else {
+    if (!ability.can(Action.READ, Product)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    return this.productService.getProduct(id)
   }
 
   @UseGuards(IsAuthGuard)
@@ -53,11 +56,10 @@ export class ProductResolver {
     @CurrentUser() user: User
   ) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.CREATE, Product)) {
-      return this.productService.createProduct(data, user)
-    } else {
+    if (!ability.can(Action.CREATE, Product)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    return this.productService.createProduct(data, user)
   }
 
   @UseGuards(IsAuthGuard)
@@ -67,22 +69,20 @@ export class ProductResolver {
     @CurrentUser() user: User
   ) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.UPDATE, Product)) {
-      return this.productService.updateProduct(data)
-    } else {
+    if (!ability.can(Action.UPDATE, Product)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    return this.productService.updateProduct(data)
   }
 
   @UseGuards(IsAuthGuard)
   @Mutation(() => Boolean)
   async deleteProduct(@Args('id') id: number, @CurrentUser() user: User) {
     const ability = this.ability.create(user)
-    if (ability.can(Action.DELETE, Product)) {
-      await this.productService.deleteProduct(id, user)
-      return true
-    } else {
+    if (!ability.can(Action.DELETE, Product)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+    await this.productService.deleteProduct(id, user)
+    return true
   }
 }

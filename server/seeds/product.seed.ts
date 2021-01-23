@@ -4,7 +4,7 @@ export async function productSeeds(prisma: PrismaClient) {
   const _product1 = await prisma.product.create({
     data: {
       name: 'Nike Shoes',
-      price: 4,
+      price: 400,
       description: 'Beautiful nike shoes size 24',
       status: 'INACTIVE',
       owner: {
@@ -17,7 +17,7 @@ export async function productSeeds(prisma: PrismaClient) {
   const _product2 = await prisma.product.create({
     data: {
       name: 'Adidas Shoes',
-      price: 3,
+      price: 300,
       description: 'Beautiful sport Adidas shoes',
       status: 'ACTIVE',
       owner: {
