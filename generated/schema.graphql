@@ -78,6 +78,10 @@ input CreateCategoryInput {
   name: String!
 }
 
+input CreateCompanyInput {
+  name: String!
+}
+
 input CreateCountryInput {
   code2: String!
   flag: String!
@@ -88,6 +92,12 @@ input CreateOrUpdateAddressInput {
   country: CountryInput!
   description: String
   postalCode: String
+}
+
+input CreateProductInput {
+  description: String
+  name: String!
+  price: Int!
 }
 
 """
@@ -104,9 +114,13 @@ enum Gender {
 
 type Mutation {
   createCategory(data: CreateCategoryInput!): Category!
+  createCompany(data: CreateCompanyInput!): Company!
   createCountry(data: CreateCountryInput!): Country!
+  createProduct(data: CreateProductInput!): Product!
   deleteCategory(id: Int!): Boolean!
+  deleteCompany(id: Int!): Boolean!
   deleteCountry(id: Int!): Boolean!
+  deleteProduct(id: Int!): Boolean!
   login(data: SignInInput!): Boolean!
   logout: Boolean!
   register(data: SignupInput!): Boolean!
@@ -114,8 +128,10 @@ type Mutation {
   resendVerificationEmail(email: String!): Boolean!
   resetPassword(data: ResetPasswordInput!): Boolean!
   updateCategory(data: UpdateCategoryInput!): Category!
+  updateCompany(data: UpdateCompanyInput!): Company!
   updateCountry(data: UpdateCountryInput!): Country!
   updateCurrentUser(data: UpdateUserInput!): Boolean!
+  updateProduct(data: UpdateProductInput!): Product!
   verifyEmail(token: String!): Boolean!
 }
 
@@ -140,6 +156,7 @@ type Product {
   id: Int!
   name: String!
   owner: Company!
+  price: Int!
   status: ProductStatus!
 
   """Identifies the date and time when the object was last updated."""
@@ -160,11 +177,12 @@ type Query {
   getAllProducts: [Product!]
   getAllUsers: [User!]
   getCategory(id: Int!): Category!
+  getCompany(id: Int!): Company!
   getCountry(id: Int!): Country!
   getPost(id: String!): Post
+  getProduct(id: Int!): Product!
   getPublishedPosts: [Post!]
   getUser(id: Int!): User
-  helloProduct: String!
 }
 
 input ResetPasswordInput {
@@ -189,11 +207,23 @@ input UpdateCategoryInput {
   name: String!
 }
 
+input UpdateCompanyInput {
+  id: Int!
+  name: String!
+}
+
 input UpdateCountryInput {
   code2: String!
   flag: String!
   id: Int!
   name: String!
+}
+
+input UpdateProductInput {
+  description: String
+  id: Int!
+  name: String!
+  price: Int!
 }
 
 input UpdateUserInformationInput {
