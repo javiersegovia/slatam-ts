@@ -1,43 +1,88 @@
 import { UseGuards } from '@nestjs/common'
-import { Resolver, Query, Parent, ResolveField } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Parent,
+  ResolveField,
+  Args,
+  Mutation,
+} from '@nestjs/graphql'
+import { CreateCompanyInput } from './dto/create-company.input'
+import { UpdateCompanyInput } from './dto/update-company.input'
 import { PrismaService } from '@resources/prisma/prisma.service'
 import { Company } from './company.entity'
 import { CompanyService } from './company.service'
-// import { User } from '@resources/user/user.entity'
-// import { CurrentUser } from '@decorators/current-user.decorator'
-// import { Action, CompanyAbility } from './company.ability'
-// import { ForbiddenError } from '@casl/ability'
+import { User } from '@resources/user/user.entity'
+import { CurrentUser } from '@decorators/current-user.decorator'
+import { Action, CompanyAbility } from './company.ability'
+import { ForbiddenException } from '@nestjs/common'
 import { IsAuthGuard } from '@guards/is-auth.guard'
 
 @Resolver(Company)
 export class CompanyResolver {
   constructor(
     private companyService: CompanyService,
-    // private ability: CompanyAbility,
+    private ability: CompanyAbility,
     private prisma: PrismaService
   ) {}
 
-  @UseGuards(IsAuthGuard)
   @Query(() => [Company], { nullable: true })
-  getAllCompanies() {
-    // getAllCompanies(@CurrentUser() user: User) {
-    // const ability = this.ability.create(user)
-    // console.log(
-    //   'All~Companies',
-    //   new Date().getUTCMinutes(),
-    //   new Date().getUTCSeconds()
-    // )
-    // ForbiddenError.from(ability)
-    //   .setMessage("You can't access all companies")
-    //   .throwUnlessCan(Action.READ, Company)
-
+  getAllCompanies(@CurrentUser() user: User) {
+    const ability = this.ability.create(user)
+    if (!ability.can(Action.READ, Company)) {
+      throw new ForbiddenException('FORBIDDEN_ACCESS')
+    }
     return this.companyService.getAllCompanies()
   }
-
   @ResolveField('members')
   async members(@Parent() company: Company) {
     return this.prisma.company
       .findUnique({ where: { id: company.id } })
       .members()
+  }
+
+  @Query(() => Company)
+  getCompany(@Args('id') id: number, @CurrentUser() user: User) {
+    const ability = this.ability.create(user)
+    if (!ability.can(Action.READ, Company)) {
+      throw new ForbiddenException('FORBIDDEN_ACCESS')
+    }
+    return this.companyService.getCompany(id)
+  }
+  @UseGuards(IsAuthGuard)
+  @Mutation(() => Company)
+  createCompany(
+    @Args('data') data: CreateCompanyInput,
+    @CurrentUser() user: User
+  ) {
+    const ability = this.ability.create(user)
+    if (!ability.can(Action.CREATE, Company)) {
+      throw new ForbiddenException('FORBIDDEN_ACCESS')
+    }
+    return this.companyService.createCompany(data, user.id)
+  }
+
+  @UseGuards(IsAuthGuard)
+  @Mutation(() => Company)
+  updateCompany(
+    @Args('data') data: UpdateCompanyInput,
+    @CurrentUser() user: User
+  ) {
+    const ability = this.ability.create(user)
+    if (!ability.can(Action.UPDATE, Company)) {
+      throw new ForbiddenException('FORBIDDEN_ACCESS')
+    }
+    return this.companyService.updateCompany(data)
+  }
+
+  @UseGuards(IsAuthGuard)
+  @Mutation(() => Boolean)
+  async deleteCompany(@Args('id') id: number, @CurrentUser() user: User) {
+    const ability = this.ability.create(user)
+    if (!ability.can(Action.DELETE, Company)) {
+      throw new ForbiddenException('FORBIDDEN_ACCESS')
+    }
+    await this.companyService.deleteCompany(id)
+    return true
   }
 }

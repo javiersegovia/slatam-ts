@@ -106,6 +106,7 @@ model Product {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   name        String
+  price       Int
   description String?
   status      ProductStatus @default(INACTIVE)
   owner       Company       @relation(fields: [companyId], references: [id])

@@ -17,20 +17,18 @@ export class CompanyAbility extends BaseAbility<TCompanySubjects> {
   }
 
   defineRules({ builder: { can, cannot }, permissions }) {
-    const { READ, UPDATE, DELETE, MANAGE } = Action
+    const { READ, UPDATE, DELETE, CREATE } = Action
 
-    cannot(MANAGE, Company)
+    // TODO make a user to update only their company
+    can(READ, Company)
+    can(CREATE, Company)
+    can(DELETE, Company)
 
-    // if (permissions.isMember) {
-    //   can(READ, Company)
-    // }
-    if (permissions.isManager) {
-      can(READ, Company)
-      can(UPDATE, Company)
+    if (permissions.isMember) {
+      cannot(CREATE, Company)
     }
-    if (permissions.isOwner) {
-      can(MANAGE, Company)
-      cannot(DELETE, Company)
+    if (permissions.isManager) {
+      can(UPDATE, Company)
     }
   }
 }

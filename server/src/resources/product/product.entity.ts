@@ -15,6 +15,7 @@ registerEnumType(ProductStatus, {
 @ObjectType()
 export class Product extends BaseEntityInt {
   name: string
+  price: number
   description?: string
   status: ProductStatus
   owner: Company

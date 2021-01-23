@@ -54,6 +54,7 @@ export abstract class BaseAbility<T> {
 
   protected abstract defineRules({
     builder,
+    user,
     permissions,
   }: IDefineResourceRules<T>): void
 }

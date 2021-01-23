@@ -1,10 +1,11 @@
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator'
+import { IsNotEmpty, IsString, Length, IsNumber } from 'class-validator'
 import { InputType } from '@nestjs/graphql'
 
 @InputType()
-export class UpdateCategoryInput {
+export class UpdateCompanyInput {
   @IsNotEmpty()
   @IsString()
+  @Length(3, 20)
   name: string
 
   @IsNotEmpty()

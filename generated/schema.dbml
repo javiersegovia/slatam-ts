@@ -84,6 +84,7 @@ Table Product {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   name String [not null]
+  price Int [not null]
   description String
   status ProductStatus [not null, default: 'INACTIVE']
   owner Company [not null]

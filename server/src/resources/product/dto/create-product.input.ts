@@ -1,30 +1,25 @@
 import {
   IsNotEmpty,
-  Length,
-  IsUppercase,
-  IsUrl,
   IsNumber,
   IsString,
+  Length,
+  IsOptional,
 } from 'class-validator'
 import { InputType } from '@nestjs/graphql'
 
 @InputType()
-export class UpdateCountryInput {
-  @IsNotEmpty()
-  @IsNumber()
-  id: number
-
+export class CreateProductInput {
   @IsNotEmpty()
   @IsString()
+  @Length(3, 50)
   name: string
 
   @IsNotEmpty()
-  @IsUrl()
-  flag: string
+  @IsNumber()
+  price: number
 
-  @IsNotEmpty()
-  @Length(2)
-  @IsUppercase()
+  @IsOptional()
   @IsString()
-  code2: string
+  @Length(10, 150)
+  description?: string
 }

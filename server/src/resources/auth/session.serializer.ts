@@ -17,7 +17,12 @@ export class SessionSerializer extends PassportSerializer {
     userId: any,
     done: (err: Error, user: User) => void
   ): Promise<any> {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } })
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        companyMember: true,
+      },
+    })
 
     done(null, user)
   }
