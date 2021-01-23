@@ -6,24 +6,32 @@ type Address {
   companyInfo: CompanyInformation
   country: Country!
 
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   description: String
   id: ID!
   owner: UserInformation
   postalCode: String
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
 }
 
 type Category {
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   id: Int!
   name: String!
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
 }
 
@@ -32,14 +40,18 @@ input CategoryInput {
 }
 
 type Company {
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   id: Int!
   information: CompanyInformation
   members: [CompanyMember!]!
   name: String!
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
 }
 
@@ -49,29 +61,39 @@ type CompanyInformation {
   company: Company!
   country: Country
 
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   description: String
   id: ID!
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
 }
 
 type CompanyMember {
   company: Company!
 
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   id: Int!
   roles: [CompanyMemberRole!]!
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
   user: User!
 }
 
-"""Company member role"""
+"""
+Company member role
+"""
 enum CompanyMemberRole {
   MANAGER
   MEMBER
@@ -81,13 +103,17 @@ enum CompanyMemberRole {
 type Country {
   code2: String!
 
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   flag: String!
   id: Int!
   name: String!
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
 }
 
@@ -127,7 +153,9 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-"""User gender"""
+"""
+User gender
+"""
 enum Gender {
   FEMALE
   MALE
@@ -161,18 +189,24 @@ type Post {
   author: User
   content: String
 
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   id: ID!
   published: Boolean!
   title: String!
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
 }
 
 type Product {
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   description: String
   id: Int!
@@ -181,11 +215,15 @@ type Product {
   price: Int!
   status: ProductStatus!
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
 }
 
-"""Product status (visibility) role"""
+"""
+Product status (visibility) role
+"""
 enum ProductStatus {
   ACTIVE
   INACTIVE
@@ -272,7 +310,9 @@ input UpdateUserInput {
 type User {
   companyMember: CompanyMember
 
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   email: String!
   firstName: String
@@ -281,7 +321,9 @@ type User {
   lastName: String
   posts: [Post!]
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
   verification: UserVerification!
 }
@@ -290,14 +332,18 @@ type UserInformation {
   address: Address
   birthDate: DateTime
 
-  """Identifies the date and time when the object was created"""
+  """
+  Identifies the date and time when the object was created
+  """
   createdAt: DateTime!
   gender: Gender
   id: ID!
   nationality: [Country!]
   occupation: String
 
-  """Identifies the date and time when the object was last updated."""
+  """
+  Identifies the date and time when the object was last updated.
+  """
   updatedAt: DateTime!
   user: User!
 }
