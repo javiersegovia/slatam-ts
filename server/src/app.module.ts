@@ -16,6 +16,7 @@ import {
   CountryModule,
   LocationModule,
   CategoryModule,
+  OrderModule,
 } from '@resources/modules'
 
 @Module({
@@ -64,6 +65,7 @@ import {
     CountryModule,
     LocationModule,
     CategoryModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [PrismaService],

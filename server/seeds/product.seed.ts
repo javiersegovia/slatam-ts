@@ -9,7 +9,7 @@ export async function productSeeds(prisma: PrismaClient) {
       status: 'INACTIVE',
       owner: {
         connect: {
-          id: 1,
+          id: 2,
         },
       },
     },
@@ -23,6 +23,45 @@ export async function productSeeds(prisma: PrismaClient) {
       owner: {
         connect: {
           id: 2,
+        },
+      },
+    },
+  })
+  const _product3 = await prisma.product.create({
+    data: {
+      name: 'Trek Bicycle',
+      price: 10000,
+      description: 'A great bicycle',
+      status: 'ACTIVE',
+      owner: {
+        connect: {
+          id: 3,
+        },
+      },
+    },
+  })
+  const _product4 = await prisma.product.create({
+    data: {
+      name: 'OEM Stand Golf Bag',
+      price: 300,
+      description: 'A high quality golf bag',
+      status: 'ACTIVE',
+      owner: {
+        connect: {
+          id: 3,
+        },
+      },
+    },
+  })
+  const _product5 = await prisma.product.create({
+    data: {
+      name: '6063 Aluminum Sheet',
+      price: 300,
+      description: 'We provide a high quality aluminum',
+      status: 'ACTIVE',
+      owner: {
+        connect: {
+          id: 1,
         },
       },
     },

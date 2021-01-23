@@ -33,6 +33,7 @@ model User {
   resetPasswordToken      String?           @unique
   resetPasswordExpiration DateTime?
   information             UserInformation?
+  orders                  Order[]
 }
 
 model UserInformation {
@@ -164,4 +165,28 @@ model Category {
   updatedAt    DateTime             @updatedAt
   name         String               @unique
   companyInfos CompanyInformation[]
+}
+
+model OrderProduct {
+  id           Int            @id @default(autoincrement())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  name         String
+  price        Int
+  quantity     Int
+  description  String?
+  seller       Company       @relation(fields: [companyId], references: [id])
+  companyId    Int
+  order        Order         @relation(fields: [orderId], references: [id])
+  orderId      Int
+}
+
+model Order {
+  id         Int            @id @default(autoincrement())
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  products   OrderProduct[]
+  totalPrice Int
+  owner      User           @relation(fields: [ownerId], references: [id])
+  ownerId    Int
 }

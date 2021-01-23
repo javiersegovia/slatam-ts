@@ -17,6 +17,7 @@ Table User {
   resetPasswordToken String [unique]
   resetPasswordExpiration DateTime
   information UserInformation
+  orders Order
 }
 
 Table UserInformation {
@@ -67,6 +68,7 @@ Table Company {
   information CompanyInformation
   members CompanyMember
   products Product
+  OrderProduct OrderProduct
 }
 
 Table CompanyInformation {
@@ -149,6 +151,30 @@ Table CategoryToCompanyInformation {
   companyinfosId String [ref: > CompanyInformation.id]
 }
 
+Table OrderProduct {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  name String [not null]
+  price Int [not null]
+  quantity Int [not null]
+  description String
+  seller Company [not null]
+  companyId Int [not null]
+  order Order [not null]
+  orderId Int [not null]
+}
+
+Table Order {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  products OrderProduct
+  totalPrice Int [not null]
+  owner User [not null]
+  ownerId Int [not null]
+}
+
 Enum Gender {
   MALE
   FEMALE
@@ -188,4 +214,14 @@ Ref: Address.countryId > Country.id
 
 Ref: Address.ownerId - UserInformation.id
 
+<<<<<<< HEAD
 Ref: Address.companyInfoId > CompanyInformation.id
+=======
+Ref: Country.userInformationId > UserInformation.id
+
+Ref: OrderProduct.companyId > Company.id
+
+Ref: OrderProduct.orderId > Order.id
+
+Ref: Order.ownerId > User.id
+>>>>>>> added new seeds
