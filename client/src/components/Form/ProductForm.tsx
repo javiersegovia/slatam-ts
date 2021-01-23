@@ -69,7 +69,7 @@ const ProductForm = () => {
 
   const { submitCount } = formState
 
-  const onSubmit = (data: IFormValues) => {
+  const onSubmit = (_data: IFormValues) => {
     // todo: handle this logic
     return null
   }

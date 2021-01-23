@@ -32,13 +32,7 @@ const StepItem = ({ title, isActive, isDisabled, isDone, step }: IStepItem) => {
   )
 }
 
-const Wizard = ({
-  title,
-  children,
-}: {
-  title: string
-  children: React.ReactNode
-}) => {
+const Wizard = ({ children }: { title: string; children: React.ReactNode }) => {
   const router = useRouter()
   const { pathname } = router
 

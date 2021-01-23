@@ -60,7 +60,8 @@ const ChangePassword = ({
             setTimeout(() => Router.push(routes.dashboard.index), 4500)
           },
           onError: (e: any) => {
-            const { info, message } = getExceptionErrors(e.response.errors)
+            // todo: handle errors
+            // const { info, message } = getExceptionErrors(e.response.errors)
           },
         }
       )
