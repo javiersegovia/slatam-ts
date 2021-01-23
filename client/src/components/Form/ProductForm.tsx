@@ -69,16 +69,10 @@ const ProductForm = () => {
 
   const { submitCount } = formState
 
-  // const router = useRouter()
   const onSubmit = (data: IFormValues) => {
-    console.log(data)
-
-    // router.push('/dashboard/products')
+    // todo: handle this logic
+    return null
   }
-
-  console.log({ submitCount })
-
-  // const statusValue = getValues('status')
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} tw="mb-8 space-y-3">

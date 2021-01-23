@@ -19,8 +19,6 @@ export class AddressResolver {
 
   @ResolveField('country', () => Country)
   async country(@Parent() address: Address) {
-    console.log('resolver of country inside Address')
-    console.log(address)
     return this.prisma.address
       .findUnique({
         where: {

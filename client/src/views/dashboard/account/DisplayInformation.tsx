@@ -38,7 +38,7 @@ const DisplayInformation = ({
   } = useForm<IFormValues>({
     defaultValues,
   })
-  const { isSubmitting } = formState
+  const { isSubmitting, submitCount } = formState
 
   const { mutate: updateUser, isLoading } = useUpdateCurrentUserMutation()
   const [success, setSuccess] = useState(false)
@@ -183,6 +183,7 @@ const DisplayInformation = ({
                   unregister={unregister}
                   setFormValue={setValue}
                   initialValue={defaultValues.information?.nationality}
+                  isSubmitClicked={Boolean(submitCount)}
                   error={get(errors, 'information.nationality') as FieldError}
                   validations={{
                     required: {

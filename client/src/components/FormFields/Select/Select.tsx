@@ -86,8 +86,8 @@ export type TSelectProps = React.DetailedHTMLProps<
 
 export type TOption = {
   id?: string | number
-  name?: string | number
-  value?: string
+  value?: string | number
+  name?: string
   label?: string
   description?: string
 }
@@ -147,13 +147,17 @@ const Select = ({
   }, [name, register, unregister])
 
   useEffect(() => {
-    let newOption = selectedOption
-
-    if (selectedOption) {
-      const { name, description, label, ...option } = selectedOption
-
-      newOption = option
-    }
+    const newOption = selectedOption
+      ? {
+          ...(selectedOption.id
+            ? {
+                id: selectedOption.id,
+              }
+            : {
+                value: selectedOption.value,
+              }),
+        }
+      : null
 
     setFormValue(name, newOption, {
       shouldValidate: isSubmitClicked,
@@ -165,9 +169,9 @@ const Select = ({
       opt.id ? opt.id === option.id : opt.value === option.value
     )
 
-    return (
+    return `${
       currentOption?.name ?? currentOption?.label ?? currentOption?.description
-    )
+    }`
   }
 
   return (
@@ -175,21 +179,29 @@ const Select = ({
       <Controller
         name={name}
         control={control}
-        styles={customStyles}
-        hasError={Boolean(error)}
-        classNamePrefix="Select"
-        aria-labelledby={name}
         defaultValue={selectedOption}
-        placeholder={placeholder}
-        onChange={handleChange}
-        options={options}
-        getOptionLabel={handleOptionLabel}
-        getOptionValue={(option: TOption) => option.id ?? option.value}
-        isClearable={Boolean(!validations?.required)}
-        isSearchable={Boolean(
-          options && options.length >= MIN_LENGTH_FOR_SEARCH
+        render={({ name, ref }) => (
+          <ReactSelect
+            ref={ref}
+            styles={customStyles}
+            onChange={handleChange}
+            options={options || undefined}
+            hasError={Boolean(error)}
+            classNamePrefix="Select"
+            menuPlacement="auto"
+            value={selectedOption}
+            placeholder={placeholder}
+            aria-labelledby={name}
+            getOptionLabel={handleOptionLabel}
+            getOptionValue={(option: TOption) =>
+              `${option['id'] ?? option['value']}`
+            }
+            isClearable={Boolean(!validations?.required)}
+            isSearchable={Boolean(
+              options && options.length >= MIN_LENGTH_FOR_SEARCH
+            )}
+          />
         )}
-        as={ReactSelect}
       />
       {Boolean(validations) && <ErrorMessage>{error?.message}</ErrorMessage>}
     </Label>

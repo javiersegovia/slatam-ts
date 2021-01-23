@@ -38,9 +38,6 @@ const Button = ({
   const isApple = variant === 'APPLE'
   const isSuccess = variant === 'SUCCESS'
 
-  console.log('isSuccess')
-  console.log(isSuccess)
-
   return (
     <button
       type={type}

@@ -51,14 +51,18 @@ export const session = {
 }
 
 interface UserRoutes {
-  profile: {
-    start: string
+  setup: {
+    profile: string
+    company: string
+    verification: string
   }
 }
 
 export const user: UserRoutes = {
-  profile: {
-    start: '/u/profile/start',
+  setup: {
+    profile: '/u/setup/profile',
+    company: '/u/setup/company',
+    verification: '/u/setup/verification',
   },
 }
 

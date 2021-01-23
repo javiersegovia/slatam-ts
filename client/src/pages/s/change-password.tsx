@@ -61,7 +61,6 @@ const ChangePassword = ({
           },
           onError: (e: any) => {
             const { info, message } = getExceptionErrors(e.response.errors)
-            console.log({ info, message })
           },
         }
       )

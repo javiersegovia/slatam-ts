@@ -28,7 +28,7 @@ const multipleCustomStyles: Partial<Styles<TOption, true>> = {
   ...(customStyles as Partial<Styles<TOption, true>>),
   multiValue: (provided) => ({
     ...provided,
-    ..._tw`bg-gray-200 rounded-sm font-medium`,
+    ..._tw`bg-gray-200 rounded-md font-medium`,
   }),
   // multiValueLabel: (provided) => ({
   //   ...provided,
@@ -36,7 +36,7 @@ const multipleCustomStyles: Partial<Styles<TOption, true>> = {
   // }),
   multiValueRemove: (provided) => ({
     ...provided,
-    ..._tw`bg-gray-200 text-gray-500`,
+    ..._tw`bg-gray-200 text-gray-500 rounded-r-md`,
   }),
 }
 
@@ -71,13 +71,9 @@ const SelectMultiple = ({
     true
   > | null>(initialValueWithInfo)
 
-  // console.log({ initialValue })
-  // console.log({ options })
-
   const handleChange = (newOptions: ValueType<TOption, true>) => {
     if (maxLimit && newOptions && newOptions?.length > maxLimit) {
       // TODO: add error here when the user tries to update beyond maxLimit
-      // console.log('will NOT update! limit exceeded')
       return
     }
 
@@ -90,13 +86,17 @@ const SelectMultiple = ({
   }, [name, register, unregister])
 
   useEffect(() => {
-    let newOptions = selectedOptions
+    const newOptions = selectedOptions?.length
+      ? selectedOptions.map((opt) => ({
+          id: opt.id || opt.value,
+        }))
+      : null
 
-    if (selectedOptions) {
-      newOptions = selectedOptions.map((opt) => ({
-        id: opt.id || opt.value,
-      }))
-    }
+    // if (selectedOptions) {
+    //   newOptions = selectedOptions.map((opt) => ({
+    //     id: opt.id || opt.value,
+    //   }))
+    // }
 
     setFormValue(name, newOptions, {
       shouldValidate: isSubmitClicked,
@@ -125,7 +125,9 @@ const SelectMultiple = ({
             )}
             value={selectedOptions}
             options={options || undefined}
-            getOptionValue={(option: TOption) => `${option['id']}`}
+            getOptionValue={(option: TOption) =>
+              `${option['id'] ?? option['value']}`
+            }
             getOptionLabel={(option: TOption) => `${option['name']}`}
             isClearable={
               Array.isArray(selectedOptions) &&

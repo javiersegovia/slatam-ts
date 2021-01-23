@@ -27,6 +27,7 @@ type TInputProps = {
   name: string
   value?: string
   type: string
+  className?: string
   placeholder?: string | undefined
   label: string
   error?: FieldErrors | FieldError | undefined
@@ -38,6 +39,7 @@ type TInputProps = {
 const Input: React.FC<TInputProps> = ({
   name,
   value,
+  className = '',
   type = 'text',
   placeholder,
   label,
@@ -50,7 +52,7 @@ const Input: React.FC<TInputProps> = ({
   const Tagname = isTextArea ? 'textarea' : 'input'
 
   return (
-    <Label htmlFor={name} description={label} tw="block">
+    <Label htmlFor={name} description={label} tw="block w-full">
       <Tagname
         {...otherProps}
         ref={register({ ...validations })}
@@ -60,7 +62,7 @@ const Input: React.FC<TInputProps> = ({
         placeholder={placeholder}
         value={value}
         rows={3}
-        className={getBaseStyles(!!error)}
+        className={`${getBaseStyles(!!error)} ${className}`}
       />
       {Boolean(validations) && <ErrorMessage>{error?.message}</ErrorMessage>}
     </Label>

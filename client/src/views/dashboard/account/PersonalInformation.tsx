@@ -180,7 +180,7 @@ const PersonalInformation = ({
                   variant={success ? 'SUCCESS' : undefined}
                   isLoading={submitting}
                   disabled={submitting || success}
-                  tw="text-white mt-3 w-full md:w-20"
+                  tw="mt-3 w-full md:w-20"
                   showCheckOnSuccess
                 >
                   Save
