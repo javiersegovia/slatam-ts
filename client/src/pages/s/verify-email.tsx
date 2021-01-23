@@ -38,7 +38,7 @@ const VerifyEmail = ({ token }: { token: string | undefined }) => {
             )
 
             redirectTimeout.current = setTimeout(
-              () => Router.push(routes.dashboard.index),
+              () => Router.push(routes.user.setup.profile),
               4500
             )
           },
@@ -54,7 +54,7 @@ const VerifyEmail = ({ token }: { token: string | undefined }) => {
   }, [mutate, token, queryClient])
 
   useEffect(() => {
-    Router.prefetch(routes.dashboard.index)
+    Router.prefetch(routes.user.setup.profile)
   }, [])
 
   return (
@@ -86,9 +86,9 @@ const VerifyEmail = ({ token }: { token: string | undefined }) => {
                     <div tw="border-t block border-gray-300 my-6 w-full" />
                     <span tw="italic ">
                       If the redirection does not work, please{' '}
-                      <Link href={routes.dashboard.index}>
+                      <Link href={routes.user.setup.profile}>
                         <a
-                          href={routes.dashboard.index}
+                          href={routes.user.setup.profile}
                           tw="text-blue-600 underline"
                         >
                           click here

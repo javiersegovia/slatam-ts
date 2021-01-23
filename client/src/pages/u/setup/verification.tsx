@@ -12,7 +12,7 @@ const SetupVerification = () => {
 
   if (isLoadingData) {
     // TODO
-    return <>Should render a Big Skeleton Here</>
+    return <></>
   }
 
   if (!data?.currentUser) {

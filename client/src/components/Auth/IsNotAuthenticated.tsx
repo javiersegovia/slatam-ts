@@ -17,7 +17,7 @@ const IsNotAuthenticated: React.FC = ({ children }) => {
   }
 
   if (data?.currentUser) {
-    Router.push(routes.dashboard.index)
+    Router.push(routes.home)
     return null
   }
 

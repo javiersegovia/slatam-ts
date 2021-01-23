@@ -139,6 +139,7 @@ const ProductForm = () => {
         register={register}
         unregister={unregister}
         setFormValue={setValue}
+        isSubmitClicked={Boolean(submitCount)}
         initialValue={defaultValues.contactPerson}
         error={errors.contactPerson}
         validations={{

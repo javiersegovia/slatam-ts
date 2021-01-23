@@ -43,9 +43,13 @@ const SignIn = () => {
         },
       },
       {
-        onSuccess: () => {
+        onSuccess: ({ login: user }) => {
           setSuccess(true)
-          Router.push(routes.dashboard.index)
+          if (user.information) {
+            Router.push(routes.dashboard.index)
+          } else {
+            Router.push(routes.user.setup.profile)
+          }
         },
         onError: (result: any) => {
           const { message } = getExceptionErrors(result?.response?.errors)

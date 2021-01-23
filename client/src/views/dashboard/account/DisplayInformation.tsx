@@ -14,7 +14,9 @@ interface IDisplayInformationProps {
   countries?: CurrentUserProfileDataQuery['getAllCountries']
 }
 
-type IFormValues = UpdateUserInput
+type IFormValues = UpdateUserInput & {
+  avatar?: File
+}
 
 const DisplayInformation = ({
   user,
@@ -79,39 +81,43 @@ const DisplayInformation = ({
         <div tw="p-5">
           <div tw="grid grid-cols-12 gap-5">
             <div tw="col-span-12 xl:col-span-5">
-              {/*  <div tw="border border-gray-200  rounded-md p-5">
-                <div
-                  // image-fit // xxx zoom-in
-                  tw="w-40 h-40 relative cursor-pointer mx-auto"
-                >
-                  <img
-                    tw="rounded-md"
-                    alt="Midone Tailwind HTML Admin Template"
-                    src="dist/images/profile-7.jpg"
-                  />
-                  <div
-                    title="Remove this profile photo?"
-                    // xxx tooltip
-                    tw="w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-red-500 right-0 top-0 -mr-2 -mt-2"
+              <div className="mt-2 flex justify-center mx-10 px-6 pt-10 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                <div className="space-y-1 text-center">
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-400"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
                   >
-                    {' '}
-                    <i data-feather="x" tw="w-4 h-4" />{' '}
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <div className="flex text-sm text-center text-gray-600">
+                    <label
+                      htmlFor="file-upload"
+                      className="relative w-full cursor-pointer bg-white rounded-md font-medium text-blue-700 hover:text-blue-900 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+                    >
+                      <span>Upload your avatar</span>
+                      <input
+                        id="file-upload"
+                        ref={register}
+                        name="avatar"
+                        type="file"
+                        className="sr-only"
+                      />
+                    </label>
+                    {/* <p className="pl-1">or drag and drop</p> */}
                   </div>
+                  <p className="text-xs text-gray-500">
+                    PNG, JPG, GIF up to 10MB
+                  </p>
                 </div>
-                <div tw="w-40 mx-auto cursor-pointer relative mt-5">
-                  <button
-                    type="button"
-                    // button
-                    tw="w-full bg-blue-800 text-white"
-                  >
-                    Change Photo
-                  </button>
-                  <input
-                    type="file"
-                    tw="w-full h-full top-0 left-0 absolute opacity-0"
-                  />
-                </div>
-              </div>*/}
+              </div>
             </div>
 
             <div tw="col-span-12 xl:col-span-7">

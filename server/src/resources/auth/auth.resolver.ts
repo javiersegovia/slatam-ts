@@ -4,6 +4,7 @@ import { AuthService } from './auth.service'
 import { SignInInput } from './dto/sign-in.input'
 import { SignupInput } from './dto/sign-up.input'
 import { ResetPasswordInput } from './dto/reset-password.input'
+import { User } from '@resources/user/user.entity'
 
 // import { CurrentUser } from '@decorators/current-user.decorator'
 
@@ -41,7 +42,7 @@ export class AuthResolver {
     return !!success
   }
 
-  @Mutation((_returns) => Boolean)
+  @Mutation((_returns) => User)
   async login(
     @Context('req') req: Request,
     @Args('data') { email, password }: SignInInput
@@ -49,7 +50,7 @@ export class AuthResolver {
     const user = await this.auth.signIn(email, password)
     await this.auth.sessionLogIn(req, user)
 
-    return true
+    return user
   }
 
   @Mutation((_returns) => Boolean)

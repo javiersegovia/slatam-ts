@@ -17,6 +17,7 @@ import { CurrentUser } from '@decorators/current-user.decorator'
 import { Action, CompanyAbility } from './company.ability'
 import { ForbiddenException } from '@nestjs/common'
 import { IsAuthGuard } from '@guards/is-auth.guard'
+import { CompanyInformation } from './company-information.entity'
 
 @Resolver(Company)
 export class CompanyResolver {
@@ -25,6 +26,13 @@ export class CompanyResolver {
     private ability: CompanyAbility,
     private prisma: PrismaService
   ) {}
+
+  @ResolveField('information', () => CompanyInformation, { nullable: true })
+  async information(@Parent() company: Company) {
+    return this.prisma.company
+      .findUnique({ where: { id: company.id } })
+      .information()
+  }
 
   @Query(() => [Company], { nullable: true })
   getAllCompanies(@CurrentUser() user: User) {
@@ -56,9 +64,10 @@ export class CompanyResolver {
     @CurrentUser() user: User
   ) {
     const ability = this.ability.create(user)
-    if (!ability.can(Action.CREATE, Company)) {
+    if (ability.cannot(Action.CREATE, Company)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+
     return this.companyService.createCompany(data, user.id)
   }
 
@@ -69,9 +78,10 @@ export class CompanyResolver {
     @CurrentUser() user: User
   ) {
     const ability = this.ability.create(user)
-    if (!ability.can(Action.UPDATE, Company)) {
+    if (ability.cannot(Action.UPDATE, Company)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
+
     return this.companyService.updateCompany(data)
   }
 

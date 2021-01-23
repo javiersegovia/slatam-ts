@@ -115,7 +115,7 @@ export interface ISelectProps extends TSelectProps {
         }>
       | undefined
   ) => void
-  isSubmitClicked?: boolean
+  isSubmitClicked: boolean
 }
 
 // CustomSelect built only for single values

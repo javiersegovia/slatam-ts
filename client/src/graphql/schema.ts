@@ -19,12 +19,13 @@ export type Scalars = {
 
 export type Address = {
   __typename?: 'Address'
+  companyInfo?: Maybe<CompanyInformation>
   country: Country
   /** Identifies the date and time when the object was created */
   createdAt: Scalars['DateTime']
   description?: Maybe<Scalars['String']>
   id: Scalars['ID']
-  owner: UserInformation
+  owner?: Maybe<UserInformation>
   postalCode?: Maybe<Scalars['String']>
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']
@@ -40,13 +41,32 @@ export type Category = {
   updatedAt: Scalars['DateTime']
 }
 
+export type CategoryInput = {
+  id: Scalars['Int']
+}
+
 export type Company = {
   __typename?: 'Company'
   /** Identifies the date and time when the object was created */
   createdAt: Scalars['DateTime']
   id: Scalars['Int']
+  information?: Maybe<CompanyInformation>
   members: Array<CompanyMember>
   name: Scalars['String']
+  /** Identifies the date and time when the object was last updated. */
+  updatedAt: Scalars['DateTime']
+}
+
+export type CompanyInformation = {
+  __typename?: 'CompanyInformation'
+  address?: Maybe<Array<Address>>
+  categories?: Maybe<Array<Category>>
+  company: Company
+  country?: Maybe<Country>
+  /** Identifies the date and time when the object was created */
+  createdAt: Scalars['DateTime']
+  description?: Maybe<Scalars['String']>
+  id: Scalars['ID']
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']
 }
@@ -91,6 +111,7 @@ export type CreateCategoryInput = {
 }
 
 export type CreateCompanyInput = {
+  information?: Maybe<UpdateCompanyInformationInput>
   name: Scalars['String']
 }
 
@@ -129,7 +150,7 @@ export type Mutation = {
   deleteCompany: Scalars['Boolean']
   deleteCountry: Scalars['Boolean']
   deleteProduct: Scalars['Boolean']
-  login: Scalars['Boolean']
+  login: User
   logout: Scalars['Boolean']
   register: Scalars['Boolean']
   requestResetPassword: Scalars['Boolean']
@@ -315,6 +336,13 @@ export type UpdateCategoryInput = {
   name: Scalars['String']
 }
 
+export type UpdateCompanyInformationInput = {
+  address?: Maybe<CreateOrUpdateAddressInput>
+  categories?: Maybe<Array<CategoryInput>>
+  country?: Maybe<CountryInput>
+  description?: Maybe<Scalars['String']>
+}
+
 export type UpdateCompanyInput = {
   id: Scalars['Int']
   name: Scalars['String']
@@ -393,6 +421,14 @@ export type ChangePasswordMutation = { __typename?: 'Mutation' } & Pick<
   'resetPassword'
 >
 
+export type CreateCompanyMutationVariables = Exact<{
+  data: CreateCompanyInput
+}>
+
+export type CreateCompanyMutation = { __typename?: 'Mutation' } & {
+  createCompany: { __typename?: 'Company' } & Pick<Company, 'id'>
+}
+
 export type RequestConfirmationEmailMutationVariables = Exact<{
   email: Scalars['String']
 }>
@@ -414,10 +450,13 @@ export type SignInMutationVariables = Exact<{
   data: SignInInput
 }>
 
-export type SignInMutation = { __typename?: 'Mutation' } & Pick<
-  Mutation,
-  'login'
->
+export type SignInMutation = { __typename?: 'Mutation' } & {
+  login: { __typename?: 'User' } & Pick<User, 'id'> & {
+      information?: Maybe<
+        { __typename?: 'UserInformation' } & Pick<UserInformation, 'id'>
+      >
+    }
+}
 
 export type SignOutMutationVariables = Exact<{ [key: string]: never }>
 
@@ -486,6 +525,14 @@ export type CurrentUserProfileDataQuery = { __typename?: 'Query' } & {
     }
   getAllCountries?: Maybe<
     Array<{ __typename?: 'Country' } & Pick<Country, 'id' | 'name'>>
+  >
+}
+
+export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllCategoriesQuery = { __typename?: 'Query' } & {
+  getAllCategories?: Maybe<
+    Array<{ __typename?: 'Category' } & Pick<Category, 'id' | 'name'>>
   >
 }
 

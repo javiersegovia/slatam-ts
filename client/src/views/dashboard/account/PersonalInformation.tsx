@@ -73,7 +73,7 @@ const PersonalInformation = ({
   const [success, setSuccess] = useState(false)
   const { mutate: updateInfo, isLoading } = useUpdateCurrentUserMutation()
 
-  const { isSubmitting } = formState
+  const { isSubmitting, submitCount } = formState
   const submitting = isSubmitting || isLoading
 
   const defaultGender = genderOptions.find(
@@ -124,6 +124,7 @@ const PersonalInformation = ({
                 unregister={unregister}
                 setFormValue={setValue}
                 initialValue={defaultGender}
+                isSubmitClicked={Boolean(submitCount)}
                 error={get(errors, 'information.gender') as FieldError}
                 validations={{
                   required: {
@@ -141,6 +142,7 @@ const PersonalInformation = ({
                 register={register}
                 unregister={unregister}
                 setFormValue={setValue}
+                isSubmitClicked={Boolean(submitCount)}
                 initialValue={defaultValues.information?.address?.country}
                 error={get(errors, 'information.address.country') as FieldError}
                 validations={{

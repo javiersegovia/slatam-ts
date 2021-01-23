@@ -184,6 +184,7 @@ export class AuthService {
       where: { email },
       include: {
         verification: true,
+        information: true,
       },
     })
 

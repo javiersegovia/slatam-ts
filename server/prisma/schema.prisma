@@ -76,12 +76,26 @@ model RefreshToken {
 }
 
 model Company {
-  id        Int             @id @default(autoincrement())
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  name      String
-  members   CompanyMember[]
-  products  Product[]
+  id          Int                 @id @default(autoincrement())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  name        String
+  information CompanyInformation?
+  members     CompanyMember[]
+  products    Product[]
+}
+
+model CompanyInformation {
+  id          String     @id @default(cuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  company     Company    @relation(fields: [companyId], references: [id])
+  companyId   Int
+  description String?
+  categories  Category[]
+  address     Address[]
+  country     Country?   @relation(fields: [countryId], references: [id])
+  countryId   Int?
 }
 
 model CompanyMember {
@@ -119,32 +133,35 @@ enum ProductStatus {
 }
 
 model Address {
-  id          String          @id @default(cuid())
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-  country     Country         @relation(fields: [countryId], references: [id])
-  countryId   Int
-  description String?
-  postalCode  String?
-  owner       UserInformation @relation(fields: [ownerId], references: [id])
-  ownerId     String
+  id            String              @id @default(cuid())
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  country       Country             @relation(fields: [countryId], references: [id])
+  countryId     Int
+  description   String?
+  postalCode    String?
+  owner         UserInformation?    @relation(fields: [ownerId], references: [id])
+  ownerId       String?
+  companyInfos  CompanyInformation? @relation(fields: [companyInfoId], references: [id])
+  companyInfoId String?
 }
 
 model Country {
-  id                Int              @id @default(autoincrement())
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-  name              String
-  flag              String
-  code2             String
-  address           Address[]
-  UserInformation   UserInformation? @relation(fields: [userInformationId], references: [id])
-  userInformationId String?
+  id           Int                  @id @default(autoincrement())
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  name         String
+  flag         String
+  code2        String
+  address      Address[]
+  userInfos    UserInformation[]
+  companyInfos CompanyInformation[]
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  name      String
+  id           Int                  @id @default(autoincrement())
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  name         String               @unique
+  companyInfos CompanyInformation[]
 }

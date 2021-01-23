@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { PrismaClientKnownRequestError } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 
 // We should use this service for formatting errors across the codebase
 // If we are handling "field" errors (with custom validations or so) we should return
@@ -12,7 +12,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client'
 @Injectable()
 export class ErrorService {
   handleUnknownError(error: any) {
-    if (error instanceof PrismaClientKnownRequestError) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
       return this.handlePrismaError(error)
     }
 
@@ -21,7 +21,7 @@ export class ErrorService {
 
   // Check Prisma Errors for reference
   // https://www.prisma.io/docs/concepts/components/prisma-client/error-reference
-  handlePrismaError(error: PrismaClientKnownRequestError) {
+  handlePrismaError(error: Prisma.PrismaClientKnownRequestError) {
     switch (error.code) {
       case 'P2002':
         return this.handlePrismaConflictError(error)
@@ -36,7 +36,7 @@ export class ErrorService {
     throw new Error()
   }
 
-  handlePrismaConflictError(error: PrismaClientKnownRequestError) {
+  handlePrismaConflictError(error: Prisma.PrismaClientKnownRequestError) {
     const data = {}
 
     error.meta?.['target']?.forEach((fieldName) => {

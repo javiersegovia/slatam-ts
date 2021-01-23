@@ -1,14 +1,13 @@
 import React from 'react'
 import MainNavbar from '@components/Layout/Navbars/MainNavbar'
 import MainFooter from '@components/Layout/Footers/MainFooter'
-import ProductGrid from '@components/Grid/ProductGrid'
+import MainProduct from '@views/products/MainProduct'
 
-export default function Home() {
+export default function ProductPage() {
   return (
     <>
       <MainNavbar />
-      <br />
-      <ProductGrid />
+      <MainProduct />
       <MainFooter />
     </>
   )

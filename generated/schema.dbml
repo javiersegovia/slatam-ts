@@ -64,8 +64,22 @@ Table Company {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   name String [not null]
+  information CompanyInformation
   members CompanyMember
   products Product
+}
+
+Table CompanyInformation {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  company Company [not null]
+  companyId Int [not null]
+  description String
+  categories Category
+  address Address
+  country Country
+  countryId Int
 }
 
 Table CompanyMember {
@@ -99,8 +113,10 @@ Table Address {
   countryId Int [not null]
   description String
   postalCode String
-  owner UserInformation [not null]
-  ownerId String [not null]
+  owner UserInformation
+  ownerId String
+  companyInfos CompanyInformation
+  companyInfoId String
 }
 
 Table Country {
@@ -111,15 +127,26 @@ Table Country {
   flag String [not null]
   code2 String [not null]
   address Address
-  UserInformation UserInformation
-  userInformationId String
+  userInfos UserInformation
+  companyInfos CompanyInformation
 }
 
 Table Category {
   id Int [pk, increment]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  name String [not null]
+  name String [unique, not null]
+  companyInfos CompanyInformation
+}
+
+Table CountryToUserInformation {
+  nationalityId Int [ref: > Country.id]
+  userinfosId String [ref: > UserInformation.id]
+}
+
+Table CategoryToCompanyInformation {
+  categoriesId Int [ref: > Category.id]
+  companyinfosId String [ref: > CompanyInformation.id]
 }
 
 Enum Gender {
@@ -147,6 +174,10 @@ Ref: Post.authorId > User.id
 
 Ref: RefreshToken.userId > User.id
 
+Ref: CompanyInformation.companyId - Company.id
+
+Ref: CompanyInformation.countryId > Country.id
+
 Ref: CompanyMember.companyId > Company.id
 
 Ref: CompanyMember.userId - User.id
@@ -157,4 +188,4 @@ Ref: Address.countryId > Country.id
 
 Ref: Address.ownerId - UserInformation.id
 
-Ref: Country.userInformationId > UserInformation.id
+Ref: Address.companyInfoId > CompanyInformation.id

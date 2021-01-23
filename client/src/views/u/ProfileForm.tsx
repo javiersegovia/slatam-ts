@@ -204,6 +204,7 @@ const ProfileForm = ({ user, countries }: IProfileFormProps) => {
             setFormValue={setValue}
             initialValue={defaultGender}
             error={get(errors, 'information.gender') as FieldError}
+            isSubmitClicked={Boolean(submitCount)}
             validations={{
               required: {
                 value: true,
@@ -221,9 +222,11 @@ const ProfileForm = ({ user, countries }: IProfileFormProps) => {
             control={control}
             register={register}
             unregister={unregister}
+            placeholder="Where do you live right now?"
             setFormValue={setValue}
             initialValue={defaultValues.information?.address?.country}
             error={get(errors, 'information.address.country') as FieldError}
+            isSubmitClicked={Boolean(submitCount)}
             validations={{
               required: {
                 value: true,
@@ -239,6 +242,7 @@ const ProfileForm = ({ user, countries }: IProfileFormProps) => {
             type="text"
             label="Address"
             register={register}
+            placeholder="Your home address"
             validations={{
               minLength: {
                 value: 10,

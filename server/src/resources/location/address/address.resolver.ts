@@ -8,7 +8,7 @@ import { Address } from './address.entity'
 export class AddressResolver {
   constructor(private prisma: PrismaService) {}
 
-  @ResolveField('owner', () => UserInformation)
+  @ResolveField('owner', () => UserInformation, { nullable: true })
   async address(@Root() address: Address) {
     return this.prisma.address
       .findUnique({

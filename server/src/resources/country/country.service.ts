@@ -21,7 +21,11 @@ export class CountryService {
   }
 
   getAllCountries() {
-    return this.prisma.country.findMany()
+    return this.prisma.country.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    })
   }
 
   createCountry(data: CreateCountryInput) {

@@ -48,7 +48,7 @@
     "@nestjs/graphql": "7.9.1",
     "@nestjs/passport": "7.1.5",
     "@nestjs/platform-express": "7.6.4",
-    "@prisma/client": "2.13.1",
+    "@prisma/client": "2.15.0",
     "@sendgrid/client": "^7.4.2",
     "@sendgrid/helpers": "^7.4.2",
     "@sendgrid/mail": "^7.4.2",

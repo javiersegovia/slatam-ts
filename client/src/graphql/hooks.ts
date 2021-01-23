@@ -34,6 +34,34 @@ export const useChangePasswordMutation = <TError = unknown, TContext = unknown>(
       >(ChangePasswordDocument, variables)(),
     options
   )
+export const CreateCompanyDocument = `
+    mutation createCompany($data: CreateCompanyInput!) {
+  createCompany(data: $data) {
+    id
+  }
+}
+    `
+export const useCreateCompanyMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    Types.CreateCompanyMutation,
+    TError,
+    Types.CreateCompanyMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<
+    Types.CreateCompanyMutation,
+    TError,
+    Types.CreateCompanyMutationVariables,
+    TContext
+  >(
+    (variables?: Types.CreateCompanyMutationVariables) =>
+      gqlFetcher<
+        Types.CreateCompanyMutation,
+        Types.CreateCompanyMutationVariables
+      >(CreateCompanyDocument, variables)(),
+    options
+  )
 export const RequestConfirmationEmailDocument = `
     mutation requestConfirmationEmail($email: String!) {
   resendVerificationEmail(email: $email)
@@ -94,7 +122,12 @@ export const useRequestPasswordMutation = <
   )
 export const SignInDocument = `
     mutation signIn($data: SignInInput!) {
-  login(data: $data)
+  login(data: $data) {
+    id
+    information {
+      id
+    }
+  }
 }
     `
 export const useSignInMutation = <TError = unknown, TContext = unknown>(
@@ -268,6 +301,29 @@ export const useCurrentUserProfileDataQuery = <
       Types.CurrentUserProfileDataQuery,
       Types.CurrentUserProfileDataQueryVariables
     >(CurrentUserProfileDataDocument, variables),
+    options
+  )
+export const GetAllCategoriesDocument = `
+    query getAllCategories {
+  getAllCategories {
+    id
+    name
+  }
+}
+    `
+export const useGetAllCategoriesQuery = <
+  TData = Types.GetAllCategoriesQuery,
+  TError = unknown
+>(
+  variables?: Types.GetAllCategoriesQueryVariables,
+  options?: UseQueryOptions<Types.GetAllCategoriesQuery, TError, TData>
+) =>
+  useQuery<Types.GetAllCategoriesQuery, TError, TData>(
+    ['getAllCategories', variables],
+    gqlFetcher<
+      Types.GetAllCategoriesQuery,
+      Types.GetAllCategoriesQueryVariables
+    >(GetAllCategoriesDocument, variables),
     options
   )
 export const AllCompaniesDocument = `

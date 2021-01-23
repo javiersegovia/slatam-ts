@@ -3,13 +3,14 @@
 # ------------------------------------------------------
 
 type Address {
+  companyInfo: CompanyInformation
   country: Country!
 
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   description: String
   id: ID!
-  owner: UserInformation!
+  owner: UserInformation
   postalCode: String
 
   """Identifies the date and time when the object was last updated."""
@@ -26,12 +27,32 @@ type Category {
   updatedAt: DateTime!
 }
 
+input CategoryInput {
+  id: Int!
+}
+
 type Company {
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   id: Int!
+  information: CompanyInformation
   members: [CompanyMember!]!
   name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type CompanyInformation {
+  address: [Address!]
+  categories: [Category!]
+  company: Company!
+  country: Country
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  description: String
+  id: ID!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
@@ -79,6 +100,7 @@ input CreateCategoryInput {
 }
 
 input CreateCompanyInput {
+  information: UpdateCompanyInformationInput
   name: String!
 }
 
@@ -121,7 +143,7 @@ type Mutation {
   deleteCompany(id: Int!): Boolean!
   deleteCountry(id: Int!): Boolean!
   deleteProduct(id: Int!): Boolean!
-  login(data: SignInInput!): Boolean!
+  login(data: SignInInput!): User!
   logout: Boolean!
   register(data: SignupInput!): Boolean!
   requestResetPassword(email: String!): Boolean!
@@ -205,6 +227,13 @@ input SignupInput {
 input UpdateCategoryInput {
   id: Int!
   name: String!
+}
+
+input UpdateCompanyInformationInput {
+  address: CreateOrUpdateAddressInput
+  categories: [CategoryInput!]
+  country: CountryInput
+  description: String
 }
 
 input UpdateCompanyInput {

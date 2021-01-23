@@ -56,7 +56,7 @@ const ChangePassword = ({
         {
           onSuccess: () => {
             setSuccess(true)
-            setTimeout(() => Router.push(routes.dashboard.index), 4500)
+            setTimeout(() => Router.push(routes.home), 4500)
           },
           // todo: handle errors
           // onError: (e: any) => {
@@ -135,11 +135,8 @@ const ChangePassword = ({
                   <div tw="border-t block border-gray-300 my-6 w-full" />
                   <span tw="italic ">
                     If the redirection does not work, please{' '}
-                    <Link href={routes.dashboard.index}>
-                      <a
-                        href={routes.dashboard.index}
-                        tw="text-blue-600 underline"
-                      >
+                    <Link href={routes.home}>
+                      <a href={routes.home} tw="text-blue-600 underline">
                         click here
                       </a>
                     </Link>

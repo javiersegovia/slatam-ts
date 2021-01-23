@@ -6,7 +6,7 @@ import Label from './Label'
 
 export const getBaseStyles = (
   hasError: boolean
-) => `bg-white shadow-sm block w-full p-3 border text-sm rounded-md border-gray-300 focus:outline-none focus:ring-2
+) => `bg-white shadow-sm block w-full p-3 border text-sm leading-6 rounded-md border-gray-300 focus:outline-none focus:ring-2
           ${
             hasError
               ? 'text-red-600 border-red-500 focus:border-red-500 focus:ring-red-500'

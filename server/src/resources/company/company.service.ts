@@ -24,9 +24,48 @@ export class CompanyService {
   }
 
   createCompany(data: CreateCompanyInput, userId: number) {
+    const { information, ...companyData } = data
+    const address = information?.address || null
+    const country = information?.country || null
+    const categories = information?.categories || null
+
     return this.prisma.company.create({
       data: {
-        ...data,
+        ...companyData,
+        information: information
+          ? {
+              create: {
+                description: information.description,
+                categories: categories
+                  ? {
+                      connect: categories?.map((category) => ({
+                        id: category.id,
+                      })),
+                    }
+                  : {},
+                country: country
+                  ? {
+                      connect: {
+                        id: country.id,
+                      },
+                    }
+                  : {},
+                address: address
+                  ? {
+                      create: {
+                        description: address.description,
+                        postalCode: address.postalCode,
+                        country: {
+                          connect: {
+                            id: address.country?.id,
+                          },
+                        },
+                      },
+                    }
+                  : {},
+              },
+            }
+          : {},
         members: {
           create: [
             {

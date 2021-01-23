@@ -59,7 +59,7 @@ const Wizard = ({ children }: { title: string; children: React.ReactNode }) => {
     <>
       <section tw="bg-blue-800 min-h-screen">
         <div tw="container px-0 py-20 mx-auto sm:px-4">
-          <div tw="w-full px-4 pt-10 pb-10 mx-auto mt-8 mb-6 bg-gray-100 rounded-none shadow-2xl sm:rounded-lg sm:w-10/12 md:w-6/12 lg:w-7/12 xl:w-10/12 sm:px-6 max-w-screen-xl">
+          <div tw="w-full px-4 pt-10 pb-10 mx-auto mt-8 mb-6 bg-gray-100 rounded-none shadow-2xl sm:rounded-lg sm:w-10/12 md:w-6/12 lg:w-7/12 max-w-screen-xl sm:px-6">
             <div tw="flex flex-col py-10 sm:py-20 mt-5">
               <div tw="relative inline-flex flex-col lg:flex-row justify-center px-5 sm:px-20">
                 <div tw="lg:text-center px-10 items-start block md:flex z-10">

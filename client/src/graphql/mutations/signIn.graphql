@@ -1,3 +1,8 @@
 mutation signIn($data: SignInInput!) {
-  login(data: $data)
+  login(data: $data) {
+    id
+    information {
+      id
+    }
+  }
 }

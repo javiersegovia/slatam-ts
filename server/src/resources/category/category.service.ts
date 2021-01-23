@@ -21,7 +21,11 @@ export class CategoryService {
   }
 
   getAllCategories() {
-    return this.prisma.category.findMany()
+    return this.prisma.category.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    })
   }
 
   createCategory(data: CreateCategoryInput) {
