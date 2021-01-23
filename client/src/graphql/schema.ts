@@ -90,6 +90,10 @@ export type CreateCategoryInput = {
   name: Scalars['String']
 }
 
+export type CreateCompanyInput = {
+  name: Scalars['String']
+}
+
 export type CreateCountryInput = {
   code2: Scalars['String']
   flag: Scalars['String']
@@ -102,6 +106,12 @@ export type CreateOrUpdateAddressInput = {
   postalCode?: Maybe<Scalars['String']>
 }
 
+export type CreateProductInput = {
+  description?: Maybe<Scalars['String']>
+  name: Scalars['String']
+  price: Scalars['Int']
+}
+
 /** User gender */
 export enum Gender {
   Female = 'FEMALE',
@@ -112,9 +122,13 @@ export enum Gender {
 export type Mutation = {
   __typename?: 'Mutation'
   createCategory: Category
+  createCompany: Company
   createCountry: Country
+  createProduct: Product
   deleteCategory: Scalars['Boolean']
+  deleteCompany: Scalars['Boolean']
   deleteCountry: Scalars['Boolean']
+  deleteProduct: Scalars['Boolean']
   login: Scalars['Boolean']
   logout: Scalars['Boolean']
   register: Scalars['Boolean']
@@ -122,8 +136,10 @@ export type Mutation = {
   resendVerificationEmail: Scalars['Boolean']
   resetPassword: Scalars['Boolean']
   updateCategory: Category
+  updateCompany: Company
   updateCountry: Country
   updateCurrentUser: Scalars['Boolean']
+  updateProduct: Product
   verifyEmail: Scalars['Boolean']
 }
 
@@ -131,15 +147,31 @@ export type MutationCreateCategoryArgs = {
   data: CreateCategoryInput
 }
 
+export type MutationCreateCompanyArgs = {
+  data: CreateCompanyInput
+}
+
 export type MutationCreateCountryArgs = {
   data: CreateCountryInput
+}
+
+export type MutationCreateProductArgs = {
+  data: CreateProductInput
 }
 
 export type MutationDeleteCategoryArgs = {
   id: Scalars['Int']
 }
 
+export type MutationDeleteCompanyArgs = {
+  id: Scalars['Int']
+}
+
 export type MutationDeleteCountryArgs = {
+  id: Scalars['Int']
+}
+
+export type MutationDeleteProductArgs = {
   id: Scalars['Int']
 }
 
@@ -167,12 +199,20 @@ export type MutationUpdateCategoryArgs = {
   data: UpdateCategoryInput
 }
 
+export type MutationUpdateCompanyArgs = {
+  data: UpdateCompanyInput
+}
+
 export type MutationUpdateCountryArgs = {
   data: UpdateCountryInput
 }
 
 export type MutationUpdateCurrentUserArgs = {
   data: UpdateUserInput
+}
+
+export type MutationUpdateProductArgs = {
+  data: UpdateProductInput
 }
 
 export type MutationVerifyEmailArgs = {
@@ -200,6 +240,7 @@ export type Product = {
   id: Scalars['Int']
   name: Scalars['String']
   owner: Company
+  price: Scalars['Int']
   status: ProductStatus
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']
@@ -220,14 +261,19 @@ export type Query = {
   getAllProducts?: Maybe<Array<Product>>
   getAllUsers?: Maybe<Array<User>>
   getCategory: Category
+  getCompany: Company
   getCountry: Country
   getPost?: Maybe<Post>
+  getProduct: Product
   getPublishedPosts?: Maybe<Array<Post>>
   getUser?: Maybe<User>
-  helloProduct: Scalars['String']
 }
 
 export type QueryGetCategoryArgs = {
+  id: Scalars['Int']
+}
+
+export type QueryGetCompanyArgs = {
   id: Scalars['Int']
 }
 
@@ -237,6 +283,10 @@ export type QueryGetCountryArgs = {
 
 export type QueryGetPostArgs = {
   id: Scalars['String']
+}
+
+export type QueryGetProductArgs = {
+  id: Scalars['Int']
 }
 
 export type QueryGetUserArgs = {
@@ -265,11 +315,23 @@ export type UpdateCategoryInput = {
   name: Scalars['String']
 }
 
+export type UpdateCompanyInput = {
+  id: Scalars['Int']
+  name: Scalars['String']
+}
+
 export type UpdateCountryInput = {
   code2: Scalars['String']
   flag: Scalars['String']
   id: Scalars['Int']
   name: Scalars['String']
+}
+
+export type UpdateProductInput = {
+  description?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+  name: Scalars['String']
+  price: Scalars['Int']
 }
 
 export type UpdateUserInformationInput = {

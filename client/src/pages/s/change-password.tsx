@@ -8,7 +8,6 @@ import { useChangePasswordMutation } from '@graphql/hooks'
 import { GetServerSideProps } from 'next'
 import Router from 'next/router'
 import routes from '@lib/utils/routes'
-import { getExceptionErrors } from '@lib/utils/errors'
 import Link from 'next/link'
 
 type IFormValues = {
@@ -59,10 +58,9 @@ const ChangePassword = ({
             setSuccess(true)
             setTimeout(() => Router.push(routes.dashboard.index), 4500)
           },
-          onError: (e: any) => {
-            // todo: handle errors
-            // const { info, message } = getExceptionErrors(e.response.errors)
-          },
+          // todo: handle errors
+          // onError: (e: any) => {
+          // },
         }
       )
     }
