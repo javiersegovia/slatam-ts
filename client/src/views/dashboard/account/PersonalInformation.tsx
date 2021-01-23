@@ -6,18 +6,12 @@ import Input from '@components/FormFields/Input'
 import { FieldError, get, useForm } from 'react-hook-form'
 import { useUpdateCurrentUserMutation } from '@graphql/hooks'
 
-// import { getExceptionErrors } from '@lib/utils/errors'
-
 import {
-  User,
   Gender,
-  UserInformation,
-  Country,
   UpdateUserInformationInput,
   CurrentUserProfileDataQuery,
 } from '@graphql/schema'
 import { Select } from '@components/FormFields'
-import { NestedPartial } from '@lib/utils/types'
 
 const genderOptions = [
   {
@@ -71,9 +65,7 @@ const PersonalInformation = ({
     errors,
     control,
     setValue,
-    setError,
     formState,
-    getValues,
   } = useForm<IFormValues>({
     defaultValues,
   })
@@ -90,9 +82,6 @@ const PersonalInformation = ({
 
   const onSubmit = async (formData: IFormValues) => {
     const { information } = formData
-
-    console.log('information?.gender')
-    console.log(information?.gender)
 
     await updateInfo(
       {

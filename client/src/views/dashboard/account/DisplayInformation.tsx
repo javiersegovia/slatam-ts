@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import Button from '@components/Button'
 import Box from '@components/UI/Box'
 import _tw from 'twin.macro'
@@ -6,48 +6,13 @@ import Input from '@components/FormFields/Input'
 import { FieldError, get, useForm } from 'react-hook-form'
 import { useUpdateCurrentUserMutation } from '@graphql/hooks'
 
-// import { getExceptionErrors } from '@lib/utils/errors'
-
-import {
-  User,
-  Gender,
-  UserInformation,
-  Country,
-  CurrentUserProfileDataQuery,
-  UpdateUserInput,
-  Address,
-} from '@graphql/schema'
-import { Select } from '@components/FormFields'
-import { NestedPartial } from '@lib/utils/types'
+import { CurrentUserProfileDataQuery, UpdateUserInput } from '@graphql/schema'
 import { SelectMultiple } from '@components/FormFields/Select'
-import { UserInfo } from 'os'
 
-const genderOptions = [
-  {
-    value: Gender.Male,
-    label: 'Male',
-  },
-  {
-    value: Gender.Female,
-    label: 'Female',
-  },
-  {
-    value: Gender.NonBinary,
-    label: 'Non-binary',
-  },
-]
 interface IDisplayInformationProps {
   user: CurrentUserProfileDataQuery['currentUser']
   countries?: CurrentUserProfileDataQuery['getAllCountries']
 }
-
-// type IFormValues = NestedPartial<User> & {
-//   information?: NestedPartial<UserInformation> & {
-//     address?: NestedPartial<Address> & {
-//       country
-//     }
-//   }
-// }
 
 type IFormValues = UpdateUserInput
 
@@ -56,22 +21,6 @@ const DisplayInformation = ({
   countries = [],
 }: IDisplayInformationProps) => {
   const { firstName, lastName, information } = user
-
-  // const nationalityOptions = countries?.map((country) => ({
-  //   value: country.id,
-  //   label: country.name,
-  // }))
-
-  // const defaultNationalities = useMemo(() => {
-  //   const defaultIds = defaultValues.information?.nationality?.map(
-  //     (item) => item?.id
-  //   )
-
-  //   return nationalityOptions?.filter((option) =>
-  //     defaultIds?.includes(option.value)
-  //   )
-  // }, [])
-
   const defaultValues: IFormValues = {
     firstName,
     lastName,
@@ -89,7 +38,7 @@ const DisplayInformation = ({
   } = useForm<IFormValues>({
     defaultValues,
   })
-  const { isSubmitting, isDirty } = formState
+  const { isSubmitting } = formState
 
   const { mutate: updateUser, isLoading } = useUpdateCurrentUserMutation()
   const [success, setSuccess] = useState(false)
