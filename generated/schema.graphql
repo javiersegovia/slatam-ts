@@ -3,53 +3,27 @@
 # ------------------------------------------------------
 
 type Address {
-<<<<<<< HEAD
   companyInfo: CompanyInformation
   country: Country!
 
-  """
-  Identifies the date and time when the object was created
-  """
+  """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   description: String
   id: ID!
   owner: UserInformation
   postalCode: String
 
-  """
-  Identifies the date and time when the object was last updated.
-  """
-=======
-  country: Country!
-
-  """Identifies the date and time when the object was created"""
-  createdAt: DateTime!
-  description: String
-  id: ID!
-  owner: UserInformation!
-  postalCode: String
-
   """Identifies the date and time when the object was last updated."""
->>>>>>> added new seeds
   updatedAt: DateTime!
 }
 
 type Category {
-<<<<<<< HEAD
-  """
-  Identifies the date and time when the object was created
-  """
-=======
   """Identifies the date and time when the object was created"""
->>>>>>> added new seeds
   createdAt: DateTime!
   id: Int!
   name: String!
 
-<<<<<<< HEAD
-  """
-  Identifies the date and time when the object was last updated.
-  """
+  """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
 }
 
@@ -58,18 +32,14 @@ input CategoryInput {
 }
 
 type Company {
-  """
-  Identifies the date and time when the object was created
-  """
+  """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   id: Int!
   information: CompanyInformation
   members: [CompanyMember!]!
   name: String!
 
-  """
-  Identifies the date and time when the object was last updated.
-  """
+  """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
 }
 
@@ -79,65 +49,29 @@ type CompanyInformation {
   company: Company!
   country: Country
 
-  """
-  Identifies the date and time when the object was created
-  """
+  """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   description: String
   id: ID!
 
-  """
-  Identifies the date and time when the object was last updated.
-  """
-=======
   """Identifies the date and time when the object was last updated."""
-  updatedAt: DateTime!
-}
-
-type Company {
-  """Identifies the date and time when the object was created"""
-  createdAt: DateTime!
-  id: Int!
-  members: [CompanyMember!]!
-  name: String!
-
-  """Identifies the date and time when the object was last updated."""
->>>>>>> added new seeds
   updatedAt: DateTime!
 }
 
 type CompanyMember {
   company: Company!
 
-<<<<<<< HEAD
-  """
-  Identifies the date and time when the object was created
-  """
-=======
   """Identifies the date and time when the object was created"""
->>>>>>> added new seeds
   createdAt: DateTime!
   id: Int!
   roles: [CompanyMemberRole!]!
 
-<<<<<<< HEAD
-  """
-  Identifies the date and time when the object was last updated.
-  """
-=======
   """Identifies the date and time when the object was last updated."""
->>>>>>> added new seeds
   updatedAt: DateTime!
   user: User!
 }
 
-<<<<<<< HEAD
-"""
-Company member role
-"""
-=======
 """Company member role"""
->>>>>>> added new seeds
 enum CompanyMemberRole {
   MANAGER
   MEMBER
@@ -147,25 +81,13 @@ enum CompanyMemberRole {
 type Country {
   code2: String!
 
-<<<<<<< HEAD
-  """
-  Identifies the date and time when the object was created
-  """
-=======
   """Identifies the date and time when the object was created"""
->>>>>>> added new seeds
   createdAt: DateTime!
   flag: String!
   id: Int!
   name: String!
 
-<<<<<<< HEAD
-  """
-  Identifies the date and time when the object was last updated.
-  """
-=======
   """Identifies the date and time when the object was last updated."""
->>>>>>> added new seeds
   updatedAt: DateTime!
 }
 
@@ -178,10 +100,7 @@ input CreateCategoryInput {
 }
 
 input CreateCompanyInput {
-<<<<<<< HEAD
   information: UpdateCompanyInformationInput
-=======
->>>>>>> added new seeds
   name: String!
 }
 
@@ -191,9 +110,11 @@ input CreateCountryInput {
   name: String!
 }
 
-<<<<<<< HEAD
-=======
 input CreateOrderInput {
+  products: [CreateOrderProductInput!]!
+}
+
+input CreateOrderProductInput {
   description: String
   name: String!
   price: Int!
@@ -201,7 +122,6 @@ input CreateOrderInput {
   sellerId: Int!
 }
 
->>>>>>> added new seeds
 input CreateOrUpdateAddressInput {
   country: CountryInput!
   description: String
@@ -219,13 +139,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-<<<<<<< HEAD
-"""
-User gender
-"""
-=======
 """User gender"""
->>>>>>> added new seeds
 enum Gender {
   FEMALE
   MALE
@@ -236,20 +150,14 @@ type Mutation {
   createCategory(data: CreateCategoryInput!): Category!
   createCompany(data: CreateCompanyInput!): Company!
   createCountry(data: CreateCountryInput!): Country!
-<<<<<<< HEAD
-=======
   createOrder(data: CreateOrderInput!): Order!
->>>>>>> added new seeds
   createProduct(data: CreateProductInput!): Product!
   deleteCategory(id: Int!): Boolean!
   deleteCompany(id: Int!): Boolean!
   deleteCountry(id: Int!): Boolean!
+  deleteOrder(id: Int!): Boolean!
   deleteProduct(id: Int!): Boolean!
-<<<<<<< HEAD
   login(data: SignInInput!): User!
-=======
-  login(data: SignInInput!): Boolean!
->>>>>>> added new seeds
   logout: Boolean!
   register(data: SignupInput!): Boolean!
   requestResetPassword(email: String!): Boolean!
@@ -259,6 +167,7 @@ type Mutation {
   updateCompany(data: UpdateCompanyInput!): Company!
   updateCountry(data: UpdateCountryInput!): Country!
   updateCurrentUser(data: UpdateUserInput!): Boolean!
+  updateOrder(data: UpdateOrderInput!): Order!
   updateProduct(data: UpdateProductInput!): Product!
   verifyEmail(token: String!): Boolean!
 }
@@ -294,26 +203,17 @@ type Post {
   author: User
   content: String
 
-  """
-  Identifies the date and time when the object was created
-  """
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   id: ID!
   published: Boolean!
   title: String!
 
-  """
-  Identifies the date and time when the object was last updated.
-  """
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
 }
 
 type Product {
-  """
-  Identifies the date and time when the object was created
-  """
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   description: String
@@ -323,15 +223,6 @@ type Product {
   price: Int!
   status: ProductStatus!
 
-  """
-  Identifies the date and time when the object was last updated.
-  """
-  updatedAt: DateTime!
-}
-
-"""
-Product status (visibility) role
-"""
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
 }
@@ -347,11 +238,13 @@ type Query {
   getAllCategories: [Category!]
   getAllCompanies: [Company!]
   getAllCountries: [Country!]
+  getAllOrders: [Order!]
   getAllProducts: [Product!]
   getAllUsers: [User!]
   getCategory(id: Int!): Category!
   getCompany(id: Int!): Company!
   getCountry(id: Int!): Country!
+  getOrder(id: Int!): Order
   getPost(id: String!): Post
   getProduct(id: Int!): Product!
   getPublishedPosts: [Post!]
@@ -399,6 +292,21 @@ input UpdateCountryInput {
   name: String!
 }
 
+input UpdateOrderInput {
+  id: Int!
+  owner: Int!
+  products: [UpdateOrderProductInput!]!
+}
+
+input UpdateOrderProductInput {
+  description: String
+  id: Int!
+  name: String!
+  price: Int!
+  quantity: Int!
+  sellerId: Int!
+}
+
 input UpdateProductInput {
   description: String
   id: Int!
@@ -423,9 +331,6 @@ input UpdateUserInput {
 type User {
   companyMember: CompanyMember
 
-  """
-  Identifies the date and time when the object was created
-  """
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   email: String!
@@ -435,9 +340,6 @@ type User {
   lastName: String
   posts: [Post!]
 
-  """
-  Identifies the date and time when the object was last updated.
-  """
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   verification: UserVerification!
@@ -447,9 +349,6 @@ type UserInformation {
   address: Address
   birthDate: DateTime
 
-  """
-  Identifies the date and time when the object was created
-  """
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   gender: Gender
@@ -457,9 +356,6 @@ type UserInformation {
   nationality: [Country!]
   occupation: String
 
-  """
-  Identifies the date and time when the object was last updated.
-  """
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   user: User!

@@ -1,11 +1,6 @@
 import { InputType } from '@nestjs/graphql'
-import { BaseEntityInt } from '@resources/base/base.entity'
-
+import { CreateOrderProductInput } from '../order-product/dto/create-order-product.input'
 @InputType()
-export class CreateOrderInput extends BaseEntityInt {
-  name: string
-  price: number
-  quantity: number
-  description?: string
-  sellerId: number
+export class CreateOrderInput {
+  products: CreateOrderProductInput[]
 }

@@ -22,13 +22,15 @@ export class CompanyAbility extends BaseAbility<TCompanySubjects> {
     // TODO make a user to update only their company
     can(READ, Company)
     can(CREATE, Company)
-    can(DELETE, Company)
 
     if (permissions.isMember) {
       cannot(CREATE, Company)
     }
     if (permissions.isManager) {
       can(UPDATE, Company)
+    }
+    if (permissions.isOwner) {
+      can(DELETE, Company)
     }
   }
 }

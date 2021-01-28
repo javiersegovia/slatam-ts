@@ -141,16 +141,6 @@ Table Category {
   companyInfos CompanyInformation
 }
 
-Table CountryToUserInformation {
-  nationalityId Int [ref: > Country.id]
-  userinfosId String [ref: > UserInformation.id]
-}
-
-Table CategoryToCompanyInformation {
-  categoriesId Int [ref: > Category.id]
-  companyinfosId String [ref: > CompanyInformation.id]
-}
-
 Table OrderProduct {
   id Int [pk, increment]
   createdAt DateTime [default: `now()`, not null]
@@ -173,6 +163,16 @@ Table Order {
   totalPrice Int [not null]
   owner User [not null]
   ownerId Int [not null]
+}
+
+Table CountryToUserInformation {
+  nationalityId Int [ref: > Country.id]
+  userinfosId String [ref: > UserInformation.id]
+}
+
+Table CategoryToCompanyInformation {
+  categoriesId Int [ref: > Category.id]
+  companyinfosId String [ref: > CompanyInformation.id]
 }
 
 Enum Gender {
@@ -214,14 +214,10 @@ Ref: Address.countryId > Country.id
 
 Ref: Address.ownerId - UserInformation.id
 
-<<<<<<< HEAD
 Ref: Address.companyInfoId > CompanyInformation.id
-=======
-Ref: Country.userInformationId > UserInformation.id
 
 Ref: OrderProduct.companyId > Company.id
 
 Ref: OrderProduct.orderId > Order.id
 
 Ref: Order.ownerId > User.id
->>>>>>> added new seeds
