@@ -30,8 +30,4 @@ export class UpdateOrderProductInput {
   @IsString()
   @Length(10, 150)
   description?: string
-
-  @IsNotEmpty()
-  @IsNumber()
-  sellerId: number
 }

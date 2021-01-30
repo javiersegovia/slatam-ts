@@ -68,7 +68,7 @@ Table Company {
   information CompanyInformation
   members CompanyMember
   products Product
-  OrderProduct OrderProduct
+  Order Order
 }
 
 Table CompanyInformation {
@@ -149,8 +149,6 @@ Table OrderProduct {
   price Int [not null]
   quantity Int [not null]
   description String
-  seller Company [not null]
-  companyId Int [not null]
   order Order [not null]
   orderId Int [not null]
 }
@@ -161,8 +159,10 @@ Table Order {
   updatedAt DateTime [not null]
   products OrderProduct
   totalPrice Int [not null]
-  owner User [not null]
-  ownerId Int [not null]
+  buyer User [not null]
+  userId Int [not null]
+  seller Company [not null]
+  companyId Int [not null]
 }
 
 Table CountryToUserInformation {
@@ -216,8 +216,8 @@ Ref: Address.ownerId - UserInformation.id
 
 Ref: Address.companyInfoId > CompanyInformation.id
 
-Ref: OrderProduct.companyId > Company.id
-
 Ref: OrderProduct.orderId > Order.id
 
-Ref: Order.ownerId > User.id
+Ref: Order.userId > User.id
+
+Ref: Order.companyId > Company.id

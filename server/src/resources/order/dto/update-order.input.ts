@@ -10,7 +10,11 @@ export class UpdateOrderInput {
 
   @IsNotEmpty()
   @IsNumber()
-  owner: number
+  buyerId: number
+
+  @IsNotEmpty()
+  @IsNumber()
+  sellerId: number
 
   products: UpdateOrderProductInput[]
 }

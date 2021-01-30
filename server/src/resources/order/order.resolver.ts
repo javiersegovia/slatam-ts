@@ -46,9 +46,14 @@ export class OrderResolver {
     return this.orderService.getOrder(id)
   }
 
-  @ResolveField('owner')
-  async owner(@Parent() order: Order) {
-    return this.prisma.order.findUnique({ where: { id: order.id } }).owner()
+  @ResolveField('buyer')
+  async buyer(@Parent() order: Order) {
+    return this.prisma.order.findUnique({ where: { id: order.id } }).buyer()
+  }
+
+  @ResolveField('seller')
+  async seller(@Parent() order: Order) {
+    return this.prisma.order.findUnique({ where: { id: order.id } }).seller()
   }
 
   @ResolveField('products')
@@ -63,7 +68,7 @@ export class OrderResolver {
     if (!ability.can(Action.CREATE, Order)) {
       throw new ForbiddenException('FORBIDDEN_ACCESS')
     }
-    return this.orderService.createOrder(data, user)
+    return this.orderService.createOrder(data)
   }
 
   @UseGuards(IsAuthGuard)

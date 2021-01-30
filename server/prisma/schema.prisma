@@ -175,8 +175,6 @@ model OrderProduct {
   price        Int
   quantity     Int
   description  String?
-  seller       Company       @relation(fields: [companyId], references: [id])
-  companyId    Int
   order        Order         @relation(fields: [orderId], references: [id])
   orderId      Int
 }
@@ -187,6 +185,8 @@ model Order {
   updatedAt  DateTime       @updatedAt
   products   OrderProduct[]
   totalPrice Int
-  owner      User           @relation(fields: [ownerId], references: [id])
-  ownerId    Int
+  buyer      User           @relation(fields: [userId], references: [id])
+  userId     Int
+  seller     Company        @relation(fields: [companyId], references: [id])
+  companyId  Int
 }

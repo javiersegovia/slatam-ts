@@ -23,70 +23,59 @@ export class OrderService {
     return order
   }
 
-  async createOrder(data: CreateOrderInput | any, user: any) {
+  async createOrder(data: CreateOrderInput) {
     // TODO create the order using the productIds
     // and fetching the data from the DB, not with data provided by the frontend
-    const productOrderPrices = []
-    const orderProducts = data.products.map(
-      (orderProduct) =>
-        (orderProduct = {
-          ...orderProduct,
-          seller: { connect: { id: orderProduct.sellerId } },
-        })
-    )
-    orderProducts.forEach((orderProduct) => {
-      delete orderProduct.sellerId
-      productOrderPrices.push(orderProduct.quantity * orderProduct.price)
-    })
-    const totalPrice = productOrderPrices.reduce(
-      (totalPrice, price) => totalPrice + price
+
+    const totalPrice = data.products.reduce(
+      (totalPrice, orderProduct) =>
+        totalPrice + orderProduct.price * orderProduct.quantity,
+      0
     )
 
     return this.prisma.order.create({
       data: {
         totalPrice: totalPrice,
-        owner: {
-          connect: { id: user.id },
+        buyer: {
+          connect: { id: data.buyerId },
+        },
+        seller: {
+          connect: { id: data.sellerId },
         },
         products: {
-          create: orderProducts,
+          create: data.products,
         },
       },
     })
   }
 
-  updateOrder(data: UpdateOrderInput | any) {
-    const { owner, ...orderProductsData } = data
-    const orderProductPrices = []
-    const orderProducts = orderProductsData.products.map(
-      (orderProduct) =>
-        (orderProduct = {
-          data: {
-            ...orderProduct,
-            seller: { connect: { id: orderProduct.sellerId } },
-          },
-          where: { id: orderProduct.id },
-        })
-    )
-    orderProducts.forEach((orderProduct) => {
-      delete orderProduct.data.sellerId
-      delete orderProduct.data.id
-      orderProductPrices.push(
-        orderProduct.data.quantity * orderProduct.data.price
-      )
+  updateOrder(data: UpdateOrderInput) {
+    const orderProducts = data.products.map((orderProduct) => {
+      const { id, ...orderProductData } = orderProduct
+      return {
+        data: {
+          ...orderProductData,
+        },
+        where: { id: id },
+      }
     })
-    const totalPrice = orderProductPrices.reduce(
-      (totalPrice, price) => totalPrice + price
+    const totalPrice = orderProducts.reduce(
+      (totalPrice, orderProduct) =>
+        totalPrice + orderProduct.data.price * orderProduct.data.quantity,
+      0
     )
 
     return this.prisma.order.update({
       where: {
-        id: orderProductsData.id,
+        id: data.id,
       },
       data: {
         totalPrice: totalPrice,
-        owner: {
-          connect: { id: owner },
+        buyer: {
+          connect: { id: data.buyerId },
+        },
+        seller: {
+          connect: { id: data.sellerId },
         },
         products: {
           update: orderProducts,

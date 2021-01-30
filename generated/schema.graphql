@@ -111,7 +111,9 @@ input CreateCountryInput {
 }
 
 input CreateOrderInput {
+  buyerId: Int!
   products: [CreateOrderProductInput!]!
+  sellerId: Int!
 }
 
 input CreateOrderProductInput {
@@ -119,7 +121,6 @@ input CreateOrderProductInput {
   name: String!
   price: Int!
   quantity: Int!
-  sellerId: Int!
 }
 
 input CreateOrUpdateAddressInput {
@@ -173,11 +174,13 @@ type Mutation {
 }
 
 type Order {
+  buyer: User!
+
   """Identifies the date and time when the object was created"""
   createdAt: DateTime!
   id: Int!
-  owner: User!
   products: [OrderProduct!]!
+  seller: Company!
   totalPrice: Int!
 
   """Identifies the date and time when the object was last updated."""
@@ -193,7 +196,6 @@ type OrderProduct {
   order: Order!
   price: Int!
   quantity: Int!
-  seller: Company!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
@@ -293,9 +295,10 @@ input UpdateCountryInput {
 }
 
 input UpdateOrderInput {
+  buyerId: Int!
   id: Int!
-  owner: Int!
   products: [UpdateOrderProductInput!]!
+  sellerId: Int!
 }
 
 input UpdateOrderProductInput {
@@ -304,7 +307,6 @@ input UpdateOrderProductInput {
   name: String!
   price: Int!
   quantity: Int!
-  sellerId: Int!
 }
 
 input UpdateProductInput {
