@@ -19,7 +19,7 @@ export class OrderAbility extends BaseAbility<TOrderSubjects> {
   defineRules({ builder: { can, cannot } }) {
     const { READ, UPDATE, DELETE, CREATE } = Action
 
-    // make a user to see only their orders
+    // TODO make a user to see only their orders
     can(READ, Order)
     can(CREATE, Order)
     cannot(DELETE, Order)

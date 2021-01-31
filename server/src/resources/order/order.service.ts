@@ -23,7 +23,7 @@ export class OrderService {
     return order
   }
 
-  async createOrder(data: CreateOrderInput) {
+  createOrder(data: CreateOrderInput) {
     // TODO create the order using the productIds
     // and fetching the data from the DB, not with data provided by the frontend
 

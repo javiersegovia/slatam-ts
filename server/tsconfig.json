@@ -19,6 +19,7 @@
       "@lib/*": ["src/lib/*"],
       "@mails/*": ["src/mails/*"],
       "@resources/*": ["src/resources/*"],
+      "@constants/*": ["src/constants/*"]
     }
   },
   "exclude": ["node_modules", "dist", "graphql"]
