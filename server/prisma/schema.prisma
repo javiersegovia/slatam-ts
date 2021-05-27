@@ -1,0 +1,272 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+  output   = "../../generated/"
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY
+}
+
+model User {
+  id                      Int               @id @default(autoincrement())
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  email                   String            @unique
+  password                String
+  firstName               String?
+  lastName                String?
+  avatar                  Image?            @relation(fields: [avatarId], references: [id])
+  avatarId                String?
+  companyMember           CompanyMember?
+  verification            UserVerification?
+  resetPasswordToken      String?           @unique
+  resetPasswordExpiration DateTime?
+  information             UserInformation?
+  posts                   Post[]
+  orders                  Order[]
+}
+
+model UserInformation {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  address     Address?
+  birthDate   DateTime?
+  occupation  String?
+  gender      Gender?
+  nationality Country[]
+}
+
+model UserVerification {
+  id                    String    @id @default(cuid())
+  verifiedEmail         Boolean   @default(false)
+  verifyEmailToken      String?   @unique
+  verifyEmailExpiration DateTime?
+  user                  User      @relation(fields: [userId], references: [id])
+  userId                Int
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  title     String
+  content   String?
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
+model Company {
+  id          Int                 @id @default(autoincrement())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  name        String
+  information CompanyInformation?
+  members     CompanyMember[]
+  products    Product[]
+  orders      Order[]
+}
+
+model CompanyInformation {
+  id          String     @id @default(cuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  description String?
+  company     Company    @relation(fields: [companyId], references: [id])
+  companyId   Int
+  country     Country?   @relation(fields: [countryId], references: [id])
+  countryId   Int?
+  categories  Category[]
+  address     Address[]
+}
+
+model CompanyMember {
+  id        Int                 @id @default(autoincrement())
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+  company   Company             @relation(fields: [companyId], references: [id])
+  companyId Int
+  user      User                @relation(fields: [userId], references: [id])
+  userId    Int
+  roles     CompanyMemberRole[]
+}
+
+enum CompanyMemberRole {
+  MEMBER
+  MANAGER
+  OWNER
+}
+
+model Product {
+  id          Int                 @id @default(autoincrement())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  name        String
+  price       Int
+  images      ProductImage[]
+  status      ProductStatus       @default(INACTIVE)
+  owner       Company             @relation(fields: [companyId], references: [id])
+  companyId   Int
+  information ProductInformation?
+}
+
+model ProductInformation {
+  id          String    @id @default(cuid())
+  description String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   Int
+}
+
+model ProductImage {
+  id          String  @id @default(cuid())
+  large       Image   @relation("LargeImage", fields: [largeId], references: [id])
+  largeId     String
+  thumbnail   Image   @relation("ThumbnailImage", fields: [thumbnailId], references: [id])
+  thumbnailId String
+  small       Image   @relation("SmallImage", fields: [smallId], references: [id])
+  smallId     String
+  product     Product @relation(fields: [productId], references: [id])
+  productId   Int
+}
+
+enum ProductStatus {
+  INACTIVE
+  ACTIVE
+}
+
+model Address {
+  id                   String              @id @default(cuid())
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  country              Country             @relation(fields: [countryId], references: [id])
+  countryId            Int
+  description          String?
+  postalCode           String?
+  owner                UserInformation?    @relation(fields: [ownerId], references: [id])
+  ownerId              String?
+  companyInformation   CompanyInformation? @relation(fields: [companyInformationId], references: [id])
+  companyInformationId String?
+}
+
+model Region {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  subRegions SubRegion[]
+  countries  Country[]
+}
+
+model SubRegion {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  region    Region    @relation(fields: [regionId], references: [id])
+  regionId  Int
+  countries Country[]
+}
+
+model Country {
+  id        Int    @id @default(autoincrement())
+  name      String
+  code2     String @unique
+  code3     String @unique
+  phoneCode String
+  emoji     String
+  emojiU    String
+  latitude  String
+  longitude String
+  capital   String
+
+  region      Region?    @relation(fields: [regionId], references: [id])
+  regionId    Int?
+  subRegion   SubRegion? @relation(fields: [subRegionId], references: [id])
+  subRegionId Int?
+
+  states State[]
+
+  address             Address[]
+  userInformations    UserInformation[]
+  companyInformations CompanyInformation[]
+}
+
+model State {
+  id        Int     @id @default(autoincrement())
+  name      String
+  stateCode String?
+
+  country   Country @relation(fields: [countryId], references: [id])
+  countryId Int
+
+  cities City[]
+}
+
+model City {
+  id        Int     @id @default(autoincrement())
+  name      String
+  latitude  String?
+  longitude String?
+  state     State   @relation(fields: [stateId], references: [id])
+  stateId   Int
+}
+
+model Category {
+  id                  Int                  @id @default(autoincrement())
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  name                String               @unique
+  companyInformations CompanyInformation[]
+  productInformations ProductInformation[]
+}
+
+model OrderProduct {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  price       Int
+  quantity    Int
+  description String?
+  order       Order    @relation(fields: [orderId], references: [id])
+  orderId     Int
+}
+
+model Order {
+  id         Int            @id @default(autoincrement())
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  products   OrderProduct[]
+  totalPrice Int
+  buyer      User           @relation(fields: [userId], references: [id])
+  userId     Int
+  seller     Company        @relation(fields: [companyId], references: [id])
+  companyId  Int
+}
+
+model Image {
+  id                    String        @id @default(cuid())
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+  publicId              String
+  url                   String
+  width                 Int
+  height                Int
+  format                String
+  productLargeImage     ProductImage? @relation("LargeImage")
+  productThumbnailImage ProductImage? @relation("ThumbnailImage")
+  productSmallImage     ProductImage? @relation("SmallImage")
+  user                  User?
+}

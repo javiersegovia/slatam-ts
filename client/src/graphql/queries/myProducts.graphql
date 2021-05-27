@@ -1,0 +1,22 @@
+query myProducts {
+  myProducts {
+    id
+    name
+    price
+    information {
+      description
+      category {
+        id
+        name
+      }
+    }
+    status
+    images {
+      small {
+        url
+        width
+        height
+      }
+    }
+  }
+}

@@ -1,0 +1,411 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Address {
+  companyInfo: CompanyInformation
+  country: Country!
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  owner: UserInformation
+  postalCode: String
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type Category {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: Int!
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+input CategoryInput {
+  id: Int!
+}
+
+type Company {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: Int!
+  information: CompanyInformation
+  members: [CompanyMember!]!
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type CompanyInformation {
+  address: [Address!]
+  categories: [Category!]
+  company: Company!
+  country: Country
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type CompanyMember {
+  company: Company!
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: Int!
+  roles: [CompanyMemberRole!]!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  user: User!
+}
+
+"""Company member role"""
+enum CompanyMemberRole {
+  MANAGER
+  MEMBER
+  OWNER
+}
+
+type Country {
+  code2: String!
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  flag: String!
+  id: Int!
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+input CountryInput {
+  id: Int!
+}
+
+input CreateCategoryInput {
+  name: String!
+}
+
+input CreateCompanyInput {
+  information: UpdateCompanyInformationInput
+  name: String!
+}
+
+input CreateOrderInput {
+  buyerId: Int!
+  products: [CreateOrderProductInput!]!
+  sellerId: Int!
+}
+
+input CreateOrderProductInput {
+  description: String
+  name: String!
+  price: Int!
+  quantity: Int!
+}
+
+input CreateOrUpdateAddressInput {
+  country: CountryInput!
+  description: String
+  postalCode: String
+}
+
+input CreateOrUpdateProductInformationInput {
+  category: CategoryInput
+  description: String
+}
+
+input CreateProductInput {
+  images: [Upload!]
+  information: CreateOrUpdateProductInformationInput
+  name: String!
+  price: Int!
+  status: ProductStatus!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""User gender"""
+enum Gender {
+  FEMALE
+  MALE
+  NON_BINARY
+}
+
+type Image {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  format: String!
+  height: Int!
+  id: ID!
+  publicId: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  url: String!
+  width: Int!
+}
+
+type Mutation {
+  createCategory(data: CreateCategoryInput!): Category!
+  createCompany(data: CreateCompanyInput!): Company!
+  createOrder(data: CreateOrderInput!): Order!
+  createProduct(data: CreateProductInput!): Product!
+  deleteCategory(id: Int!): Int!
+  deleteCompany(id: Int!): Boolean!
+  deleteCountry(id: Int!): Int!
+  deleteOrder(id: Int!): Boolean!
+  deleteProduct(id: Int!): Int!
+  login(data: SignInInput!): User!
+  logout: Boolean!
+  register(data: SignupInput!): Boolean!
+  requestResetPassword(email: String!): Boolean!
+  resendVerificationEmail(email: String!): Boolean!
+  resetPassword(data: ResetPasswordInput!): Boolean!
+  updateCategory(data: UpdateCategoryInput!): Category!
+  updateCompany(data: UpdateCompanyInput!): Company!
+  updateCurrentUser(data: UpdateUserInput!): Boolean!
+  updateOrder(data: UpdateOrderInput!): Order!
+  updateProduct(data: UpdateProductInput!): Product!
+  verifyEmail(token: String!): Boolean!
+}
+
+type Order {
+  buyer: User!
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: Int!
+  products: [OrderProduct!]!
+  seller: Company!
+  totalPrice: Int!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type OrderProduct {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  description: String
+  id: Int!
+  name: String!
+  order: Order!
+  price: Int!
+  quantity: Int!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type Post {
+  author: User
+  content: String
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: ID!
+  published: Boolean!
+  title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type Product {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: Int!
+  images: [ProductImage!]
+  information: ProductInformation
+  name: String!
+  owner: Company!
+  price: Int!
+  status: ProductStatus!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type ProductImage {
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  id: ID!
+  large: Image!
+  product: Product!
+  small: Image!
+  thumbnail: Image!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type ProductInformation {
+  category: Category
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  product: Product!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""Product status (visibility) role"""
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
+
+type Query {
+  categories: [Category!]
+  category(id: Int!): Category!
+  companies: [Company!]
+  company(id: Int!): Company!
+  countries: [Country!]
+  country(id: Int!): Country!
+  currentUser: User!
+  myProducts: [Product!]!
+  order(id: Int!): Order
+  orders: [Order!]
+  post(id: String!): Post
+  product(id: Int!): Product!
+  products: [Product!]
+  productStatuses: [ProductStatus!]
+  publishedPosts: [Post!]
+  user(id: Int!): User
+  users: [User!]
+}
+
+input ResetPasswordInput {
+  password: String!
+  resetPasswordToken: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input SignupInput {
+  email: String!
+  firstName: String
+  lastName: String
+  password: String!
+}
+
+input UpdateCategoryInput {
+  id: Int!
+  name: String!
+}
+
+input UpdateCompanyInformationInput {
+  address: CreateOrUpdateAddressInput
+  categories: [CategoryInput!]
+  country: CountryInput
+  description: String
+}
+
+input UpdateCompanyInput {
+  id: Int!
+  name: String!
+}
+
+input UpdateOrderInput {
+  buyerId: Int!
+  id: Int!
+  products: [UpdateOrderProductInput!]!
+  sellerId: Int!
+}
+
+input UpdateOrderProductInput {
+  description: String
+  id: Int!
+  name: String!
+  price: Int!
+  quantity: Int!
+}
+
+input UpdateProductInput {
+  existingImages: [String!]
+  id: Int!
+  information: CreateOrUpdateProductInformationInput
+  name: String!
+  newImages: [Upload!]
+  price: Int!
+  status: ProductStatus!
+}
+
+input UpdateUserInformationInput {
+  address: CreateOrUpdateAddressInput
+  birthDate: DateTime
+  gender: Gender
+  nationality: [CountryInput!]
+  occupation: String
+}
+
+input UpdateUserInput {
+  avatar: Upload
+  firstName: String
+  information: UpdateUserInformationInput
+  lastName: String
+}
+
+"""Upload custom scalar type"""
+scalar Upload
+
+type User {
+  avatar: Image
+  companyMember: CompanyMember
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  email: String!
+  firstName: String
+  id: Int!
+  information: UserInformation
+  lastName: String
+  posts: [Post!]
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  verification: UserVerification!
+}
+
+type UserInformation {
+  address: Address
+  birthDate: DateTime
+
+  """Identifies the date and time when the object was created"""
+  createdAt: DateTime!
+  gender: Gender
+  id: ID!
+  nationality: [Country!]
+  occupation: String
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  user: User!
+}
+
+type UserVerification {
+  verifiedEmail: Boolean!
+}

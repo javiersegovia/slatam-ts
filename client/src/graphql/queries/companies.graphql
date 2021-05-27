@@ -1,0 +1,13 @@
+query companies {
+  companies {
+    id
+    name
+    members {
+      id
+      roles
+      user {
+        email
+      }
+    }
+  }
+}

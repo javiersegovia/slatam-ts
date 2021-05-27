@@ -1,0 +1,37 @@
+query products {
+  products {
+    id
+    name
+    price
+    information {
+      description
+      category {
+        id
+        name
+      }
+    }
+    status
+    images {
+      id
+      large {
+        id
+        url
+        width
+        height
+      }
+      thumbnail {
+        id
+        url
+        width
+        height
+      }
+    }
+    owner {
+      id
+      name
+      information {
+        description
+      }
+    }
+  }
+}

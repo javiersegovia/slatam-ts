@@ -1,0 +1,22 @@
+query currentUser {
+  currentUser {
+    id
+    email
+    firstName
+    lastName
+    avatar {
+      id
+      url
+    }
+    verification {
+      verifiedEmail
+    }
+    companyMember {
+      roles
+      company {
+        id
+        name
+      }
+    }
+  }
+}
