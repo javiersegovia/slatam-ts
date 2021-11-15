@@ -7,7 +7,6 @@ import { ProductStatus } from '../../../../graphql/schema'
 import GeneralInformation from '../shared/GeneralInformation'
 import { useFilesData } from '@lib/utils/forms'
 import { useQueryClient } from 'react-query'
-import { queries } from '@lib/react-query/keys'
 import Router from 'next/router'
 import routes from '@lib/utils/routes'
 

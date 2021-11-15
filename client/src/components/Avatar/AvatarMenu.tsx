@@ -21,10 +21,7 @@ const AvatarWithMenu = ({ user }: IAvatarWithMenu) => {
               <span tw="rounded-md shadow-sm border-gray-50">
                 <Menu.Button as={React.Fragment}>
                   <button type="button">
-                    <Avatar
-                      size="XS"
-                      imagePath={user.avatar?.url} //TODO: replace when we have the dynamic image urls
-                    />
+                    <Avatar size="XS" imagePath={user.avatar?.url} />
                   </button>
                 </Menu.Button>
               </span>

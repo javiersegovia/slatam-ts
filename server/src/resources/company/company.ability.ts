@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { Company } from './company.entity'
-import { User } from '@resources/user/user.entity'
 import { BaseAbility, Action } from '@resources/base/base.ability'
 import { Ability } from '@casl/ability'
 import { TCurrentUser } from '@resources/auth/session.serializer'

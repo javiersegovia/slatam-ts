@@ -1,5 +1,4 @@
 import { CompanyMemberRole } from '@resources/company/company-member/company-member.entity'
-import { User } from '@resources/user/user.entity'
 import { Ability, AbilityClass, AbilityBuilder } from '@casl/ability'
 import { TCurrentUser } from '@resources/auth/session.serializer'
 

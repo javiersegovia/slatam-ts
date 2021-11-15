@@ -20,7 +20,6 @@ export function formatMoney(cents: number) {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  console.log(product)
   return (
     <>
       <div tw="w-full bg-white shadow-lg flex flex-col rounded-lg overflow-hidden">

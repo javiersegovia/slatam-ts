@@ -7,7 +7,6 @@ import { useForm, get, FieldError } from 'react-hook-form'
 import Input from '@components/FormFields/Input'
 import Select, { SelectMultiple } from '@components/FormFields/Select'
 import Button from '@components/Button'
-import { queries } from '@lib/react-query/keys'
 import routes from '@lib/utils/routes'
 import {
   useCurrentUserQuery,

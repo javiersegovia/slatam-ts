@@ -14,7 +14,6 @@ import { CurrentUserProfileDataQuery, UpdateUserInput } from '@graphql/schema'
 import { usePreviewURL } from '@lib/hooks/usePreviewURL'
 import { FileData, useFilesData } from '@lib/utils/forms'
 import { useQueryClient } from 'react-query'
-import { queries } from '../../../lib/react-query/keys'
 import { useCurrentUserQuery } from '../../../graphql/hooks'
 
 interface IDisplayInformationProps {

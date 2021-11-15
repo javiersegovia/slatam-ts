@@ -53,7 +53,12 @@ export class MailService {
 
     const email = new Email({
       views: { root: './src/mails/templates/' },
-      preview: isDev,
+      preview: isDev && {
+        open: {
+          app: 'firefox',
+          wait: false,
+        },
+      },
       message: {},
       send: false,
       juice: true,
@@ -64,8 +69,6 @@ export class MailService {
         },
       },
     })
-
-    console.log(email)
 
     const renderedEmail = await email.render(`${templateName}/html`, data)
 

@@ -21,10 +21,10 @@ export default function MainNavbar() {
             <div tw="flex justify-start lg:w-0 lg:flex-1">
               <Link href="/">
                 <a href="/">
-                  <span tw="sr-only">Workflow</span>
+                  <span tw="sr-only">Slatam</span>
                   <img
-                    tw="h-8 w-auto sm:h-10"
-                    src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+                    tw="width[200px] object-contain sm:h-10"
+                    src="/images/logo.png"
                     alt="Logo"
                   />
                 </a>

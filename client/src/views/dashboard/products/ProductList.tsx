@@ -4,11 +4,10 @@ import { useMyProductsQuery } from '@graphql/hooks'
 import NextImage from 'next/image'
 import { ProductStatus, MyProductsQuery } from '@graphql/schema'
 import Pill from '@components/Pills/Pill'
-import { HiOutlineDuplicate, HiX } from 'react-icons/hi'
+import { HiX } from 'react-icons/hi'
 import routes from '@lib/utils/routes'
 import Link from 'next/link'
 import { useDeleteProductMutation } from '../../../graphql/hooks'
-import { queries } from '@lib/react-query/keys'
 import { useQueryClient } from 'react-query'
 
 // TODO: move to another place

@@ -5,7 +5,7 @@ type DashboardContainerProps = {
   children: React.ReactNode
 }
 
-const DashboardContainerProps = ({
+const DashboardContainer = ({
   children,
   ...otherProps
 }: DashboardContainerProps) => {
@@ -19,4 +19,4 @@ const DashboardContainerProps = ({
   )
 }
 
-export default DashboardContainerProps
+export default DashboardContainer

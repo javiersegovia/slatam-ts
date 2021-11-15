@@ -9,7 +9,6 @@ import routes from '@lib/utils/routes'
 import { useQueryClient } from 'react-query'
 import { gqlFetcher } from '@lib/react-query/client'
 import { CurrentUserQuery, CurrentUserQueryVariables } from '@graphql/schema'
-import { queries } from '@lib/react-query/keys'
 import { useCurrentUserQuery } from '../../graphql/hooks'
 
 const VerifyEmail = ({ token }: { token: string | undefined }) => {
@@ -37,7 +36,7 @@ const VerifyEmail = ({ token }: { token: string | undefined }) => {
 
             redirectTimeout.current = setTimeout(
               () => Router.push(routes.user.setup.profile),
-              6000
+              2000
             )
           },
         }

@@ -14,7 +14,6 @@ import Button from '@components/Button'
 import { CountriesQuery } from '@graphql/schema'
 import Link from 'next/link'
 import { useQueryClient } from 'react-query'
-import { queries } from '@lib/react-query/keys'
 
 type IFormValues = CreateCompanyInput
 

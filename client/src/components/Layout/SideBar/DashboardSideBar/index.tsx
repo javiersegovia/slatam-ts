@@ -65,8 +65,8 @@ const SideBar: React.FC = ({ children }) => {
           ]}
         >
           <Link href="/" passHref>
-            <a tw="flex items-center px-4 py-5 text-white cursor-pointer">
-              Slatam Logo
+            <a tw="flex items-center width[200px] object-contain px-4 py-5 text-white cursor-pointer mx-auto">
+              <img src="/images/logo-white.png" alt="Logo" />
             </a>
           </Link>
           <nav

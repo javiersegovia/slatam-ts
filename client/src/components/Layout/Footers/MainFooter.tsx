@@ -10,7 +10,7 @@ export default function MainFooter() {
           <div tw="flex-shrink-0 w-64 mx-auto text-center md:mx-0 md:text-right">
             <Link href="/" passHref>
               <a tw="flex items-end justify-end font-medium text-gray-900 md:justify-end">
-                SLATAM LOGO
+                <img src="/images/logo.png" alt="Logo" />
               </a>
             </Link>
             <p tw="mt-2 text-sm text-gray-500">Trade without borders</p>

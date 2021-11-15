@@ -62,7 +62,7 @@
     "connect-redis": "^5.1.0",
     "crypto": "^1.0.1",
     "deepmerge": "^4.2.2",
-    "email-templates": "^8.0.3",
+    "email-templates": "^8.0.8",
     "express-session": "^1.17.1",
     "graphql": "15.4.0",
     "graphql-tools": "7.0.2",

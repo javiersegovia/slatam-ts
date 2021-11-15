@@ -1,20 +1,7 @@
 import React from 'react'
 import _tw from 'twin.macro'
 import { ProductCard } from '@components/Card/Product'
-import faker from 'faker'
-import { Product, ProductStatus } from '@graphql/schema'
-import { NestedPartial } from '@lib/utils/types'
 import { useProductsQuery } from '@graphql/hooks'
-
-const products: NestedPartial<Product[]> = new Array(30)
-  .fill(null)
-  .map((_e, idx) => ({
-    id: idx,
-    name: faker.commerce.productName(),
-    status: idx % 2 ? ProductStatus.Active : ProductStatus.Inactive,
-    price: faker.random.number(10000),
-    description: faker.commerce.productDescription(),
-  }))
 
 const ProductGrid = () => {
   const { data: products, isLoading } = useProductsQuery()
